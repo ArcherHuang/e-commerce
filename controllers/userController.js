@@ -27,8 +27,8 @@ const userController = {
         return res.redirect('/signup')
       } else if (data['status'] === 'success') {
         req.flash('success_messages', data['message'])
-        // return next(null, data['user'])
-        res.redirect('/signin')
+        return next(null, data['user'])
+        // res.redirect('/signin')
       }
     })
 
@@ -39,6 +39,8 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   },
+
+
 
 }
 
