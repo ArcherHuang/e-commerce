@@ -1,6 +1,8 @@
 
 const userController = require('../controllers/userController.js')
 const forgetPasswordController = require('../controllers/forgetPasswordController.js')
+const categoryController = require('../controllers/categoryController.js')
+const adminController = require('../controllers/adminController.js')
 
 const helpers = require('../_helpers')
 
@@ -45,5 +47,15 @@ module.exports = (app, passport) => {
   app.put('/modfiy-password', forgetPasswordController.resetPassword)
 
   app.get('/logout', userController.logout)
+
+  app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/products'))
+  app.get('/admin/products', authenticatedAdmin, adminController.getProducts)
+
+  // 商品分類
+  app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
+  app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
 
 }
