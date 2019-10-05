@@ -3,6 +3,7 @@ const userController = require('../controllers/userController.js')
 const forgetPasswordController = require('../controllers/forgetPasswordController.js')
 const categoryController = require('../controllers/categoryController.js')
 const adminController = require('../controllers/adminController.js')
+const adminCouponController = require('../controllers/adminCouponController.js')
 
 const helpers = require('../_helpers')
 
@@ -62,4 +63,12 @@ module.exports = (app, passport) => {
   // User
   app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
+
+  // Coupon
+  app.post('/admin/coupons', authenticatedAdmin, adminCouponController.postCoupon)
+  app.put('/admin/coupons/:id', authenticatedAdmin, adminCouponController.putCoupon)
+  app.delete('/admin/coupons/:id', authenticatedAdmin, adminCouponController.deleteCoupon)
+  app.get('/admin/coupons', authenticatedAdmin, adminCouponController.getCoupons)
+  app.get('/admin/coupons/:id', authenticatedAdmin, adminCouponController.getCoupons)
+
 }
