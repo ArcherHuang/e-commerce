@@ -4,16 +4,13 @@ const User = db.User
 const adminService = {
 
   editUsers: (req, res, callback) => {
-
     User.findAll().then(users => {
-      return callback({ status: 'success', users })
+      return callback({ status: 'success', message: '取得使用者清單成功', content: users })
     })
-
   },
 
   putUsers: (req, res, callback) => {
-
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.user_id)
       .then(user => {
         const {
           role
@@ -35,7 +32,6 @@ const adminService = {
             })
         }
       })
-
   },
 
 }

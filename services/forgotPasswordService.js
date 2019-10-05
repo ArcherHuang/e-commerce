@@ -88,14 +88,14 @@ const forgotPasswordService = {
 
     const token = req.params.token
     forgotPasswordService.getRedisInstance().get(`PASSWORD:RESET:${token}`, (err, reply) => {
-      // console.log(`token: ${token}`)
-      // console.log(`reply: ${reply}`)
+      console.log(`token: ${token}`)
+      console.log(`reply: ${reply}`)
       if (reply === null || reply === '') {
         return callback({ status: 'error', message: '5 分鐘的時效已過，請重新點選【 忘記密碼 】功能 ~' })
       } else {
         const parseReply = JSON.parse(reply)
         // console.log(`email: ${parseReply.email}`)
-        req.session.mail = parseReply.email
+        // req.session.mail = parseReply.email
         return callback({ status: 'success', message: '請輸入密碼進行密碼變更' })
       }
 
@@ -117,7 +117,7 @@ const forgotPasswordService = {
 
         User.findOne({
           where: {
-            email: req.session.mail
+            email: 'mmosconii@gmail.com'
           }
         }).then((user) => {
           if (user) {

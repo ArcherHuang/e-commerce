@@ -1,5 +1,7 @@
+const passport = require('./config/passport')
+
 function ensureAuthenticated(req) {
-  return req.isAuthenticated();
+  return false;
 }
 
 function getUser(req) {

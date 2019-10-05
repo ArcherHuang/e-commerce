@@ -1,5 +1,5 @@
-let validator = require('validator')
-let moment = require('moment')
+const validator = require('validator')
+const moment = require('moment')
 const { Op } = require('sequelize')
 
 const db = require('../models')
@@ -48,7 +48,9 @@ const adminCouponService = {
       return ({ status: 'error', message: '請輸入 Coupon 相關資訊' })
     } else {
 
-      if (validator.isInt(number_of_limitation, { min: 1 }) && validator.isInt(discount, { min: 1 }) && validator.isISO8601(expire_date)) {
+      if (validator.isInt(number_of_limitation, { min: 1 }) &&
+        validator.isInt(discount, { min: 1 }) &&
+        moment(expire_date, 'YYYY-MM-DD', true).isValid()) {
 
         if (!moment(expire_date).isAfter(new Date())) {
           return ({ status: 'error', message: 'expire_date 請輸入大於今日的日期' })
@@ -88,7 +90,7 @@ const adminCouponService = {
     const couponFieldCheckResult = adminCouponService.checkCouponField(req.body)
     if (couponFieldCheckResult.status === 'success') {
       Coupon.findByPk(
-        req.params.id
+        req.params.coupon_id
       ).then((coupon) => {
         if (coupon) {
           coupon.update({
@@ -111,7 +113,7 @@ const adminCouponService = {
 
     Coupon.destroy({
       where: {
-        id: req.params.id
+        id: req.params.coupon_id
       }
     }).then(() => {
       return callback({ status: 'success', message: 'Coupon 已刪除' })
@@ -123,8 +125,8 @@ const adminCouponService = {
 
     Coupon.findAll().then(coupons => {
 
-      if (req.params.id) {
-        Coupon.findByPk(req.params.id)
+      if (req.params.coupon_id) {
+        Coupon.findByPk(req.params.coupon_id)
           .then((coupon) => {
             return callback({ status: 'success', message: '取得特定 Coupon 資料', content: coupon })
           })
