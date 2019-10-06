@@ -1,8 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define('Category', {
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
+  const CartItem = sequelize.define('CartItem', {
+    quantity: DataTypes.INTEGER,
+    cart_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
     data_status: {
       type: DataTypes.INTEGER,
@@ -10,9 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 1
     },
   }, {});
-  Category.associate = function (models) {
+  CartItem.associate = function (models) {
     // associations can be defined here
-    Category.hasMany(models.Product)
+    CartItem.belongsTo(models.Cart)
+    CartItem.belongsTo(models.Product)
   };
-  return Category;
+  return CartItem;
 };
