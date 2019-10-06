@@ -2,11 +2,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Payment = sequelize.define('Payment', {
     sn: DataTypes.STRING,
-    paymentMethod: DataTypes.STRING,
-    payAt: DataTypes.DATE,
+    payment_method: DataTypes.STRING,
+    pay_at: DataTypes.DATE,
     params: DataTypes.TEXT,
-    orderId: DataTypes.INTEGER,
-    dataStatus: {
+    order_id: DataTypes.INTEGER,
+    data_status: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     role: DataTypes.STRING,
-    isValid: DataTypes.BOOLEAN,
+    is_valid: DataTypes.BOOLEAN,
     phone: DataTypes.STRING,
     address: DataTypes.STRING,
     birthday: DataTypes.DATE
@@ -23,28 +23,28 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CouponDistribution, unique: false
       },
-      foreignKey: 'userId'
+      foreignKey: 'user_id'
     });
     User.belongsToMany(models.Product, {
       as: 'productViewd',
       through: {
         model: models.PageView, unique: false
       },
-      foreignKey: 'userId'
+      foreignKey: 'user_id'
     });
     User.belongsToMany(models.Product, {
       as: 'productLiked',
       through: {
         model: models.Like, unique: false
       },
-      foreignKey: 'userId'
+      foreignKey: 'user_id'
     });
     User.belongsToMany(models.Product, {
       as: 'productReviewed',
       through: {
         model: models.Review, unique: false
       },
-      foreignKey: 'userId'
+      foreignKey: 'user_id'
     });
   };
   return User;
