@@ -7,8 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     discount: DataTypes.INTEGER,
     expire_date: DataTypes.DATE
   }, {});
-  Coupon.associate = function(models) {
+  Coupon.associate = function (models) {
     // associations can be defined here
+    Coupon.hasMany(models.CouponDistribution)
+    Coupon.belongsToMany(models.User, {
+      as: 'users',
+      through: {
+        model: models.CouponDistribution, unique: false
+      },
+      foreignKey: 'couponId'
+    });
   };
   return Coupon;
 };
