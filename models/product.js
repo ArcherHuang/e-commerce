@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     Product.belongsToMany(models.User, {
       as: 'userViews',
       through: {
-        model: models.User, unique: false
+        model: models.PageView, unique: false
       },
       foreignKey: 'productId'
     });

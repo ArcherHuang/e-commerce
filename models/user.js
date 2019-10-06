@@ -25,21 +25,21 @@ module.exports = (sequelize, DataTypes) => {
       },
       foreignKey: 'userId'
     });
-    User.belongsToMany(models.Proudct, {
+    User.belongsToMany(models.Product, {
       as: 'productViewd',
       through: {
         model: models.PageView, unique: false
       },
       foreignKey: 'userId'
     });
-    User.belongsToMany(models.Proudct, {
+    User.belongsToMany(models.Product, {
       as: 'productLiked',
       through: {
         model: models.Like, unique: false
       },
       foreignKey: 'userId'
     });
-    User.belongsToMany(models.Proudct, {
+    User.belongsToMany(models.Product, {
       as: 'productReviewed',
       through: {
         model: models.Review, unique: false

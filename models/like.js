@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Like.associate = function (models) {
     // associations can be defined here
     Like.belongsTo(models.User)
-    Like.belongsTo(models.Proudct)
+    Like.belongsTo(models.Product)
   };
   return Like;
 };
