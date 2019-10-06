@@ -10,7 +10,8 @@ const options = {
       description: "【 說明 】電商平台後端 API"
     },
     // host: 'localhost:3000',
-    host: 'pro-ec.herokuapp.com',
+    // host: 'pro-ec.herokuapp.com',
+    host: 'aja-ec.herokuapp.com',
     explorer: true,
     securityDefinitions: {
       bearerAuth: {
