@@ -95,7 +95,7 @@ const forgotPasswordService = {
       } else {
         const parseReply = JSON.parse(reply)
         // console.log(`email: ${parseReply.email}`)
-        // req.session.mail = parseReply.email
+        req.session.mail = parseReply.email
         return callback({ status: 'success', message: '請輸入密碼進行密碼變更' })
       }
 
@@ -112,12 +112,11 @@ const forgotPasswordService = {
     } else {
 
       if (passwordCheck !== password) {
-        return callback({ status: 'error', message: '兩次密碼輸入不同！' })
+        return callback({ status: 'error', message: '兩次密碼輸入不同!！' })
       } else {
-
         User.findOne({
           where: {
-            email: 'mmosconii@gmail.com'
+            email: req.session.mail
           }
         }).then((user) => {
           if (user) {

@@ -82,3 +82,83 @@
  *       200:
  *         description: 註冊成功
  */
+
+/********************************************************************
+* Accounts - 設定連結時效與寄發 mail
+* POST http://localhost:3000/accounts/reset-password
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/reset-password:
+ *   post:
+ *     tags:
+ *      - Accounts
+ *     description: Accounts - 設定連結時效與寄發 mail
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: email
+ *         description: 使用者的 email
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: 設定成功
+ */
+
+/********************************************************************
+* Accounts - 驗證所收到的 email 連結是否還在有效期限內
+* GET http://localhost:3000/accounts/reset-password/{token}
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/reset-password/{token}:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Accounts - 驗證所收到的 email 連結是否還在有效期限內
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         type: string
+ *         required: true
+ *         description: redis token ( from email )
+ *     responses:
+ *       200:
+ *         description: 驗證成功
+ */
+
+/********************************************************************
+* Accounts - 設定密碼
+* PUT http://localhost:3000/accounts/modfiy-password
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/modfiy-password:
+ *   put:
+ *     tags:
+ *      - Accounts
+ *     description: Accounts - 設定密碼
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: password
+ *         description: 使用者新的 password
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: passwordCheck
+ *         description: 再次輸入 password 以確認跟第一次輸入的相同
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: 修改密碼成功
+ */
