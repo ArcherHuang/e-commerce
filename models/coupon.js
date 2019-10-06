@@ -4,10 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     sn: DataTypes.STRING,
     amount: DataTypes.INTEGER,
-    numberOfLimitation: DataTypes.INTEGER,
+    number_of_limitation: DataTypes.INTEGER,
     discount: DataTypes.INTEGER,
-    expireDate: DataTypes.DATE,
-    dataStatus: {
+    expire_date: DataTypes.DATE,
+    data_status: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CouponDistribution, unique: false
       },
-      foreignKey: 'couponId'
+      foreignKey: 'coupon_id'
     });
   };
   return Coupon;
