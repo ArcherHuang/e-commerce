@@ -1,20 +1,20 @@
 const express = require('express')
 const router = express.Router()
 
-const adminController = require('../controllers/adminController')
-const categoryController = require('../controllers/categoryController')
-const adminCouponController = require('../controllers/adminCouponController')
+const adminUserController = require('../controllers/admin/userController')
+const adminCategoryController = require('../controllers/admin/categoryController')
+const adminCouponController = require('../controllers/admin/couponController')
 
 // User
-router.get('/users', adminController.editUsers)
-router.put('/users/:user_id', adminController.putUsers)
+router.get('/users', adminUserController.editUsers)
+router.put('/users/:user_id', adminUserController.putUsers)
 
 // 商品分類
-router.post('/categories', categoryController.postCategory)
-router.put('/categories/:category_id', categoryController.putCategory)
-router.delete('/categories/:category_id', categoryController.deleteCategory)
-router.get('/categories', categoryController.getCategories)
-router.get('/categories/:category_id', categoryController.getCategories)
+router.post('/categories', adminCategoryController.postCategory)
+router.put('/categories/:category_id', adminCategoryController.putCategory)
+router.delete('/categories/:category_id', adminCategoryController.deleteCategory)
+router.get('/categories', adminCategoryController.getCategories)
+router.get('/categories/:category_id', adminCategoryController.getCategories)
 
 // Coupon
 router.post('/coupons', adminCouponController.postCoupon)

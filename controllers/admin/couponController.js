@@ -1,6 +1,6 @@
-const adminCouponService = require('../services/adminCouponService.js')
+const adminCouponService = require('../../services/admin/couponService')
 
-const adminCouponController = {
+const couponController = {
 
   postCoupon: (req, res, callback) => {
     adminCouponService.postCoupon(req, res, (data) => {
@@ -28,4 +28,4 @@ const adminCouponController = {
 
 }
 
-module.exports = adminCouponController
+module.exports = couponController

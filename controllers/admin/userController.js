@@ -1,6 +1,6 @@
-const adminService = require('../services/adminService.js')
+const adminService = require('../../services/admin/userService')
 
-const adminController = {
+const userController = {
 
   editUsers: (req, res) => {
     adminService.editUsers(req, res, (data) => {
@@ -16,4 +16,4 @@ const adminController = {
 
 }
 
-module.exports = adminController
+module.exports = userController

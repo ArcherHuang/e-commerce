@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
-const userController = require('../controllers/userController')
+const accountController = require('../controllers/accountController')
 const forgetPasswordController = require('../controllers/forgetPasswordController')
 
 // User
-router.post('/signin', userController.signIn)
-router.post('/signup', userController.signUp)
-router.get('/logout', userController.logout)
+router.post('/signin', accountController.signIn)
+router.post('/signup', accountController.signUp)
+router.get('/logout', accountController.logout)
 
 // Reset Password
 router.post('/reset-password', forgetPasswordController.setRedisKey)

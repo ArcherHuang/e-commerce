@@ -2,7 +2,7 @@ const validator = require('validator')
 const moment = require('moment')
 const { Op } = require('sequelize')
 
-const db = require('../models')
+const db = require('../../models')
 const Coupon = db.Coupon
 
 const adminCouponService = {
