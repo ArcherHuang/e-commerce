@@ -5,7 +5,12 @@ module.exports = (sequelize, DataTypes) => {
     paymentMethod: DataTypes.STRING,
     payAt: DataTypes.DATE,
     params: DataTypes.TEXT,
-    orderId: DataTypes.INTEGER
+    orderId: DataTypes.INTEGER,
+    dataStatus: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
   }, {});
   Payment.associate = function (models) {
     // associations can be defined here

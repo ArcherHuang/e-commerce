@@ -3,7 +3,12 @@ module.exports = (sequelize, DataTypes) => {
   const PageView = sequelize.define('PageView', {
     viewCount: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER
+    productId: DataTypes.INTEGER,
+    dataStatus: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
   }, {});
   PageView.associate = function (models) {
     // associations can be defined here

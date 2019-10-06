@@ -3,9 +3,15 @@ module.exports = (sequelize, DataTypes) => {
   const Coupon = sequelize.define('Coupon', {
     name: DataTypes.STRING,
     sn: DataTypes.STRING,
-    number_of_limitation: DataTypes.INTEGER,
+    amount: DataTypes.INTEGER,
+    numberOfLimitation: DataTypes.INTEGER,
     discount: DataTypes.INTEGER,
-    expire_date: DataTypes.DATE
+    expireDate: DataTypes.DATE,
+    dataStatus: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
   }, {});
   Coupon.associate = function (models) {
     // associations can be defined here

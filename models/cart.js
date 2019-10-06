@@ -1,7 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define('Cart', {
-    id: DataTypes.INTEGER
+    id: DataTypes.INTEGER,
+    dataStatus: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
   }, {});
   Cart.associate = function (models) {
     // associations can be defined here

@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     paymentStatus: DataTypes.STRING,
     userId: DataTypes.INTEGER,
     couponDistributionId: DataTypes.INTEGER,
-    addDiscount: DataTypes.FLOAT
+    addDiscount: DataTypes.FLOAT,
+    dataStatus: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
   }, {});
   Order.associate = function (models) {
     // associations can be defined here
