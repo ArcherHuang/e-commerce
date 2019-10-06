@@ -107,7 +107,7 @@
 
 /********************************************************************
 * Admin - 刪除分類
-* POST http://localhost:3000/admin/categories/:category_id
+* DELETE http://localhost:3000/admin/categories/:category_id
 ********************************************************************/
 
 /**
