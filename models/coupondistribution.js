@@ -2,9 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   const CouponDistribution = sequelize.define('CouponDistribution', {
     coupon_id: DataTypes.INTEGER,
-    user_id: DataTypes.INTEGER,
-    usage_status: DataTypes.INTEGER,
-    data_status: {
+    userId: DataTypes.INTEGER,
+    usageStatus: DataTypes.INTEGER,
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1

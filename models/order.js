@@ -5,13 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     address: DataTypes.STRING,
     sn: DataTypes.STRING,
-    total_amount: DataTypes.FLOAT,
-    shipping_status: DataTypes.STRING,
-    payment_status: DataTypes.STRING,
-    user_id: DataTypes.INTEGER,
-    coupon_distribution_id: DataTypes.INTEGER,
-    add_discount: DataTypes.FLOAT,
-    data_status: {
+    totalAmount: DataTypes.FLOAT,
+    shippingStatus: DataTypes.STRING,
+    paymentStatus: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
+    couponDistributionId: DataTypes.INTEGER,
+    addDiscount: DataTypes.FLOAT,
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.OrderItem, unique: false
       },
-      foreignKey: 'order_id'
+      foreignKey: 'orderId'
     });
   };
   return Order;

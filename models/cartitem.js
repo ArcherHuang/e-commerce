@@ -2,9 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   const CartItem = sequelize.define('CartItem', {
     quantity: DataTypes.INTEGER,
-    cart_id: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER,
-    data_status: {
+    cartId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
