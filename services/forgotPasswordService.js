@@ -1,3 +1,4 @@
+const sendEmailService = require('./sendEmailService')
 const uuidv4 = require('uuid/v4')
 const bcrypt = require('bcrypt-nodejs')
 
@@ -5,8 +6,6 @@ const db = require('../models')
 const User = db.User
 
 let redisClient
-
-let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN })
 
 const forgotPasswordService = {
 
@@ -45,13 +44,13 @@ const forgotPasswordService = {
           console.log(`Key: ${redisKey}, values: ${redisValue}`)
 
           forgotPasswordService.getRedisInstance().set(redisKey, redisValue, function () {
-            forgotPasswordService.getRedisInstance().expire(redisKey, "300", function () {
+            forgotPasswordService.getRedisInstance().expire(redisKey, "300", async function () {
 
               let data = {
-                from: process.env.EMAIL_FROM,
-                to: email,
+                email,
                 subject: `【 會員密碼重置確認信 】`,
-                text: `
+                type: 'text',
+                info: `
                 ☆ 此信件為系統發出信件，請勿直接回覆，感謝您的配合 ☆
 
                 親愛的會員 您好：
@@ -65,10 +64,7 @@ const forgotPasswordService = {
                 `
               }
 
-              mailgun.messages().send(data, (error, body) => {
-                console.log(body)
-                console.log(`Key: ${redisKey}, values: ${redisValue}`)
-              })
+              await sendEmailService.mailInfo(data)
 
               return callback({ status: 'success', message: `已寄送修改密碼通知信件到 ${email}` })
 
