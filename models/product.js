@@ -5,14 +5,14 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     image: DataTypes.STRING,
     price: DataTypes.FLOAT,
-    recommended_price: DataTypes.FLOAT,
+    recommendedPrice: DataTypes.FLOAT,
     inventory: DataTypes.INTEGER,
     length: DataTypes.FLOAT,
     width: DataTypes.FLOAT,
     height: DataTypes.FLOAT,
     weight: DataTypes.FLOAT,
     categoryId: DataTypes.INTEGER,
-    data_status: {
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
@@ -32,28 +32,28 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CartItem, unique: false
       },
-      foreignKey: 'product_id'
+      foreignKey: 'productId'
     });
     Product.belongsToMany(models.Order, {
       as: 'orders',
       through: {
         model: models.OrderItem, unique: false
       },
-      foreignKey: 'product_id'
+      foreignKey: 'productId'
     });
     Product.belongsToMany(models.User, {
       as: 'userViews',
       through: {
         model: models.PageView, unique: false
       },
-      foreignKey: 'product_id'
+      foreignKey: 'productId'
     });
     Product.belongsToMany(models.User, {
       as: 'userLikes',
       through: {
         model: models.Like, unique: false
       },
-      foreignKey: 'product_id'
+      foreignKey: 'productId'
     });
 
   };

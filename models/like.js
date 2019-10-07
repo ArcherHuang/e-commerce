@@ -1,9 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Like = sequelize.define('Like', {
-    user_id: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER,
-    data_status: {
+    userId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1

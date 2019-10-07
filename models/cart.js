@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define('Cart', {
-    data_status: {
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CartItem, unique: false
       },
-      foreignKey: 'cart_id'
+      foreignKey: 'cartId'
     });
   };
   return Cart;

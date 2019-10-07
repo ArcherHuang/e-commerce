@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define('Category', {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
-    product_id: DataTypes.INTEGER,
-    data_status: {
+    productId: DataTypes.INTEGER,
+    dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
