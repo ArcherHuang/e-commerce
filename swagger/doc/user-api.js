@@ -162,3 +162,47 @@
  *       200:
  *         description: 修改密碼成功
  */
+
+/********************************************************************
+* Accounts - 取得所有 Product
+* GET http://localhost:3000/products
+********************************************************************/
+
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得所有 Product
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得所有 Product 成功
+ */
+
+/********************************************************************
+* Accounts - 取得特定 Product
+* GET http://localhost:3000/products/:product_id
+********************************************************************/
+
+/**
+ * @swagger
+ * /products/{product_id}:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得特定 Product
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         type: integer
+ *         required: true
+ *         description: product_id
+ *     responses:
+ *       200:
+ *         description: 取得特定 Product 成功
+ */
