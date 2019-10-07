@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     name: DataTypes.STRING,
-    discription: DataTypes.TEXT,
+    description: DataTypes.TEXT,
     image: DataTypes.STRING,
     price: DataTypes.FLOAT,
     recommended_price: DataTypes.FLOAT,
@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     width: DataTypes.FLOAT,
     height: DataTypes.FLOAT,
     weight: DataTypes.FLOAT,
+    categoryId: DataTypes.INTEGER,
     data_status: {
       type: DataTypes.INTEGER,
       allowNull: false,
