@@ -11,7 +11,8 @@ const options = {
     },
     // host: 'localhost:3000',
     // host: 'pro-ec.herokuapp.com',
-    host: 'aja-ec.herokuapp.com',
+    // host: 'aja-ec.herokuapp.com',
+    host: process.env.API_SERVER_FOR_SWAGGER,
     explorer: true,
     securityDefinitions: {
       bearerAuth: {
