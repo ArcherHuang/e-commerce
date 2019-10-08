@@ -1,8 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const CouponDistribution = sequelize.define('CouponDistribution', {
-    coupon_id: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
+    CouponId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
     usageStatus: DataTypes.INTEGER,
     dataStatus: {
       type: DataTypes.INTEGER,

@@ -2,8 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const CartItem = sequelize.define('CartItem', {
     quantity: DataTypes.INTEGER,
-    cartId: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER,
+    CartId: DataTypes.INTEGER,
+    ProductId: DataTypes.INTEGER,
     dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -32,28 +32,28 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CartItem, unique: false
       },
-      foreignKey: 'productId'
+      foreignKey: 'ProductId'
     });
     Product.belongsToMany(models.Order, {
       as: 'orders',
       through: {
         model: models.OrderItem, unique: false
       },
-      foreignKey: 'productId'
+      foreignKey: 'ProductId'
     });
     Product.belongsToMany(models.User, {
       as: 'userViews',
       through: {
         model: models.PageView, unique: false
       },
-      foreignKey: 'productId'
+      foreignKey: 'ProductId'
     });
     Product.belongsToMany(models.User, {
       as: 'userLikes',
       through: {
         model: models.Like, unique: false
       },
-      foreignKey: 'productId'
+      foreignKey: 'ProductId'
     });
 
   };
