@@ -2,8 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const PageView = sequelize.define('PageView', {
     viewCount: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
+    ProductId: DataTypes.INTEGER,
     dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,

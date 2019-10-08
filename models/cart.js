@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CartItem, unique: false
       },
-      foreignKey: 'cartId'
+      foreignKey: 'CartId'
     });
   };
   return Cart;

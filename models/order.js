@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     totalAmount: DataTypes.FLOAT,
     shippingStatus: DataTypes.STRING,
     paymentStatus: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    couponDistributionId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
+    CouponDistributionId: DataTypes.INTEGER,
     addDiscount: DataTypes.FLOAT,
     dataStatus: {
       type: DataTypes.INTEGER,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.OrderItem, unique: false
       },
-      foreignKey: 'orderId'
+      foreignKey: 'OrderId'
     });
   };
   return Order;

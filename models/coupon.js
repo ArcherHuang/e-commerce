@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       through: {
         model: models.CouponDistribution, unique: false
       },
-      foreignKey: 'couponId'
+      foreignKey: 'CouponId'
     });
   };
   return Coupon;
