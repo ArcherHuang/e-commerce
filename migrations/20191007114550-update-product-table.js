@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return Promise.all([
       queryInterface.addColumn('Products', 'description', {
-        type: Sequelize.FLOAT
+        type: Sequelize.TEXT
       }),
       queryInterface.removeColumn('Products', 'discription'),
     ]);
@@ -13,7 +13,7 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return Promise.all([
       queryInterface.addColumn('Products', 'discription', {
-        type: Sequelize.FLOAT
+        type: Sequelize.TEXT
       }),
       queryInterface.removeColumn('Products', 'description'),
     ]);

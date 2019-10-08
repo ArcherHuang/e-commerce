@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     width: DataTypes.FLOAT,
     height: DataTypes.FLOAT,
     weight: DataTypes.FLOAT,
-    categoryId: DataTypes.INTEGER,
+    CategoryId: DataTypes.INTEGER,
     dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -90,7 +90,7 @@ const productService = {
             width,
             height,
             weight,
-            categoryId: req.body.category_id
+            CategoryId: req.body.category_id
           }).then((product) => {
             callback({ status: 'success', message: '商品資料建立成功' })
           })
@@ -106,7 +106,7 @@ const productService = {
           width,
           height,
           weight,
-          categoryId: req.body.category_id
+          CategoryId: req.body.category_id
         })
           .then((product) => {
             callback({ status: 'success', message: '商品資料建立成功' })
@@ -150,7 +150,7 @@ const productService = {
                 width,
                 height,
                 weight,
-                categoryId: req.body.category_id
+                CategoryId: req.body.category_id
               }).then((product) => {
                 callback({ status: 'success', message: '商品更新成功' })
               })
@@ -169,7 +169,7 @@ const productService = {
               width,
               height,
               weight,
-              categoryId: req.body.category_id
+              CategoryId: req.body.category_id
             }).then((product) => {
               callback({ status: 'success', message: '商品更新成功' })
             })
