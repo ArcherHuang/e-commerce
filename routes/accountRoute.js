@@ -12,6 +12,6 @@ router.get('/logout', accountController.logout)
 // Reset Password
 router.post('/reset-password', forgetPasswordController.setRedisKey)
 router.get('/reset-password/:token', forgetPasswordController.getRedisKey)
-router.put('/modfiy-password', forgetPasswordController.resetPassword)
+router.put('/modify-password', forgetPasswordController.resetPassword)
 
 module.exports = router

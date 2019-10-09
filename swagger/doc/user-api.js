@@ -135,12 +135,12 @@
 
 /********************************************************************
 * Accounts - 設定密碼
-* PUT http://localhost:3000/accounts/modfiy-password
+* PUT http://localhost:3000/accounts/modify-password
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/modfiy-password:
+ * /accounts/modify-password:
  *   put:
  *     tags:
  *      - Accounts
