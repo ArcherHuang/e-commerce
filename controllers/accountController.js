@@ -18,6 +18,11 @@ const userController = {
     req.logout()
   },
 
+  getProfile: (req, res) => {
+    userService.getProfile(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 }
 
 module.exports = userController

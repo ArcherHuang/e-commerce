@@ -4,6 +4,9 @@ const router = express.Router()
 const accountController = require('../controllers/accountController')
 const forgetPasswordController = require('../controllers/forgetPasswordController')
 
+// Member
+router.get('/', accountController.getProfile)
+
 // User
 router.post('/signin', accountController.signIn)
 router.post('/signup', accountController.signUp)

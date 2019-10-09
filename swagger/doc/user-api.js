@@ -1,4 +1,23 @@
 /********************************************************************
+* Accounts - 取得 Profile
+* GET http://localhost:3000/accounts
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得 User Profile
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得 User Profile 成功
+ */
+
+/********************************************************************
 * Accounts - 使用者登入
 * POST http://localhost:3000/accounts/signin
 ********************************************************************/

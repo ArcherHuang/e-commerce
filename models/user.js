@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'UserId'
     });
     User.belongsToMany(models.Product, {
-      as: 'productViewd',
+      as: 'productViewed',
       through: {
         model: models.PageView, unique: false
       },

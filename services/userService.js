@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 
 const db = require('../models')
-const User = db.User
+const { User, Product } = db
 
 const userService = {
 
@@ -29,6 +29,10 @@ const userService = {
 
     const payload = { id: user.id }
     const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+    // 用 session 紀錄 user 資訊
+    req.session.user = user
+
     return callback({
       status: 'success', message: '登入成功', token, user: {
         id: user.id,
@@ -98,6 +102,27 @@ const userService = {
 
   },
 
+  getProfile: (req, res, callback) => {
+    try {
+      return User.findAll({
+        where: {
+          id: req.session.user.id
+        },
+        include: [
+          { model: Product, as: "productLiked" },
+          { model: Product, as: "productViewed" },
+          { model: Product, as: "productReviewed" },
+        ]
+      }).then(user => {
+        return callback({ status: 'success', message: '取得使用者頁面成功', content: user })
+      }).catch(err => {
+        return callback({ status: 'error', message: '無法取得使用者頁面' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '無法取得使用者頁面' })
+    }
+  },
 }
 
 module.exports = userService  
