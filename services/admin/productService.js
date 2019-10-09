@@ -46,10 +46,26 @@ const productService = {
 
   getProducts: (req, res, callback) => {
 
-    return Product.findAll({ include: [Category] }).then(products => {
-      return callback({ status: 'success', message: '取得產品清單成功', content: products })
-    })
-
+    if (req.query.category_id) {
+      return Product.findAll({
+        include: [Category],
+        where: {
+          CategoryId: req.query.category_id
+        }
+      }).then(products => {
+        if (products.length !== 0) {
+          return callback({ status: 'success', message: '取得該分類產品清單成功', content: products })
+        } else {
+          return Product.findAll({ include: [Category] }).then(products => {
+            return callback({ status: 'success', message: '該分類沒有產品，取得所有產品清單成功', content: products })
+          })
+        }
+      })
+    } else {
+      return Product.findAll({ include: [Category] }).then(products => {
+        return callback({ status: 'success', message: '取得產品清單成功', content: products })
+      })
+    }
   },
 
   getProduct: (req, res, callback) => {

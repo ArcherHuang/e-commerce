@@ -14,6 +14,12 @@
  *       - application/json
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: category_id
+ *         schema:
+ *           type: integer
+ *         description: Put in category id that user want to query
  *     responses:
  *       200:
  *         description: 取得所有 Product 成功
