@@ -84,7 +84,7 @@
  *         required: false
  *         type: integer
  *       - name: expire_date
- *         description: Coupon 的 expire date
+ *         description: Coupon 的 expire date ( YYYY-MM-DD )
  *         in: formData
  *         required: true
  *         type: string
@@ -136,7 +136,7 @@
  *         required: false
  *         type: integer
  *       - name: expire_date
- *         description: Coupon 的 expire date
+ *         description: Coupon 的 expire date ( YYYY-MM-DD )
  *         in: formData
  *         required: true
  *         type: string

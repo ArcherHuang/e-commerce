@@ -74,7 +74,7 @@
  *         required: true
  *         type: string
  *       - name: birthday
- *         description: 使用者的 birthday
+ *         description: 使用者的 birthday ( YYYY-MM-DD )
  *         in: formData
  *         required: true
  *         type: string
