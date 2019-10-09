@@ -6,6 +6,9 @@ const db = require('../../models')
 const Product = db.Product
 const Category = db.Category
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 const productService = {
 
   checkProductField: (data) => {
@@ -46,24 +49,54 @@ const productService = {
 
   getProducts: (req, res, callback) => {
 
-    if (req.query.category_id) {
+    if (req.query.category_id && req.query.keyword) {
+      const keyword = req.query.keyword ? req.query.keyword : null
       return Product.findAll({
         include: [Category],
         where: {
-          CategoryId: req.query.category_id
-        }
+          dataStatus: 1,
+          CategoryId: req.query.category_id ? req.query.category_id : null,
+          [Op.or]: [
+            { name: { [Op.like]: '%' + keyword + '%' } },
+            { description: { [Op.like]: '%' + keyword + '%' } }
+          ]
+        },
+        order: [['updatedAt', 'DESC']]
       }).then(products => {
         if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得該分類產品清單成功', content: products })
+          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products })
         } else {
           return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該分類沒有產品，取得所有產品清單成功', content: products })
+            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products })
+          })
+        }
+      })
+
+    } else if (req.query.category_id || req.query.keyword) {
+      const keyword = req.query.keyword ? req.query.keyword : null
+      return Product.findAll({
+        include: [Category],
+        where: {
+          dataStatus: 1,
+          [Op.or]: [
+            { CategoryId: req.query.category_id ? req.query.category_id : null, },
+            { name: { [Op.like]: '%' + keyword + '%' } },
+            { description: { [Op.like]: '%' + keyword + '%' } }
+          ]
+        },
+        order: [['updatedAt', 'DESC']]
+      }).then(products => {
+        if (products.length !== 0) {
+          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products })
+        } else {
+          return Product.findAll({ include: [Category] }).then(products => {
+            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products })
           })
         }
       })
     } else {
       return Product.findAll({ include: [Category] }).then(products => {
-        return callback({ status: 'success', message: '取得產品清單成功', content: products })
+        return callback({ status: 'success', message: '取得所有產品清單成功', content: products })
       })
     }
   },

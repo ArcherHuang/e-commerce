@@ -20,6 +20,11 @@
  *         schema:
  *           type: integer
  *         description: Put in category id that user want to query
+ *       - in: query
+ *         name: keyword
+ *         schema:
+ *           type: string
+ *         description: Put in keyword that user want to query
  *     responses:
  *       200:
  *         description: 取得所有 Product 成功
