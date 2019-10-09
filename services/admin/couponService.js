@@ -131,7 +131,7 @@ const adminCouponService = {
       .then((coupon) => {
         if (coupon) {
           coupon.update({
-            data_status: 0
+            dataStatus: 0
           })
             .then((coupon) => {
               callback({ status: 'success', message: 'Coupon 已刪除成功' })

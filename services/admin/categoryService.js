@@ -55,14 +55,20 @@ const categoryService = {
   },
 
   deleteCategory: (req, res, callback) => {
-    Category.destroy({
-      where: {
-        id: req.params.category_id
-      }
-    }).then(() => {
-      return callback({ status: 'success', message: '分類已刪除' })
-    })
+    Category.findByPk(req.params.category_id)
+      .then((category) => {
+        if (category) {
+          category.update({
+            dataStatus: 0
+          })
+            .then((category) => {
+              callback({ status: 'success', message: '分類已刪除成功' })
+            })
+        } else {
+          callback({ status: 'fail', message: '查無此分類存在' })
+        }
 
+      })
   },
 }
 
