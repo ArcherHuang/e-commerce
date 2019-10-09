@@ -50,30 +50,35 @@ module.exports = {
         {
           name: 'Category 1',
           description: faker.lorem.sentence(10),
+          dataStatus: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
           name: 'Category 2',
           description: faker.lorem.sentence(10),
+          dataStatus: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
           name: 'Category 3',
           description: faker.lorem.sentence(10),
+          dataStatus: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
           name: 'Category 4',
           description: faker.lorem.sentence(10),
+          dataStatus: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
           name: 'Category 5',
           description: faker.lorem.sentence(10),
+          dataStatus: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         }
@@ -85,6 +90,7 @@ module.exports = {
       'Products',
       Array.from({ length: 100 }).map((d) => ({
         name: faker.lorem.word(),
+        description: faker.lorem.sentence(),
         image: faker.image.business(),
         price: faker.random.number({
           min: 100,
@@ -114,10 +120,11 @@ module.exports = {
           min: 100,
           max: 20000
         }),
-        categoryId: faker.random.number({
-          min: 0,
-          max: 4
+        CategoryId: faker.random.number({
+          min: 1,
+          max: 5
         }),
+        dataStatus: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       })),
@@ -138,6 +145,7 @@ module.exports = {
           max: 10
         }),
         expireDate: faker.date.future(1),
+        dataStatus: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       })),
