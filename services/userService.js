@@ -8,6 +8,22 @@ const { User, Product } = db
 
 const userService = {
 
+  checkUserField: (data) => {
+    const name = data.name === undefined ? '' : data.name.trim()
+    const phone = data.phone === undefined ? '' : data.phone.trim()
+    const address = data.address === undefined ? '' : data.address.trim()
+    const birthday = data.birthday === undefined ? '' : data.birthday.trim()
+
+    if (birthday.length !== 0 && moment(birthday, 'YYYY-MM-DD', true).isValid()) {
+      if (moment(birthday).isAfter(new Date())) {
+        return ({ status: 'error', message: 'birthday 請輸入今日以前日期' })
+      }
+    } else if (birthday.length !== 0 && !moment(birthday, 'YYYY-MM-DD', true).isValid()) {
+      return ({ status: 'error', message: 'birthday 請輸入正確的日期格式 YYYY-MM-DD' })
+    }
+    return ({ status: 'success', message: 'User 欄位確認正確' })
+  },
+
   signIn: async (req, res, callback) => {
 
     const email = req.body.email === undefined ? '' : req.body.email.trim()
@@ -121,6 +137,34 @@ const userService = {
     }
     catch (err) {
       return callback({ status: 'error', message: '無法取得使用者頁面' })
+    }
+  },
+
+  putProfile: (req, res, callback) => {
+
+    try {
+      const userFieldCheckResult = userService.checkUserField(req.body)
+      if (userFieldCheckResult.status === 'success') {
+        return User.findByPk(req.session.user.id)
+          .then((user) => {
+            if (!user) {
+              return callback({ status: 'error', message: '使用者不存在' })
+            }
+            user.update({
+              name: req.body.name,
+              phone: req.body.phone,
+              address: req.body.address,
+              birthday: req.body.birthday,
+            }).then((user) => {
+              return callback({ status: 'success', message: '使用者資料更新成功!' })
+            })
+          })
+      } else {
+        return callback(userFieldCheckResult)
+      }
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '無法更新使用者資料' })
     }
   },
 }

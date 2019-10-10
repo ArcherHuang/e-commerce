@@ -6,6 +6,7 @@ const forgetPasswordController = require('../controllers/forgetPasswordControlle
 
 // Member
 router.get('/', accountController.getProfile)
+router.put('/', accountController.putProfile)
 
 // User
 router.post('/signin', accountController.signIn)

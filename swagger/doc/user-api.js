@@ -18,6 +18,42 @@
  */
 
 /********************************************************************
+* Accounts - 修改 Profile
+* PUT http://localhost:3000/accounts
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts:
+ *   put:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 修改 User Profile
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: name
+ *         description: User name
+ *         in: formData
+ *         type: string
+ *       - name: phone
+ *         description: User 的 phone
+ *         in: formData
+ *         type: string
+ *       - name: address
+ *         description: User 的 address
+ *         in: formData
+ *         type: string
+ *       - name: birthday
+ *         description: User 的 birthday ( YYYY-MM-DD )
+ *         in: formData
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: 修改 User Profile 成功
+ */
+
+/********************************************************************
 * Accounts - 使用者登入
 * POST http://localhost:3000/accounts/signin
 ********************************************************************/
