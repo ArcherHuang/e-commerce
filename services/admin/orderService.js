@@ -20,7 +20,7 @@ const orderService = {
         }
       })
     } catch (error) {
-      return res.status(500).json({ status: 'error', message: error })
+      return res.status(500).json({ status: 'fail', message: error })
     }
   },
 
@@ -45,7 +45,7 @@ const orderService = {
           }
         })
     } catch (error) {
-      return res.status(500).json({ status: 'error', message: error })
+      return res.status(500).json({ status: 'fail', message: error })
     }
   },
 
@@ -66,7 +66,7 @@ const orderService = {
           }
         })
     } catch (error) {
-      return res.status(500).json({ status: 'error', message: error })
+      return res.status(500).json({ status: 'fail', message: error })
     }
   },
 
@@ -87,7 +87,7 @@ const orderService = {
           }
         })
     } catch (error) {
-      return res.status(500).json({ status: 'error', message: error })
+      return res.status(500).json({ status: 'fail', message: error })
     }
   },
 
@@ -108,7 +108,7 @@ const orderService = {
           }
         })
     } catch (error) {
-      return res.status(500).json({ status: 'error', message: error })
+      return res.status(500).json({ status: 'fail', message: error })
     }
   },
 
