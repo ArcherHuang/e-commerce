@@ -129,7 +129,15 @@ const userService = {
           { model: Product, as: "productViewed" },
           { model: Product, as: "productReviewed" },
         ]
-      }).then(user => {
+      }).then(result => {
+        let user = result[0]
+
+        // 將有瀏覽過的商品，加入是否 like 過的紀錄
+        user.productViewed = user.productViewed.map(r => ({
+          ...r,
+          isLiked: user.productLiked.map(d => d.id).includes(r.id)
+        }))
+
         return callback({ status: 'success', message: '取得使用者頁面成功', content: user })
       }).catch(err => {
         return callback({ status: 'error', message: '無法取得使用者頁面' })
