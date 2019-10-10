@@ -7,6 +7,7 @@ const adminUserController = require('../controllers/admin/userController')
 const adminCategoryController = require('../controllers/admin/categoryController')
 const adminCouponController = require('../controllers/admin/couponController')
 const adminProductController = require('../controllers/admin/productController')
+const adminOrderController = require('../controllers/admin/orderController')
 
 // User
 router.get('/users', adminUserController.editUsers)
@@ -32,5 +33,13 @@ router.get('/products/:product_id', adminProductController.getProduct)
 router.post('/products', upload.single('image'), adminProductController.postProduct)
 router.put('/products/:product_id', upload.single('image'), adminProductController.putProduct)
 router.delete('/products/:product_id', adminProductController.deleteProduct)
+
+// Order
+router.get('/orders', adminOrderController.getOrders)
+router.get('/orders/:order_id', adminOrderController.getOrders)
+router.put('/orders/:order_id/cancel', adminOrderController.cancelOrder)
+router.put('/orders/:order_id/resume', adminOrderController.resumeOrder)
+router.put('/orders/:order_id/shipped', adminOrderController.shippedOrder)
+router.put('/orders/:order_id/unshipped', adminOrderController.unshippedOrder)
 
 module.exports = router
