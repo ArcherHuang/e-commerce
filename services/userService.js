@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 
 const db = require('../models')
-const { User, Product, Order } = db
+const { User, Product, Order, Coupon, CouponDistribution } = db
 
 const userService = {
 
@@ -240,6 +240,32 @@ const userService = {
     }
     catch (err) {
       return callback({ status: 'error', message: '取消訂單失敗' })
+    }
+  },
+
+  getCoupons: (req, res, callback) => {
+    try {
+      return User.findAll({
+        where: {
+          id: req.session.user.id
+        },
+        include: [
+          CouponDistribution,
+          { model: Coupon, as: "couponsOwned" },
+        ],
+      }).then(result => {
+        let coupons = result[0].couponsOwned
+        if (coupons.length === 0) {
+          return callback({ status: 'success', message: '成功取得資料，該使用者目前沒有 coupon', content: coupons })
+        } else {
+          return callback({ status: 'success', message: '成功取得 coupons', content: coupons })
+        }
+      }).catch(err => {
+        return callback({ status: 'error', message: '無法取得 coupons' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '無法取得 coupons' })
     }
   }
 }

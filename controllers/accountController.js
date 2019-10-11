@@ -47,6 +47,12 @@ const userController = {
       return res.json(data)
     })
   },
+
+  getCoupons: (req, res) => {
+    userService.getCoupons(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController
