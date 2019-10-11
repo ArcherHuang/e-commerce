@@ -28,6 +28,12 @@ const userController = {
     userService.putProfile(req, res, (data) => {
       return res.json(data)
     })
+  },
+
+  getOrders: (req, res) => {
+    userService.getOrders(req, res, (data) => {
+      return res.json(data)
+    })
   }
 }
 

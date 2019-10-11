@@ -54,6 +54,25 @@
  */
 
 /********************************************************************
+* Accounts - 取得 Orders
+* GET http://localhost:3000/accounts/orders
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/orders:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得使用者的訂單清單
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得使用者的訂單清單成功
+ */
+
+/********************************************************************
 * Accounts - 使用者登入
 * POST http://localhost:3000/accounts/signin
 ********************************************************************/
