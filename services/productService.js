@@ -29,7 +29,7 @@ const productService = {
         // 商品存在，like 紀錄存在，但未被使用者 like
         like.update({
           dataStatus: 1
-        }).then(liek => {
+        }).then(like => {
           return callback({ status: 'success', message: 'Like 商品成功' })
         })
       }
