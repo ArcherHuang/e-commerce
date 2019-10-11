@@ -54,6 +54,25 @@
  */
 
 /********************************************************************
+* Accounts - 取得使用者擁有的 Coupons
+* GET http://localhost:3000/accounts/coupons
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/coupons:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得使用者擁有的 Coupons
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得使用者擁有的 Coupons 成功
+ */
+
+/********************************************************************
 * Accounts - 取得 Orders
 * GET http://localhost:3000/accounts/orders
 ********************************************************************/
