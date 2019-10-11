@@ -40,7 +40,13 @@ const userController = {
     userService.getOrder(req, res, (data) => {
       return res.json(data)
     })
-  }
+  },
+
+  cancelOrder: (req, res) => {
+    userService.cancelOrder(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

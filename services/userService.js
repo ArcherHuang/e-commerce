@@ -215,6 +215,32 @@ const userService = {
     catch (err) {
       return callback({ status: 'error', message: '無法取得單筆訂單資料' })
     }
+  },
+
+  cancelOrder: (req, res, callback) => {
+    try {
+      Order.findAll({
+        where: {
+          UserId: req.session.user.id,
+          id: req.params.order_id,
+          dataStatus: 1
+        }
+      }).then(result => {
+        let order = result[0]
+        order.update({
+          dataStatus: 0
+        }).then(order => {
+          return callback({ status: 'success', message: '成功取消該筆訂單' })
+        }).catch(err => {
+          return callback({ status: 'error', message: '取消訂單失敗' })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '取消訂單失敗' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取消訂單失敗' })
+    }
   }
 }
 

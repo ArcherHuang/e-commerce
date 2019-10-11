@@ -9,6 +9,7 @@ router.get('/', accountController.getProfile)
 router.put('/', accountController.putProfile)
 router.get('/orders', accountController.getOrders)
 router.get('/orders/:order_id', accountController.getOrder)
+router.put('/orders/:order_id/cancel', accountController.cancelOrder)
 
 // User
 router.post('/signin', accountController.signIn)
