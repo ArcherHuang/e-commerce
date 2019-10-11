@@ -193,6 +193,29 @@ const userService = {
       return callback({ status: 'error', message: '無法取得訂單清單' })
     }
   },
+
+  getOrder: (req, res, callback) => {
+    try {
+      Order.findAll({
+        where: {
+          UserId: req.session.user.id,
+          id: req.params.order_id
+        }
+      }).then(result => {
+        let order = result[0]
+        if (order) {
+          return callback({ status: 'success', message: '成功取得單筆訂單資料', content: order })
+        } else {
+          return callback({ status: 'error', message: '無法取得單筆訂單資料' })
+        }
+      }).catch(err => {
+        return callback({ status: 'error', message: '無法取得單筆訂單資料' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '無法取得單筆訂單資料' })
+    }
+  }
 }
 
 module.exports = userService  

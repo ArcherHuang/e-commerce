@@ -34,6 +34,12 @@ const userController = {
     userService.getOrders(req, res, (data) => {
       return res.json(data)
     })
+  },
+
+  getOrder: (req, res) => {
+    userService.getOrder(req, res, (data) => {
+      return res.json(data)
+    })
   }
 }
 
