@@ -28,7 +28,25 @@ const userController = {
     userService.putProfile(req, res, (data) => {
       return res.json(data)
     })
-  }
+  },
+
+  getOrders: (req, res) => {
+    userService.getOrders(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  getOrder: (req, res) => {
+    userService.getOrder(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  cancelOrder: (req, res) => {
+    userService.cancelOrder(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

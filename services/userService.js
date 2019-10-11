@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 
 const db = require('../models')
-const { User, Product } = db
+const { User, Product, Order } = db
 
 const userService = {
 
@@ -175,6 +175,73 @@ const userService = {
       return callback({ status: 'error', message: '無法更新使用者資料' })
     }
   },
+
+  getOrders: (req, res, callback) => {
+    try {
+      Order.findAll({
+        where: {
+          UserId: req.session.user.id
+        },
+        order: [['updatedAt', 'DESC']],
+      }).then(orders => {
+        return callback({ status: 'success', message: '成功取得訂單清單', content: orders })
+      }).catch(err => {
+        return callback({ status: 'error', message: '無法取得訂單清單' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '無法取得訂單清單' })
+    }
+  },
+
+  getOrder: (req, res, callback) => {
+    try {
+      Order.findAll({
+        where: {
+          UserId: req.session.user.id,
+          id: req.params.order_id
+        }
+      }).then(result => {
+        let order = result[0]
+        if (order) {
+          return callback({ status: 'success', message: '成功取得單筆訂單資料', content: order })
+        } else {
+          return callback({ status: 'error', message: '無法取得單筆訂單資料' })
+        }
+      }).catch(err => {
+        return callback({ status: 'error', message: '無法取得單筆訂單資料' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '無法取得單筆訂單資料' })
+    }
+  },
+
+  cancelOrder: (req, res, callback) => {
+    try {
+      Order.findAll({
+        where: {
+          UserId: req.session.user.id,
+          id: req.params.order_id,
+          dataStatus: 1
+        }
+      }).then(result => {
+        let order = result[0]
+        order.update({
+          dataStatus: 0
+        }).then(order => {
+          return callback({ status: 'success', message: '成功取消該筆訂單' })
+        }).catch(err => {
+          return callback({ status: 'error', message: '取消訂單失敗' })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '取消訂單失敗' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取消訂單失敗' })
+    }
+  }
 }
 
 module.exports = userService  

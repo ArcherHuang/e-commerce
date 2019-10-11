@@ -54,6 +54,75 @@
  */
 
 /********************************************************************
+* Accounts - 取得 Orders
+* GET http://localhost:3000/accounts/orders
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/orders:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得使用者的訂單清單
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得使用者的訂單清單成功
+ */
+
+/********************************************************************
+* Accounts - 取得 Order
+* GET http://localhost:3000/accounts/orders/:order_id
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/orders/{order_id}:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得使用者單筆訂單資料
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: order_id
+ *         type: integer
+ *         required: true
+ *         description: order_id
+ *     responses:
+ *       200:
+ *         description: 取得使用者單筆訂單資料成功
+ */
+
+/********************************************************************
+* Accounts - 取消 Order
+* PUT http://localhost:3000/accounts/orders/:order_id/cancel
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/orders/{order_id}/cancel:
+ *   put:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取消使用者單筆訂單資料
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: order_id
+ *         type: integer
+ *         required: true
+ *         description: order_id
+ *     responses:
+ *       200:
+ *         description: 取消使用者單筆訂單資料
+ */
+
+/********************************************************************
 * Accounts - 使用者登入
 * POST http://localhost:3000/accounts/signin
 ********************************************************************/
