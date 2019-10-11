@@ -219,7 +219,7 @@
  */
 
 /********************************************************************
-* Accounts - 取得所有 Product
+* Products - 取得所有 Product
 * GET http://localhost:3000/products
 ********************************************************************/
 
@@ -228,7 +228,7 @@
  * /products:
  *   get:
  *     tags:
- *      - Accounts
+ *      - Products
  *     description: Account - 取得所有 Product
  *     produces:
  *       - application/json
@@ -249,7 +249,7 @@
  */
 
 /********************************************************************
-* Accounts - 取得特定 Product
+* Products - 取得特定 Product
 * GET http://localhost:3000/products/:product_id
 ********************************************************************/
 
@@ -258,7 +258,7 @@
  * /products/{product_id}:
  *   get:
  *     tags:
- *      - Accounts
+ *      - Products
  *     description: Account - 取得特定 Product
  *     produces:
  *       - application/json
@@ -271,4 +271,54 @@
  *     responses:
  *       200:
  *         description: 取得特定 Product 成功
+ */
+
+/********************************************************************
+* Products - Like 特定 Product
+* POST http://localhost:3000/products/:product_id/like
+********************************************************************/
+
+/**
+ * @swagger
+ * /products/{product_id}/like:
+ *   post:
+ *     tags:
+ *      - Products
+ *     description: Account - Like 特定 Product
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         type: integer
+ *         required: true
+ *         description: product_id
+ *     responses:
+ *       200:
+ *         description: Like 特定 Product 成功
+ */
+
+/********************************************************************
+* Products - Unlike 特定 Product
+* POST http://localhost:3000/products/:product_id/unlike
+********************************************************************/
+
+/**
+ * @swagger
+ * /products/{product_id}/unlike:
+ *   post:
+ *     tags:
+ *      - Products
+ *     description: Product - Unlike 特定 Product
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         type: integer
+ *         required: true
+ *         description: product_id
+ *     responses:
+ *       200:
+ *         description: Unlike 特定 Product 成功
  */
