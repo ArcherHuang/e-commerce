@@ -66,3 +66,28 @@
  *       200:
  *         description: 增加購物車中的商品數量成功
  */
+
+/********************************************************************
+* Cart - 增加購物車中的商品數量
+* POST http://localhost:3000/carts/:cartItem_id/sub
+********************************************************************/
+
+/**
+ * @swagger
+ * /carts/{cartItem_id}/sub:
+ *   post:
+ *     tags:
+ *      - Cart
+ *     description: Cart - 減少購物車中的商品數量
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: cartItem_id
+ *         type: integer
+ *         required: true
+ *         description: cartItem_id
+ *     responses:
+ *       200:
+ *         description: 減少購物車中的商品數量成功
+ */

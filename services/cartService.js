@@ -103,6 +103,38 @@ const cartService = {
     catch (err) {
       return callback({ status: 'error', message: '新增商品數量失敗' })
     }
+  },
+
+  subCartItem: (req, res, callback) => {
+    try {
+      CartItem.findOne({
+        where: {
+          id: req.params.cartItem_id,
+          dataStatus: 1
+        }
+      }).then(cartItem => {
+        if (cartItem) {
+          if (cartItem.quantity > 1) {
+            cartItem.update({
+              quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1
+            }).then((cartItem) => {
+              return callback({ status: 'success', message: '減少商品數量成功' })
+            }).catch(err => {
+              return callback({ status: 'error', message: '減少商品數量失敗' })
+            })
+          } else if (cartItem.quantity === 1) {
+            return callback({ status: 'error', message: '商品數量為 1，無法繼續減少商品數量' })
+          } else {
+            return callback({ status: 'error', message: '減少商品數量失敗' })
+          }
+        } else {
+          return callback({ status: 'error', message: 'cart item 不存在' })
+        }
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '減少商品數量失敗' })
+    }
   }
 }
 
