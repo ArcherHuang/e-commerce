@@ -26,7 +26,11 @@ app.use(bodyParser.json())
 app.use(session({
   secret: 'helloworld',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1800000, //Cookie 30 分鐘後失效
+    secure: true //只允許 HTTPS/SSL 訪問
+  },
 }))
 
 app.listen(port, () => {
