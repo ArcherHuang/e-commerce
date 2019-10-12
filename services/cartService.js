@@ -81,23 +81,30 @@ const cartService = {
           dataStatus: 1
         }
       }).then(cartItem => {
-        //檢查購物車中的商品數量，是否超過庫存  
-        Product.findByPk(cartItem.ProductId).then(product => {
-          if (cartItem.quantity >= product.inventory) {
 
-            //若購物車中的商品數量大於等於商品庫存
-            return callback({ status: 'error', message: '商品已無庫存' })
-          } else {
-            //若購物車中的商品數量小於商品庫存，可以持續增加數量
-            cartItem.update({
-              quantity: cartItem.quantity + 1,
-            }).then((cartItem) => {
-              return callback({ status: 'success', message: '新增商品數量成功' })
-            }).catch(err => {
-              return callback({ status: 'error', message: '新增商品數量失敗' })
-            })
-          }
-        })
+        //檢查 cart item 是否存在
+        if (cartItem) {
+          //檢查購物車中的商品數量，是否超過庫存  
+          Product.findByPk(cartItem.ProductId).then(product => {
+            if (cartItem.quantity >= product.inventory) {
+
+              //若購物車中的商品數量大於等於商品庫存
+              return callback({ status: 'error', message: '商品已無庫存' })
+            } else {
+              //若購物車中的商品數量小於商品庫存，可以持續增加數量
+              cartItem.update({
+                quantity: cartItem.quantity + 1,
+              }).then((cartItem) => {
+                return callback({ status: 'success', message: '新增商品數量成功' })
+              }).catch(err => {
+                return callback({ status: 'error', message: '新增商品數量失敗' })
+              })
+            }
+          })
+        } else {
+          //若 cart item 不存在
+          return callback({ status: 'error', message: 'cart item 不存在' })
+        }
       })
     }
     catch (err) {
@@ -113,7 +120,9 @@ const cartService = {
           dataStatus: 1
         }
       }).then(cartItem => {
+        //檢查 cart item 是否存在
         if (cartItem) {
+          //檢查購物車中的商品數量
           if (cartItem.quantity > 1) {
             cartItem.update({
               quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1
@@ -123,11 +132,14 @@ const cartService = {
               return callback({ status: 'error', message: '減少商品數量失敗' })
             })
           } else if (cartItem.quantity === 1) {
+
+            //若購物車中的商品數量為1，回傳無法減少數量的訊息
             return callback({ status: 'error', message: '商品數量為 1，無法繼續減少商品數量' })
           } else {
             return callback({ status: 'error', message: '減少商品數量失敗' })
           }
         } else {
+          //若 cart item 不存在
           return callback({ status: 'error', message: 'cart item 不存在' })
         }
       })
