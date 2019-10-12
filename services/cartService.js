@@ -4,6 +4,31 @@ const { Cart, CartItem, Product } = db
 
 const cartService = {
 
+  getCart: (req, res, callback) => {
+    try {
+      return Cart.findOne({
+        where: {
+          id: req.session.cartId
+        },
+        include: [
+          CartItem,
+          { model: Product, as: "items" },
+        ]
+      }).then(cart => {
+        console.log("===cart===")
+        console.log(cart)
+        cart = cart || { items: [] }
+        let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
+
+        return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart, totalPrice: totalPrice })
+      })
+    }
+    catch (err) {
+      console.log(err)
+      return callback({ status: 'error', message: '取得購物車資訊失敗' })
+    }
+  },
+
   postCart: async (req, res, callback) => {
 
     try {
