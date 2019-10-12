@@ -3,8 +3,7 @@ const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const db = require('../../models')
-const Product = db.Product
-const Category = db.Category
+const { Product, Category, Carousel } = db
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -47,7 +46,9 @@ const productService = {
     return ({ status: 'success', message: 'Product 欄位確認正確' })
   },
 
-  getProducts: (req, res, callback) => {
+  getProducts: async (req, res, callback) => {
+
+    let carousels = await Carousel.findAll()
 
     if (req.query.category_id && req.query.keyword) {
       const keyword = req.query.keyword ? req.query.keyword : null
@@ -64,10 +65,10 @@ const productService = {
         order: [['updatedAt', 'DESC']]
       }).then(products => {
         if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products })
+          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels })
         } else {
           return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products })
+            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels })
           })
         }
       })
@@ -87,16 +88,16 @@ const productService = {
         order: [['updatedAt', 'DESC']]
       }).then(products => {
         if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products })
+          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels })
         } else {
           return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products })
+            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels })
           })
         }
       })
     } else {
       return Product.findAll({ include: [Category] }).then(products => {
-        return callback({ status: 'success', message: '取得所有產品清單成功', content: products })
+        return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels })
       })
     }
   },
