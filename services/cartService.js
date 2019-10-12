@@ -15,8 +15,6 @@ const cartService = {
           { model: Product, as: "items" },
         ]
       }).then(cart => {
-        console.log("===cart===")
-        console.log(cart)
         cart = cart || { items: [] }
         let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
 
@@ -24,7 +22,6 @@ const cartService = {
       })
     }
     catch (err) {
-      console.log(err)
       return callback({ status: 'error', message: '取得購物車資訊失敗' })
     }
   },
@@ -76,6 +73,37 @@ const cartService = {
     }
   },
 
+  addCartItem: async (req, res, callback) => {
+    try {
+      CartItem.findOne({
+        where: {
+          id: req.params.cartItem_id,
+          dataStatus: 1
+        }
+      }).then(cartItem => {
+        //檢查購物車中的商品數量，是否超過庫存  
+        Product.findByPk(cartItem.ProductId).then(product => {
+          if (cartItem.quantity >= product.inventory) {
+
+            //若購物車中的商品數量大於等於商品庫存
+            return callback({ status: 'error', message: '商品已無庫存' })
+          } else {
+            //若購物車中的商品數量小於商品庫存，可以持續增加數量
+            cartItem.update({
+              quantity: cartItem.quantity + 1,
+            }).then((cartItem) => {
+              return callback({ status: 'success', message: '新增商品數量成功' })
+            }).catch(err => {
+              return callback({ status: 'error', message: '新增商品數量失敗' })
+            })
+          }
+        })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '新增商品數量失敗' })
+    }
+  }
 }
 
 module.exports = cartService

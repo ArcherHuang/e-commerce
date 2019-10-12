@@ -13,6 +13,12 @@ const cartController = {
       return res.json(data)
     })
   },
+
+  addCartItem: (req, res) => {
+    cartService.addCartItem(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = cartController
