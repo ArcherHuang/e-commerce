@@ -147,7 +147,38 @@ const cartService = {
     catch (err) {
       return callback({ status: 'error', message: '減少商品數量失敗' })
     }
-  }
+  },
+
+  deleteCartItem: (req, res, callback) => {
+    try {
+      CartItem.findOne({
+        where: {
+          id: req.params.cartItem_id,
+          dataStatus: 1
+        }
+      }).then(cartItem => {
+
+        //檢查 cart item 是否存在
+        if (cartItem) {
+          cartItem.update({
+            dataStatus: 0
+          }).then(cartItem => {
+            return callback({ status: 'success', message: '移除購物車商品成功' })
+          }).catch(err => {
+            return callback({ status: 'error', message: '移除購物車商品失敗' })
+          })
+        } else {
+          //若 cart item 不存在
+          return callback({ status: 'error', message: 'cart item 不存在' })
+        }
+      }).catch(err => {
+        return callback({ status: 'error', message: '移除購物車商品失敗' })
+      })
+    }
+    catch (err) {
+
+    }
+  },
 }
 
 module.exports = cartService

@@ -68,7 +68,7 @@
  */
 
 /********************************************************************
-* Cart - 增加購物車中的商品數量
+* Cart - 減少購物車中的商品數量
 * POST http://localhost:3000/carts/:cartItem_id/sub
 ********************************************************************/
 
@@ -90,4 +90,29 @@
  *     responses:
  *       200:
  *         description: 減少購物車中的商品數量成功
+ */
+
+/********************************************************************
+* Cart - 移除購物車中的商品
+* POST http://localhost:3000/carts/:cartItem_id/delete
+********************************************************************/
+
+/**
+ * @swagger
+ * /carts/{cartItem_id}/delete:
+ *   post:
+ *     tags:
+ *      - Cart
+ *     description: Cart - 移除購物車中的商品
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: cartItem_id
+ *         type: integer
+ *         required: true
+ *         description: cartItem_id
+ *     responses:
+ *       200:
+ *         description: 移除購物車中的商品成功
  */
