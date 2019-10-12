@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.CouponDistribution)
 
     User.belongsToMany(models.Coupon, {
-      as: 'coupons',
+      as: 'couponsOwned',
       through: {
         model: models.CouponDistribution, unique: false
       },

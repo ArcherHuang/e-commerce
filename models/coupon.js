@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Coupon.hasMany(models.CouponDistribution)
     Coupon.belongsToMany(models.User, {
-      as: 'users',
+      as: 'owners',
       through: {
         model: models.CouponDistribution, unique: false
       },
