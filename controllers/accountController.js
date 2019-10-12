@@ -53,6 +53,12 @@ const userController = {
       return res.json(data)
     })
   },
+
+  getCurrentUser: (req, res) => {
+    userService.getCurrentUser(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

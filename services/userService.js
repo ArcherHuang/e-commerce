@@ -267,7 +267,26 @@ const userService = {
     catch (err) {
       return callback({ status: 'error', message: '無法取得 coupons' })
     }
-  }
+  },
+
+  getCurrentUser: (req, res, callback) => {
+
+    try {
+
+      if (req.session.user) {
+        let user = req.session.user
+        user.password = null
+        return callback({ status: 'success', message: '取得當前使用者資料成功', content: user })
+      } else {
+        return callback({ status: 'success', message: '使用者尚未登入' })
+      }
+
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取得當前使用者資料失敗' })
+    }
+  },
+
 }
 
 module.exports = userService  

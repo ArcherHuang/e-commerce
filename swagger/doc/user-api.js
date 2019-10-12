@@ -410,3 +410,23 @@
  *       200:
  *         description: Unlike 特定 Product 成功
  */
+
+
+/********************************************************************
+* Accounts - 取得當前使用者資料
+* GET http://localhost:3000/accounts/currentUser
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/currentUser:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Accounts - 取得當前使用者資料
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得當前使用者資料成功
+ */
