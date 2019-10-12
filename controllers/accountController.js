@@ -59,6 +59,12 @@ const userController = {
       return res.json(data)
     })
   },
+
+  logout: (req, res) => {
+    userService.logout(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

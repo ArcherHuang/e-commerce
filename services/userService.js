@@ -287,6 +287,12 @@ const userService = {
     }
   },
 
+  logout: (req, res, callback) => {
+    req.logout()
+    req.session.user = null
+    return callback({ status: 'success', message: '成功登出' })
+  },
+
 }
 
 module.exports = userService  

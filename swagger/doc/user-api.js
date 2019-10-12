@@ -430,3 +430,22 @@
  *       200:
  *         description: 取得當前使用者資料成功
  */
+
+/********************************************************************
+* Accounts - 使用者登出
+* GET http://localhost:3000/accounts/logout
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/logout:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Accounts - 使用者登出
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 使用者登出成功
+ */

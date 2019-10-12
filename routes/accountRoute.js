@@ -16,6 +16,7 @@ router.put('/orders/:order_id/cancel', accountController.cancelOrder)
 router.post('/signin', accountController.signIn)
 router.post('/signup', accountController.signUp)
 router.get('/logout', accountController.logout)
+router.get('/logout', accountController.logout)
 router.get('/currentUser', accountController.getCurrentUser)
 
 // Reset Password
