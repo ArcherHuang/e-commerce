@@ -15,6 +15,7 @@ router.put('/orders/:order_id/cancel', accountController.cancelOrder)
 // User
 router.post('/signin', accountController.signIn)
 router.post('/signup', accountController.signUp)
+router.get('/email-valid/:token', accountController.checkEmail)
 router.get('/logout', accountController.logout)
 router.get('/currentUser', accountController.getCurrentUser)
 

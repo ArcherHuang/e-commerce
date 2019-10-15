@@ -14,6 +14,12 @@ const userController = {
     })
   },
 
+  checkEmail: (req, res, next) => {
+    userService.checkEmail(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
   logout: (req, res) => {
     req.logout()
   },

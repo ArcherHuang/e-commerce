@@ -20,7 +20,7 @@ const sendEmailService = {
       }
 
       mailgun.messages().send(data, (error, body) => {
-        console.log(`${JSON.stringify(body)}`)
+        // console.log(`mailgun: ${JSON.stringify(body)}`)
         resolve(body)
       })
 

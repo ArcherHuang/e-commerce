@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const moment = require('moment')
 
+const signUpValidEmailService = require('./signUpValidEmailService')
+
 const db = require('../models')
 const { User, Product, Order, Coupon, CouponDistribution } = db
 
@@ -98,8 +100,33 @@ const userService = {
           }
         }).then((user) => {
           if (user) {
-            return callback({ status: 'error', message: '信箱重複！' })
+            const diffSecondTime = moment(new Date()).diff(moment(user.updatedAt), 'seconds')
+            if (user.isValid) {
+              // 代表此 email 已經註冊過且已通過 email 認證
+              return callback({ status: 'error', message: '此 email 已重複！' })
+            } else if (user && !user.isValid && diffSecondTime <= 300) {
+              // 代表此 email 已經註冊過、尚未通過 email 認證、信件連結還在時效內
+              return callback({ status: 'error', message: '請使用者透過信件中的連結來激活 email 帳號！' })
+            } else if (!user.isValid && diffSecondTime > 300) {
+              // 代表此 email 已經註冊過、尚未通過 email 認證、連結時效已過期
+              user.destroy()
+                .then((user) => {
+                  User.create({
+                    name,
+                    email,
+                    password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null),
+                    phone,
+                    address,
+                    birthday
+                  }).then(async user => {
+                    let promises = await signUpValidEmailService.setEmailLinkKey(email)
+                    return callback(promises)
+                  })
+                })
+            }
+
           } else {
+            // 不存在於 Users Table 
             User.create({
               name,
               email,
@@ -107,15 +134,26 @@ const userService = {
               phone,
               address,
               birthday
-            }).then((user) => {
-              return callback({ status: 'success', message: '成功註冊帳號！', user })
+            }).then(async user => {
+              let promises = await signUpValidEmailService.setEmailLinkKey(email)
+              return callback(promises)
             })
           }
+
+
         })
 
       }
     }
 
+  },
+
+  checkEmail: async (req, res, callback) => {
+    try {
+      return callback(await signUpValidEmailService.checkEmailLink(req.params.token))
+    } catch (err) {
+      return callback({ status: 'error', message: 'email 認證錯誤' })
+    }
   },
 
   getProfile: (req, res, callback) => {

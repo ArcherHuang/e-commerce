@@ -227,6 +227,31 @@
  */
 
 /********************************************************************
+* Accounts - 註冊後驗證 email
+* GET http://localhost:3000/accounts/email-valid/:token
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/email-valid/{token}:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 註冊後驗證 email
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         type: string
+ *         required: true
+ *         description: token
+ *     responses:
+ *       200:
+ *         description: 驗證 email 成功
+ */
+
+/********************************************************************
 * Accounts - 設定連結時效與寄發 mail
 * POST http://localhost:3000/accounts/reset-password
 ********************************************************************/
