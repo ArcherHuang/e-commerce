@@ -12,6 +12,8 @@
  *     description: Account - 取得 User Profile
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: 取得 User Profile 成功
@@ -31,6 +33,8 @@
  *     description: Account - 修改 User Profile
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: name
  *         description: User name
@@ -67,6 +71,8 @@
  *     description: Account - 取得使用者擁有的 Coupons
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: 取得使用者擁有的 Coupons 成功
@@ -86,6 +92,8 @@
  *     description: Account - 取得使用者的訂單清單
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: 取得使用者的訂單清單成功
@@ -105,6 +113,8 @@
  *     description: Account - 取得使用者單筆訂單資料
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: order_id
@@ -130,6 +140,8 @@
  *     description: Account - 取消使用者單筆訂單資料
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: order_id

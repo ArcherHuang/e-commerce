@@ -48,9 +48,6 @@ const userService = {
     const payload = { id: user.id }
     const token = jwt.sign(payload, process.env.JWT_SECRET)
 
-    // 用 session 紀錄 user 資訊
-    req.session.user = user
-
     return callback({
       status: 'success', message: '登入成功', token, user: {
         id: user.id,
@@ -160,7 +157,7 @@ const userService = {
     try {
       return User.findAll({
         where: {
-          id: req.session.user.id
+          id: req.user.id
         },
         include: [
           { model: Product, as: "productLiked" },
@@ -191,7 +188,7 @@ const userService = {
     try {
       const userFieldCheckResult = userService.checkUserField(req.body)
       if (userFieldCheckResult.status === 'success') {
-        return User.findByPk(req.session.user.id)
+        return User.findByPk(req.user.id)
           .then((user) => {
             if (!user) {
               return callback({ status: 'error', message: '使用者不存在' })
@@ -218,7 +215,7 @@ const userService = {
     try {
       Order.findAll({
         where: {
-          UserId: req.session.user.id
+          UserId: req.user.id
         },
         order: [['updatedAt', 'DESC']],
       }).then(orders => {
@@ -236,7 +233,7 @@ const userService = {
     try {
       Order.findAll({
         where: {
-          UserId: req.session.user.id,
+          UserId: req.user.id,
           id: req.params.order_id
         }
       }).then(result => {
@@ -259,7 +256,7 @@ const userService = {
     try {
       Order.findAll({
         where: {
-          UserId: req.session.user.id,
+          UserId: req.user.id,
           id: req.params.order_id,
           dataStatus: 1
         }
@@ -285,7 +282,7 @@ const userService = {
     try {
       return User.findAll({
         where: {
-          id: req.session.user.id
+          id: req.user.id
         },
         include: [
           CouponDistribution,
@@ -310,15 +307,13 @@ const userService = {
   getCurrentUser: (req, res, callback) => {
 
     try {
-
-      if (req.session.user) {
-        let user = req.session.user
+      if (req.user) {
+        let user = req.user
         user.password = null
         return callback({ status: 'success', message: '取得當前使用者資料成功', content: user })
       } else {
         return callback({ status: 'success', message: '使用者尚未登入' })
       }
-
     }
     catch (err) {
       return callback({ status: 'error', message: '取得當前使用者資料失敗' })

@@ -9,7 +9,7 @@ module.exports = (app, passport) => {
 
   // app.get('/', ensureAuthenticated, getUser, (req, res) => res.send('Hello World!'))
   app.use('/admin', ensureAuthenticated, getUser, isAuthAdmin, adminRoute)
-  app.use('/accounts', accountRoute)
+  app.use('/accounts', getUser, accountRoute)
   app.use('/carts', cartRoute)
   app.use('/products', ensureAuthenticated, getUser, isAuthUser, productRoute)
 
