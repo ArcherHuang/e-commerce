@@ -345,6 +345,8 @@
  *     description: Account - 取得所有 Product
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: category_id
@@ -375,6 +377,8 @@
  *     description: Account - 取得特定 Product
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: product_id
@@ -400,6 +404,8 @@
  *     description: Account - Like 特定 Product
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: product_id
@@ -425,6 +431,8 @@
  *     description: Product - Unlike 特定 Product
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: product_id
@@ -451,6 +459,8 @@
  *     description: Accounts - 取得當前使用者資料
  *     produces:
  *       - application/json
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: 取得當前使用者資料成功
