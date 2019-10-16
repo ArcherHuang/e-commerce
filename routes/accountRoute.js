@@ -1,23 +1,24 @@
 const express = require('express')
 const router = express.Router()
 
+const { ensureAuthenticated, isAuthUser, getUser } = require('../config/auth')
 const accountController = require('../controllers/accountController')
 const forgetPasswordController = require('../controllers/forgetPasswordController')
 
 // Member
-router.get('/', accountController.getProfile)
-router.put('/', accountController.putProfile)
-router.get('/coupons', accountController.getCoupons)
-router.get('/orders', accountController.getOrders)
-router.get('/orders/:order_id', accountController.getOrder)
-router.put('/orders/:order_id/cancel', accountController.cancelOrder)
+router.get('/', ensureAuthenticated, getUser, isAuthUser, accountController.getProfile)
+router.put('/', ensureAuthenticated, getUser, isAuthUser, accountController.putProfile)
+router.get('/coupons', ensureAuthenticated, getUser, isAuthUser, accountController.getCoupons)
+router.get('/orders', ensureAuthenticated, getUser, isAuthUser, accountController.getOrders)
+router.get('/orders/:order_id', ensureAuthenticated, getUser, isAuthUser, accountController.getOrder)
+router.put('/orders/:order_id/cancel', ensureAuthenticated, getUser, isAuthUser, accountController.cancelOrder)
 
 // User
 router.post('/signin', accountController.signIn)
 router.post('/signup', accountController.signUp)
 router.get('/email-valid/:token', accountController.checkEmail)
 router.get('/logout', accountController.logout)
-router.get('/currentUser', accountController.getCurrentUser)
+router.get('/currentUser', ensureAuthenticated, getUser, isAuthUser, accountController.getCurrentUser)
 
 // Reset Password
 router.post('/reset-password', forgetPasswordController.setRedisKey)
