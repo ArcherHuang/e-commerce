@@ -93,7 +93,7 @@ const productService = {
     let product = await Product.findByPk(req.params.product_id)
     let like = await Like.findOne({
       where: {
-        UserId: req.session.user.id,
+        UserId: req.user.id,
         ProductId: req.params.product_id,
       }
     })
@@ -116,7 +116,7 @@ const productService = {
     } else {
       // 商品存在，like 紀錄尚未存在
       Like.create({
-        UserId: req.session.user.id,
+        UserId: req.user.id,
         ProductId: req.params.product_id,
         dataStatus: 1
       }).then(liek => {
@@ -129,7 +129,7 @@ const productService = {
     try {
       Like.findOne({
         where: {
-          UserId: req.session.user.id,
+          UserId: req.user.id,
           ProductId: req.params.product_id,
           dataStatus: 1,
         }

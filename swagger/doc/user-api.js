@@ -357,8 +357,6 @@
  *     description: Account - 取得所有 Product
  *     produces:
  *       - application/json
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: category_id
@@ -389,8 +387,6 @@
  *     description: Account - 取得特定 Product
  *     produces:
  *       - application/json
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: product_id

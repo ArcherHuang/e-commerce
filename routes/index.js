@@ -11,6 +11,6 @@ module.exports = (app, passport) => {
   app.use('/admin', ensureAuthenticated, getUser, isAuthAdmin, adminRoute)
   app.use('/accounts', getUser, accountRoute)
   app.use('/carts', cartRoute)
-  app.use('/products', ensureAuthenticated, getUser, isAuthUser, productRoute)
+  app.use('/products', productRoute)
 
 }
