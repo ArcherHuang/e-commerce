@@ -4,6 +4,7 @@ const adminRoute = require('./adminRoute')
 const accountRoute = require('./accountRoute')
 const cartRoute = require('./cartRoute')
 const productRoute = require('./productRoute')
+const orderRoute = require('./orderRoute')
 
 module.exports = (app, passport) => {
 
@@ -11,6 +12,7 @@ module.exports = (app, passport) => {
   app.use('/admin', ensureAuthenticated, getUser, isAuthAdmin, adminRoute)
   app.use('/accounts', getUser, accountRoute)
   app.use('/carts', cartRoute)
+  app.use('/orders', ensureAuthenticated, getUser, isAuthUser, orderRoute)
   app.use('/products', productRoute)
 
 }
