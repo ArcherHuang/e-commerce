@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     CouponDistribution.belongsTo(models.User)
     CouponDistribution.belongsTo(models.Coupon)
-    CouponDistribution.hasOne(models.Order)
+    // CouponDistribution.hasMany(models.Order)
   };
   return CouponDistribution;
 };
