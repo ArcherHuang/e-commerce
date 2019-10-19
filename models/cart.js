@@ -4,6 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     CouponDistributionId: {
       type: DataTypes.INTEGER,
     },
+    totalPrice: {
+      type: DataTypes.FLOAT,
+    },
     dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
