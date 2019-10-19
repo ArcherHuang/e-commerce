@@ -236,7 +236,6 @@ const cartService = {
   addCoupon: (req, res, callback) => {
     try {
       // 確認 coupon 是否存在
-      console.log("Coupon code: ", req.body.coupon_code)
       return Coupon.findOne({
         where: {
           sn: req.body.coupon_code,
@@ -244,7 +243,6 @@ const cartService = {
         }
       }).then(coupon => {
 
-        console.log("Coupon id: ", coupon.id)
         // 確認使用者是否擁有該 coupon，且 coupon 未被使用
         return CouponDistribution.findOne({
           where: {
@@ -253,8 +251,6 @@ const cartService = {
             usageStatus: "1"  // unused 1, used 2, expired 3, deleted 0
           }
         }).then(result => {
-          console.log("Result: ", result)
-          console.log("CouponDistribution id: ", result.id)
           // 將有效 coupon 加入 cart
           return Cart.findOne({
             where: {
@@ -264,24 +260,19 @@ const cartService = {
             cart.update({
               CouponDistributionId: result.id
             }).then(() => {
-              console.log("Cart: ", cart)
               return callback({ status: 'success', message: '使用 coupon 成功' })
             }).catch(err => {
-              console.log("Err 1: ", err)
               return callback({ status: 'error', message: '使用 coupon 失敗' })
             })
           }).catch(err => {
-            console.log("Err 2: ", err)
             return callback({ status: 'error', message: '購物車不存在' })
           })
         })
       }).catch(err => {
-        console.log("Err 3: ", err)
         return callback({ status: 'error', message: '使用者無法使用該 coupon' })
       })
     }
     catch (err) {
-      console.log("Err 4: ", err)
       return callback({ status: 'error', message: 'Coupon 不存在' })
     }
   },
