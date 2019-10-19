@@ -1,6 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define('Cart', {
+    CouponDistributionId: {
+      type: DataTypes.INTEGER,
+    },
     dataStatus: {
       type: DataTypes.INTEGER,
       allowNull: false,
