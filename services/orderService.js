@@ -1,9 +1,21 @@
 const db = require('../models')
 const { Order, Cart, OrderItem, Product } = db
+const moment = require('moment')
 
 const orderService = {
   postOrder: (req, res, callback) => {
     try {
+
+      // 利用時間產生序號 (sn) 並額外加入四位亂碼
+      let nowTime = moment().format()
+      nowTime = nowTime.replace(/-/g, "").replace(/:/g, "").split("+")
+      let sn = '';
+      for (let i = 0; i < nowTime[0].length; i++) {
+        sn += '' + nowTime[0].charCodeAt(i).toString(16);
+      }
+      sn = Math.random().toString(36).slice(-4) + sn
+      sn = sn.toUpperCase()
+
       return Cart.findOne({
         where: {
           Id: req.body.cart_id
@@ -17,6 +29,7 @@ const orderService = {
           name: req.body.name,
           address: req.body.address,
           phone: req.body.phone,
+          sn: sn,
           UserId: req.user.id,
           totalAmount: 0,
           shippingStatus: 0, // 待出貨 0, 已出貨 1, 取消出貨 2
@@ -51,7 +64,7 @@ const orderService = {
             }).then(order => {
               // 更新訂單的總金額
               order[0].update({
-                totalAmount: totalAmount
+                totalAmount: Math.ceil(totalAmount)
               }).then(order => {
                 return callback({ status: 'success', message: '建立訂單成功', content: order })
               }).catch(err => {
