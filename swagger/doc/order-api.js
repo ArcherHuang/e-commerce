@@ -37,5 +37,5 @@
  *         type: string
  *     responses:
  *       200:
- *         description: 取得訂單清單成功
+ *         description: 建立訂單成功
  */

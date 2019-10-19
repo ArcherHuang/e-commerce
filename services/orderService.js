@@ -3,9 +3,10 @@ const { Order, Cart, OrderItem, Product } = db
 const moment = require('moment')
 
 const orderService = {
-  postOrder: (req, res, callback) => {
-    try {
 
+  postOrder: (req, res, callback) => {
+
+    try {
       // 利用時間產生序號 (sn) 並額外加入四位亂碼
       let nowTime = moment().format()
       nowTime = nowTime.replace(/-/g, "").replace(/:/g, "").split("+")
@@ -24,22 +25,23 @@ const orderService = {
           { model: Product, as: "items" }
         ]
       }).then(cart => {
+
         // 先建立訂單，取得 order.id
+        let totalPrice = cart.totalPrice ? cart.totalPrice : 0
         return Order.create({
           name: req.body.name,
           address: req.body.address,
           phone: req.body.phone,
           sn: sn,
+          totalAmount: totalPrice,
           UserId: req.user.id,
-          totalAmount: 0,
           shippingStatus: 0, // 待出貨 0, 已出貨 1, 取消出貨 2
           paymentStatus: 0,  // 待付款 0, 已付款 1, 取消付款 2
           dataStatus: 1,     // 訂單刪除 0, 訂單存在 1, 訂單取消 2
         }).then(order => {
 
-          // 將 cart items 放入 order items，並計算總金額
+          // 將 cart items 放入 order items
           let results = []
-          let totalAmount = 0
           for (let i = 0; i < cart.items.length; i++) {
             results.push(
               OrderItem.create({
@@ -49,7 +51,6 @@ const orderService = {
                 quantity: cart.items[i].CartItem.quantity,
               })
             )
-            totalAmount = totalAmount + (cart.items[i].price * cart.items[i].CartItem.quantity)
           }
 
           return Promise.all(results).then(() => {
@@ -62,14 +63,7 @@ const orderService = {
                 { model: Product, as: "items" },
               ]
             }).then(order => {
-              // 更新訂單的總金額
-              order[0].update({
-                totalAmount: Math.ceil(totalAmount)
-              }).then(order => {
-                return callback({ status: 'success', message: '建立訂單成功', content: order })
-              }).catch(err => {
-                return callback({ status: 'error', message: '建立訂單失敗' })
-              })
+              return callback({ status: 'success', message: '建立訂單成功', content: order })
             }).catch(err => {
               return callback({ status: 'error', message: '建立訂單失敗' })
             })

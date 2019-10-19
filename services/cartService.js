@@ -1,6 +1,6 @@
 const validator = require('validator')
 const db = require('../models')
-const { Cart, CartItem, Product } = db
+const { Cart, CartItem, Coupon, CouponDistribution, Product } = db
 
 const cartService = {
 
@@ -15,10 +15,63 @@ const cartService = {
           { model: Product, as: "items" },
         ]
       }).then(cart => {
-        cart = cart || { items: [] }
-        let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
 
-        return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart, totalPrice: totalPrice })
+        if (cart) {
+          // 計算總金額
+          cart = cart || { items: [] }
+          let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
+
+          // 計算折扣後的金額
+          return CouponDistribution.findByPk(cart.CouponDistributionId).then(result => {
+
+            if (result) {
+              Coupon.findByPk(result.CouponId).then(coupon => {
+                if (coupon.discount > 0 && coupon.amount > 0) {
+                  // 同時使用百分比折扣與定額折扣
+                  totalPrice = (totalPrice - coupon.amount) * (1 - coupon.discount / 100)
+                  totalPrice = Math.ceil(totalPrice)
+                } else if (coupon.discount > 0) {
+                  // 使用百分比折扣
+                  totalPrice = totalPrice * (1 - coupon.discount / 100)
+                  totalPrice = Math.ceil(totalPrice)
+                } else if (coupon.amount > 0) {
+                  // 使用定額折扣
+                  totalPrice = totalPrice - coupon.amount
+                  totalPrice = Math.ceil(totalPrice)
+                } else {
+                  // 沒有折扣
+                  totalPrice = Math.ceil(totalPrice)
+                }
+
+                cart.update({
+                  totalPrice: totalPrice
+                }).then(cart => {
+                  return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart })
+                }).catch(err => {
+                  return callback({ status: 'error', message: '取得購物車資訊失敗' })
+                })
+
+              }).catch(err => {
+                return callback({ status: 'error', message: '取得 Coupon 資訊失敗' })
+              })
+            } else {
+              totalPrice = Math.ceil(totalPrice)
+              cart.update({
+                totalPrice: totalPrice
+              }).then(cart => {
+                return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart })
+              }).catch(err => {
+                return callback({ status: 'error', message: '取得購物車資訊失敗' })
+              })
+            }
+          }).catch(err => {
+            return callback({ status: 'error', message: '取得 Coupon Distribution 資訊失敗' })
+          })
+        } else {
+          return callback({ status: 'error', message: '取得購物車資訊失敗，購物車不存在' })
+        }
+      }).catch(err => {
+        return callback({ status: 'error', message: '取得購物車資訊失敗' })
       })
     }
     catch (err) {
@@ -174,6 +227,68 @@ const cartService = {
       }).catch(err => {
         return callback({ status: 'error', message: '移除購物車商品失敗' })
       })
+    }
+    catch (err) {
+
+    }
+  },
+
+  addCoupon: (req, res, callback) => {
+    try {
+      // 確認 coupon 是否存在
+      console.log("Coupon code: ", req.body.coupon_code)
+      return Coupon.findOne({
+        where: {
+          sn: req.body.coupon_code,
+          dataStatus: 1
+        }
+      }).then(coupon => {
+
+        console.log("Coupon id: ", coupon.id)
+        // 確認使用者是否擁有該 coupon，且 coupon 未被使用
+        return CouponDistribution.findOne({
+          where: {
+            CouponId: coupon.id,
+            UserId: req.user.id,
+            usageStatus: "1"  // unused 1, used 2, expired 3, deleted 0
+          }
+        }).then(result => {
+          console.log("Result: ", result)
+          console.log("CouponDistribution id: ", result.id)
+          // 將有效 coupon 加入 cart
+          return Cart.findOne({
+            where: {
+              id: req.session.cartId
+            },
+          }).then(cart => {
+            cart.update({
+              CouponDistributionId: result.id
+            }).then(() => {
+              console.log("Cart: ", cart)
+              return callback({ status: 'success', message: '使用 coupon 成功' })
+            }).catch(err => {
+              console.log("Err 1: ", err)
+              return callback({ status: 'error', message: '使用 coupon 失敗' })
+            })
+          }).catch(err => {
+            console.log("Err 2: ", err)
+            return callback({ status: 'error', message: '購物車不存在' })
+          })
+        })
+      }).catch(err => {
+        console.log("Err 3: ", err)
+        return callback({ status: 'error', message: '使用者無法使用該 coupon' })
+      })
+    }
+    catch (err) {
+      console.log("Err 4: ", err)
+      return callback({ status: 'error', message: 'Coupon 不存在' })
+    }
+  },
+
+  removeCoupon: (req, res, callback) => {
+    try {
+
     }
     catch (err) {
 

@@ -31,6 +31,18 @@ const cartController = {
       return res.json(data)
     })
   },
+
+  addCoupon: (req, res) => {
+    cartService.addCoupon(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  removeCoupon: (req, res) => {
+    cartService.removeCoupon(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = cartController
