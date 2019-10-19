@@ -279,12 +279,27 @@ const cartService = {
 
   removeCoupon: (req, res, callback) => {
     try {
-
+      return Cart.findOne({
+        where: {
+          id: req.session.cartId
+        },
+      }).then(cart => {
+        return cart.update({
+          CouponDistributionId: null
+        }).then(cart => {
+          return callback({ status: 'success', message: '從購物車中移除 coupon 成功' })
+        }).catch(err => {
+          return callback({ status: 'error', message: '從購物車中移除 coupon 失敗' })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '購物車中不存在' })
+      })
     }
     catch (err) {
-
+      return callback({ status: 'error', message: '從購物車中移除 coupon 失敗' })
     }
   },
+
 }
 
 module.exports = cartService

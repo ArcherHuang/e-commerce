@@ -141,5 +141,26 @@
  *         type: string
  *     responses:
  *       200:
- *         description: 將 coupon 加入購物車
+ *         description: 將 coupon 加入購物車成功
+ */
+
+/********************************************************************
+* Cart - 將 coupon 加入購物車
+* POST http://localhost:3000/carts/removeCoupon
+********************************************************************/
+
+/**
+ * @swagger
+ * /carts/removeCoupon:
+ *   post:
+ *     tags:
+ *      - Cart
+ *     description: Cart - 將 coupon 移出購物車
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 將 coupon 移出購物車成功
  */
