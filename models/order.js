@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     Order.belongsTo(models.User)
     Order.hasMany(models.Payment)
     // Order.belongsTo(models.CouponDistribution)
+    Order.hasMany(models.OrderItem)
     Order.belongsToMany(models.Product, {
       as: 'items',
       through: {
