@@ -12,7 +12,7 @@ module.exports = (app, passport) => {
   app.use('/admin', ensureAuthenticated, getUser, isAuthAdmin, adminRoute)
   app.use('/accounts', getUser, accountRoute)
   app.use('/carts', cartRoute)
-  app.use('/orders', ensureAuthenticated, getUser, isAuthUser, orderRoute)
+  app.use('/orders', orderRoute)
   app.use('/products', productRoute)
 
 }
