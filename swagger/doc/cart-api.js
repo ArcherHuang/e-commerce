@@ -116,3 +116,51 @@
  *       200:
  *         description: 移除購物車中的商品成功
  */
+
+/********************************************************************
+* Cart - 將 coupon 加入購物車
+* POST http://localhost:3000/carts/addCoupon
+********************************************************************/
+
+/**
+ * @swagger
+ * /carts/addCoupon:
+ *   post:
+ *     tags:
+ *      - Cart
+ *     description: Cart - 將 coupon 加入購物車
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: coupon_code
+ *         description: Coupon code (sn)
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: 將 coupon 加入購物車成功
+ */
+
+/********************************************************************
+* Cart - 將 coupon 加入購物車
+* POST http://localhost:3000/carts/removeCoupon
+********************************************************************/
+
+/**
+ * @swagger
+ * /carts/removeCoupon:
+ *   post:
+ *     tags:
+ *      - Cart
+ *     description: Cart - 將 coupon 移出購物車
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 將 coupon 移出購物車成功
+ */

@@ -87,7 +87,7 @@ const adminCouponService = {
       Coupon.create({
         name: req.body.name.trim(),
         sn: await adminCouponService.generateSn(),
-        number_of_limitation: req.body.number_of_limitation.trim(),
+        numberOfLimitation: req.body.number_of_limitation.trim(),
         discount: req.body.discount === undefined ? 0 : req.body.discount.trim(),
         amount: req.body.amount === undefined ? 0 : req.body.amount.trim(),
         expire_date: req.body.expire_date.trim()
