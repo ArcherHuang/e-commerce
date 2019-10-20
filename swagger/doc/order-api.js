@@ -8,7 +8,7 @@
  * /orders:
  *   post:
  *     tags:
- *      - Ordres
+ *      - Orders
  *     description: Order - 建立訂單
  *     produces:
  *       - application/json
@@ -38,4 +38,32 @@
  *     responses:
  *       200:
  *         description: 建立訂單成功
+ */
+
+
+/********************************************************************
+* Order - 建立交易參數
+* GET http://localhost:3000/orders/:order_id/payment
+********************************************************************/
+
+/**
+ * @swagger
+ * /orders/{order_id}/payment:
+ *   get:
+ *     tags:
+ *      - Orders
+ *     description: order - 建立交易參數
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: order_id
+ *         type: integer
+ *         required: true
+ *         description: order_id
+ *     responses:
+ *       200:
+ *         description: 建立交易參數成功
  */
