@@ -2,6 +2,7 @@ const db = require('../models')
 const { Order, Cart, OrderItem, Product } = db
 const moment = require('moment')
 const crypto = require('crypto')
+const stripe = require('stripe')('sk_test_9nhZ1DE1Nc4xqBeW8XelurKX00Ib8HqOm2')
 
 // Payment variables
 const URL = process.env.LOCAL_NGROK_URL
@@ -129,10 +130,64 @@ const orderService = {
     catch (err) {
       return callback({ status: 'error', message: '取得藍新金流 callback 資料失敗' })
     }
+  },
+
+  postStripePayment: async (req, res, callback) => {
+    try {
+      // 驗證表單輸入金額是否和訂單資料庫一致
+      let isAmountCorrect = false
+      let order = await Order.findOne({ where: { sn: req.body.sn } }).then(order => { return order })
+
+      if (parseFloat(order.totalAmount) === parseFloat(req.body.amount)) {
+        isAmountCorrect = true
+      } else {
+        isAmountCorrect = false
+      }
+
+      if (isAmountCorrect) {
+        return stripe.charges.create({
+          amount: parseInt((req.body.amount / 22) * 100),   // 台幣轉換成新幣，乘以 100 變成 cents
+          currency: "sgd",
+          source: req.body.stripeToken,
+          description: req.body.sn
+        }).then(charge => {
+          // 確認付款結果
+          if (charge.paid === true && charge.description === req.body.sn) {
+            // 付款成功
+            return Order.findOne({
+              where: {
+                sn: req.body.sn,
+                paymentStatus: 0,
+                dataStatus: 1
+              }
+            }).then(order => {
+              return order.update({
+                paymentStatus: 1,     // 待付款 0, 已付款 1, 取消付款 2
+              }).then(order => {
+                return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
+              }).catch(err => {
+                return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
+              })
+            }).catch(err => {
+              return callback({ status: 'error', message: '查詢訂單失敗，訂單不存在' })
+            })
+          } else {
+            // 付款失敗
+            return callback({ status: 'error', message: '付款失敗' })
+          }
+        }).catch(err => {
+          // Stripe charge create 失敗
+          return callback({ status: 'error', message: 'Stripe charge create 失敗' })
+        })
+      } else {
+        return callback({ status: 'error', message: '付款金額不一致' })
+      }
+    } catch (err) {
+      return callback({ status: 'error', message: 'postStripePayment 失敗' })
+    }
   }
 }
 
-// 
 function genDataChain(tradeInfo) {
   let results = [];
   for (let kv of Object.entries(tradeInfo)) {
