@@ -18,6 +18,12 @@ const orderController = {
     orderService.newebpayCallback(req, res, (data) => {
       return res.json(data)
     })
+  },
+
+  postStripePayment: (req, res) => {
+    orderService.postStripePayment(req, res, (data) => {
+      return res.json(data)
+    })
   }
 }
 
