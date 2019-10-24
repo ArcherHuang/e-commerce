@@ -5,6 +5,7 @@ const accountRoute = require('./accountRoute')
 const cartRoute = require('./cartRoute')
 const productRoute = require('./productRoute')
 const orderRoute = require('./orderRoute')
+const authRoute = require('./authRoute')
 
 module.exports = (app, passport) => {
 
@@ -14,5 +15,6 @@ module.exports = (app, passport) => {
   app.use('/carts', cartRoute)
   app.use('/orders', orderRoute)
   app.use('/products', productRoute)
+  app.use('/auth', authRoute)
 
 }

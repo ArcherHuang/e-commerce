@@ -71,6 +71,18 @@ const userController = {
       return res.json(data)
     })
   },
+
+  getFacebook: (req, res) => {
+    userService.getFacebook(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  getFacebookCallback: (req, res) => {
+    userService.getFacebookCallback(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController
