@@ -7,7 +7,7 @@ const passport = require('passport')
 const signUpValidEmailService = require('./signUpValidEmailService')
 
 const db = require('../models')
-const { User, Product, Order, Coupon, CouponDistribution } = db
+const { User, Product, Order, Coupon, CouponDistribution, Review } = db
 
 const userService = {
 
@@ -161,6 +161,7 @@ const userService = {
           id: req.user.id
         },
         include: [
+          Review,
           { model: Product, as: "productLiked" },
           { model: Product, as: "productViewed" },
           { model: Product, as: "productReviewed" },

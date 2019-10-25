@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 
 const db = require('../models')
-const { Carousel, Category, User, Product, Like } = db
+const { Carousel, Category, User, Product, Like, Order, OrderItem, Review } = db
 
 const productService = {
 
@@ -31,7 +31,7 @@ const productService = {
     if (req.query.category_id && req.query.keyword) {
       const keyword = req.query.keyword ? req.query.keyword : null
       return Product.findAll({
-        include: [Category],
+        include: [Category, Review],
         where: {
           dataStatus: 1,
           CategoryId: req.query.category_id ? req.query.category_id : null,
@@ -45,7 +45,7 @@ const productService = {
         if (products.length !== 0) {
           return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
         } else {
-          return Product.findAll({ include: [Category] }).then(products => {
+          return Product.findAll({ include: [Category, Review] }).then(products => {
             return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
           })
         }
@@ -54,7 +54,7 @@ const productService = {
     } else if (req.query.category_id || req.query.keyword) {
       const keyword = req.query.keyword ? req.query.keyword : null
       return Product.findAll({
-        include: [Category],
+        include: [Category, Review],
         where: {
           dataStatus: 1,
           [Op.or]: [
@@ -68,13 +68,13 @@ const productService = {
         if (products.length !== 0) {
           return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
         } else {
-          return Product.findAll({ include: [Category] }).then(products => {
+          return Product.findAll({ include: [Category, Review] }).then(products => {
             return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
           })
         }
       })
     } else {
-      return Product.findAll({ include: [Category] }).then(products => {
+      return Product.findAll({ include: [Category, Review] }).then(products => {
         return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
       })
     }
@@ -82,7 +82,7 @@ const productService = {
 
   getProduct: (req, res, callback) => {
 
-    return Product.findByPk(req.params.product_id, { include: [Category] }).then(product => {
+    return Product.findByPk(req.params.product_id, { include: [Category, Review] }).then(product => {
       return callback({ status: 'success', message: '取得特定產品成功', content: product })
     })
 
@@ -153,6 +153,100 @@ const productService = {
     }
     catch (err) {
       return callback({ status: 'error', message: 'UnLike 商品失敗' })
+    }
+  },
+
+  postReview: async (req, res, callback) => {
+    try {
+      // 檢查使用者是否購買過此商品
+      let result = await Order.findAll({
+        where: {
+          UserId: req.user.id,
+          paymentStatus: 1
+        },
+        include: [
+          {
+            model: Product,
+            as: 'items',
+            where: { id: req.params.product_id }
+          }
+        ]
+      }).then(orders => {
+        return orders
+      })
+      // 若已購買商品數量大於等於 1
+      if (result.length >= 1) {
+        // 建立新的評論
+        return Review.create({
+          review: req.body.review,
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
+          dataStatus: 1
+        }).then(review => {
+          return callback({ status: 'success', message: '使用者評論商品成功', content: review })
+        }).catch(err => {
+          return callback({ status: 'error', message: '使用者評論失敗' })
+        })
+      } else {
+        // 若已購買商品數量等於 0
+        return callback({ status: 'error', message: '使用者並未購買過此商品，無法建立評論' })
+      }
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者評論失敗' })
+    }
+  },
+
+  putReview: async (req, res, callback) => {
+    try {
+      return Review.findOne({
+        where: {
+          id: req.params.review_id,
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
+          dataStatus: 1
+        }
+      }).then(review => {
+
+        review.update({
+          review: req.body.review || review.review
+        }).then(review => {
+          return callback({ status: 'success', message: '使用者更新評論成功', content: review })
+        }).catch(err => {
+          return callback({ status: 'error', message: '使用者更新評論失敗', content: err })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '評論不存在', content: err })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者更新評論失敗', content: err })
+    }
+  },
+
+  deleteReview: (req, res, callback) => {
+    try {
+      return Review.findOne({
+        where: {
+          id: req.params.review_id,
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
+          dataStatus: 1
+        }
+      }).then(review => {
+        review.update({
+          dataStatus: 0
+        }).then(review => {
+          return callback({ status: 'success', message: '使用者移除商品評論成功' })
+        }).catch(err => {
+          return callback({ status: 'error', message: '使用者移除商品評論失敗', content: err })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '找不到該評論', content: err })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者移除商品評論失敗', content: err })
     }
   }
 }

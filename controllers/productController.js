@@ -25,6 +25,24 @@ const productController = {
       return res.json(data)
     })
   },
+
+  postReview: (req, res) => {
+    productService.postReview(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  putReview: (req, res) => {
+    productService.putReview(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  deleteReview: (req, res) => {
+    productService.deleteReview(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = productController

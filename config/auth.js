@@ -1,5 +1,5 @@
 const helper = require('../_helpers')
-const passport = require('./passport')
+const passport = require('passport')
 
 module.exports = {
 
