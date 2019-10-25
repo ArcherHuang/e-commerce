@@ -1,7 +1,6 @@
 const passport = require('passport')
 const passportJWT = require('passport-jwt')
 const passportFB = require('passport-facebook')
-const FacebookTokenStrategy = require('passport-facebook-token');
 const JwtStrategy = passportJWT.Strategy
 const ExtractJwt = passportJWT.ExtractJwt
 const FacebookStrategy = passportFB.Strategy
@@ -62,44 +61,6 @@ module.exports = passport => {
       })
     })
   )
-
-  passport.use(
-    new FacebookTokenStrategy({
-      clientID: process.env.FB_CLIENT_ID,
-      clientSecret: process.env.FB_CLIENT_SECRET,
-      callbackURL: process.env.FB_CALLBACK_URL,
-      profileFields: ['email', 'displayName']
-    }, (accessToken, refreshToken, profile, done) => {
-      console.log('Profile: ', profile)
-      console.log('Done: ', done)
-      User.findOne({
-        where: {
-          email: profile._json.email
-        }
-      }).then(user => {
-        if (!user) {
-          let randomPassword = Math.random().toString(36).slice(-8)
-          bcrypt.genSalt(10, (err, salt) =>
-            bcrypt.hash(randomPassword, salt, null, (err, hash) => {
-              return User.create({
-                name: profile._json.name,
-                email: profile._json.email,
-                role: user,
-                password: hash
-              }).then(user => {
-                return done(null, user)
-              }).catch(err => {
-                console.log('Err: ', err)
-              })
-            })
-          )
-        } else {
-          return done(null, user)
-        }
-      })
-    })
-  )
-
 
   passport.serializeUser((user, done) => {
     done(null, user.id)

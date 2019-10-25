@@ -8,5 +8,6 @@ router.get('/', productController.getProducts)
 router.get('/:product_id', productController.getProduct)
 router.post('/:product_id/like', ensureAuthenticated, getUser, isAuthUser, productController.likeProduct)
 router.post('/:product_id/unlike', ensureAuthenticated, getUser, isAuthUser, productController.unlikeProduct)
+router.post('/:product_id/reviews', productController.postReview)
 
 module.exports = router

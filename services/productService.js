@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 
 const db = require('../models')
-const { Carousel, Category, User, Product, Like } = db
+const { Carousel, Category, User, Product, Like, Order, OrderItem, Review } = db
 
 const productService = {
 
@@ -153,6 +153,47 @@ const productService = {
     }
     catch (err) {
       return callback({ status: 'error', message: 'UnLike 商品失敗' })
+    }
+  },
+
+  postReview: async (req, res, callback) => {
+    try {
+      // 檢查使用者是否購買過此商品
+      let result = await Order.findAll({
+        where: {
+          UserId: req.user.id,
+          paymentStatus: 1
+        },
+        include: [
+          {
+            model: Product,
+            as: 'items',
+            where: { id: req.params.product_id }
+          }
+        ]
+      }).then(orders => {
+        return orders
+      })
+      // 若已購買商品數量大於等於 1
+      if (result.length >= 1) {
+        // 建立新的評論
+        return Review.create({
+          review: req.body.review,
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
+          dataStatus: 1
+        }).then(review => {
+          return callback({ status: 'success', message: '使用者評論商品成功', content: review })
+        }).catch(err => {
+          return callback({ status: 'error', message: '使用者評論失敗' })
+        })
+      } else {
+        // 若已購買商品數量等於 0
+        return callback({ status: 'error', message: '使用者並未購買過此商品，無法建立評論' })
+      }
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者評論失敗' })
     }
   }
 }
