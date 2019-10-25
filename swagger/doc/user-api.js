@@ -521,6 +521,37 @@
  *         description: 修改 Product 的評論成功
  */
 
+/********************************************************************
+* Products - 移除 Product 的評論
+* DELETE http://localhost:3000/products/:product_id/reviews/:review_id
+********************************************************************/
+
+/**
+ * @swagger
+ * /products/{product_id}/reviews/{review_id}:
+ *   delete:
+ *     tags:
+ *      - Products
+ *     description: Product - 移除 Product 的評論
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         type: integer
+ *         required: true
+ *         description: product_id
+ *       - in: path
+ *         name: review_id
+ *         type: integer
+ *         required: true
+ *         description: review_id
+ *     responses:
+ *       200:
+ *         description: 移除 Product 的評論成功
+ */
 
 /********************************************************************
 * Accounts - 取得當前使用者資料

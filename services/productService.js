@@ -203,7 +203,8 @@ const productService = {
         where: {
           id: req.params.review_id,
           UserId: req.user.id,
-          ProductId: req.params.product_id
+          ProductId: req.params.product_id,
+          dataStatus: 1
         }
       }).then(review => {
 
@@ -220,6 +221,32 @@ const productService = {
     }
     catch (err) {
       return callback({ status: 'error', message: '使用者更新評論失敗', content: err })
+    }
+  },
+
+  deleteReview: (req, res, callback) => {
+    try {
+      return Review.findOne({
+        where: {
+          id: req.params.review_id,
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
+          dataStatus: 1
+        }
+      }).then(review => {
+        review.update({
+          dataStatus: 0
+        }).then(review => {
+          return callback({ status: 'success', message: '使用者移除商品評論成功' })
+        }).catch(err => {
+          return callback({ status: 'error', message: '使用者移除商品評論失敗', content: err })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '找不到該評論', content: err })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者移除商品評論失敗', content: err })
     }
   }
 }

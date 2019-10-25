@@ -10,5 +10,6 @@ router.post('/:product_id/like', ensureAuthenticated, getUser, isAuthUser, produ
 router.post('/:product_id/unlike', ensureAuthenticated, getUser, isAuthUser, productController.unlikeProduct)
 router.post('/:product_id/reviews', ensureAuthenticated, getUser, isAuthUser, productController.postReview)
 router.put('/:product_id/reviews/:review_id', ensureAuthenticated, getUser, isAuthUser, productController.putReview)
+router.delete('/:product_id/reviews/:review_id', ensureAuthenticated, getUser, isAuthUser, productController.deleteReview)
 
 module.exports = router
