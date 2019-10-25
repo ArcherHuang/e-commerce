@@ -40,8 +40,14 @@ const userService = {
       return callback({ status: 'error', message: '請輸入正確的 email !' })
     }
 
-    const user = await User.findOne({ where: { email } })
-    if (!user) return res.status(401).json({ status: 'error', message: '使用者不存在' })
+    const user = await User.findOne({
+      where: {
+        email: email,
+        isValid: 1
+      }
+    })
+
+    if (!user) return res.status(401).json({ status: 'error', message: '使用者不存在，或尚未通過信箱驗證' })
     if (!bcrypt.compareSync(password, user.password)) {
       return callback({ status: 'error', message: '密碼不正確' })
     }
@@ -50,7 +56,7 @@ const userService = {
     const token = jwt.sign(payload, process.env.JWT_SECRET)
 
     req.session.user = user
-    console.log(req.session)
+
     return callback({
       status: 'success', message: '登入成功', token, user: {
         id: user.id,
