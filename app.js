@@ -8,7 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const helpers = require('./_helpers')
-const passport = require('./config/passport')
+// const passport = require('./config/passport')
+const passport = require('passport')
 const cors = require('cors')
 const db = require('./models')
 
@@ -32,6 +33,17 @@ app.use(session({
     // secure: true //只允許 HTTPS/SSL 訪問
   },
 }))
+
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./config/passport')(passport)
+
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  next()
+})
 
 app.listen(port, () => {
   db.sequelize.sync()

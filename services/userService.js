@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt-nodejs')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const moment = require('moment')
+const passport = require('passport')
 
 const signUpValidEmailService = require('./signUpValidEmailService')
 
@@ -326,6 +327,40 @@ const userService = {
     return callback({ status: 'success', message: '成功登出' })
   },
 
+  getFacebook: (req, res, callback) => {
+    return callback({ status: 'success', message: '使用 Facebook 登入中' })
+  },
+
+  getFacebookCallback: (req, res, callback) => {
+    try {
+      passport.authenticate('facebook', function (err, user, info) {
+        if (err || !user) { return callback({ status: 'error', message: err }) }
+
+        req.logIn(user, function (err) {
+
+          if (err) { return callback({ status: 'error', message: err }) }
+          // 產生 token
+          const payload = { id: user.id }
+          const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+          return callback({
+            status: 'success',
+            message: '使用 Facebook 登入成功',
+            token,
+            user: {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role
+            }
+          })
+        })
+      })(req, res, callback);
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用 Facebook 登入失敗' })
+    }
+  }
 }
 
 module.exports = userService  
