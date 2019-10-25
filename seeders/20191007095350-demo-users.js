@@ -335,6 +335,65 @@ module.exports = {
       })),
       {}
     )
+
+    await queryInterface.bulkInsert(
+      'Orders',
+      Array.from({ length: 20 }).map((d) => ({
+        name: faker.lorem.word(),
+        phone: faker.phone.phoneNumberFormat(),
+        address: faker.address.streetAddress(),
+        sn: faker.random.alphaNumeric(8),
+        shippingStatus: 1,
+        paymentStatus: 1,
+        totalAmount: faker.random.number({
+          min: 1000,
+          max: 9999
+        }),
+        UserId: faker.random.number({
+          min: users[0],
+          max: users[users.length - 1]
+        }),
+        dataStatus: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })),
+      {}
+    )
+
+    // Get all new orders ids
+    let orders = await Order.findAll().then(orders => {
+      let results = []
+      for (let i = 0; i < orders.length; i++) {
+        results.push(orders[i].id)
+      }
+      return results
+    })
+
+    await queryInterface.bulkInsert(
+      'OrderItems',
+      Array.from({ length: 100 }).map((d) => ({
+        OrderId: faker.random.number({
+          min: orders[0],
+          max: orders[orders.length - 1]
+        }),
+        ProductId: faker.random.number({
+          min: products[0],
+          max: products[products.length - 1]
+        }),
+        price: faker.random.number({
+          min: 100,
+          max: 999,
+        }),
+        quantity: faker.random.number({
+          min: 1,
+          max: 10,
+        }),
+        dataStatus: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })),
+      {}
+    )
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -345,5 +404,7 @@ module.exports = {
     await queryInterface.bulkDelete('Carousels', null, {})
     await queryInterface.bulkDelete('Likes', null, {})
     await queryInterface.bulkDelete('PageViews', null, {})
+    await queryInterface.bulkDelete('Orders', null, {})
+    await queryInterface.bulkDelete('OrderItems', null, {})
   }
 }
