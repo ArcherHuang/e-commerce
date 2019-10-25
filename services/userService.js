@@ -49,6 +49,8 @@ const userService = {
     const payload = { id: user.id }
     const token = jwt.sign(payload, process.env.JWT_SECRET)
 
+    req.session.user = user
+    console.log(req.session)
     return callback({
       status: 'success', message: '登入成功', token, user: {
         id: user.id,

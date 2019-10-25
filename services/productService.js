@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 
 const db = require('../models')
-const { Carousel, Category, User, Product, Like, Order, OrderItem, Review } = db
+const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageView } = db
 
 const productService = {
 
@@ -81,11 +81,58 @@ const productService = {
   },
 
   getProduct: (req, res, callback) => {
-
-    return Product.findByPk(req.params.product_id, { include: [Category, Review] }).then(product => {
-      return callback({ status: 'success', message: '取得特定產品成功', content: product })
-    })
-
+    try {
+      return Product.findByPk(req.params.product_id, { include: [Category, Review, PageView] }).then(product => {
+        if (req.session.user) {
+          return PageView.findOrCreate({
+            where: {
+              UserId: req.session.user.id,
+              ProductId: req.params.product_id
+            },
+            default: {
+              UserId: req.session.user.id,
+              ProductId: req.params.product_id,
+              viewCount: 0
+            }
+          }).spread((pageView, created) => {
+            return pageView.update({
+              viewCount: (pageView.viewCount || 1) + 1
+            }).then(pageView => {
+              return callback({ status: 'success', message: '取得特定產品成功', content: product })
+            }).catch(err => {
+              return callback({ status: 'error', message: '增加商品瀏覽紀錄失敗', content: err })
+            })
+          }).catch(err => {
+            return callback({ status: 'error', message: '取得特定產品失敗', content: err })
+          })
+        } else {
+          return PageView.findOrCreate({
+            where: {
+              UserId: null,
+              ProductId: req.params.product_id
+            },
+            default: {
+              UserId: null,
+              ProductId: req.params.product_id,
+              viewCount: 0
+            }
+          }).spread((pageView, created) => {
+            return pageView.update({
+              viewCount: (pageView.viewCount || 1) + 1
+            }).then(pageView => {
+              return callback({ status: 'success', message: '取得特定產品成功', content: product })
+            }).catch(err => {
+              return callback({ status: 'error', message: '增加商品瀏覽紀錄失敗', content: err })
+            })
+          }).catch(err => {
+            return callback({ status: 'error', message: '取得特定產品失敗', content: err })
+          })
+        }
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取得特定產品失敗', content: err })
+    }
   },
 
   likeProduct: async (req, res, callback) => {
