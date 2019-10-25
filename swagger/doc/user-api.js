@@ -492,3 +492,22 @@
  *       200:
  *         description: 使用者登出成功
  */
+
+/********************************************************************
+* Auths - 使用者使用 Facebook 登入
+* GET http://localhost:3000/auth/facebook
+********************************************************************/
+
+/**
+ * @swagger
+ * /auth/facebook:
+ *   get:
+ *     tags:
+ *      - Auths
+ *     description: Auths - 使用者使用 Facebook 登入
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 使用者使用 Facebook 登入成功
+ */
