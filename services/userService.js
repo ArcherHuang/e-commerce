@@ -7,7 +7,7 @@ const passport = require('passport')
 const signUpValidEmailService = require('./signUpValidEmailService')
 
 const db = require('../models')
-const { User, Product, Order, Coupon, CouponDistribution, Review } = db
+const { User, Product, Order, Coupon, CouponDistribution, Review, PageView } = db
 
 const userService = {
 
@@ -360,6 +360,26 @@ const userService = {
     }
     catch (err) {
       return callback({ status: 'error', message: '使用 Facebook 登入失敗' })
+    }
+  },
+
+  getViewHistory: (req, res, callback) => {
+    console.log('getViewHistory')
+    try {
+      return PageView.findAll({
+        where: {
+          UserId: req.user.id
+        },
+        order: [['updatedAt', 'DESC']],
+        include: [Product]
+      }).then(pageViews => {
+        return callback({ status: 'success', message: '取得使用者商品瀏覽紀錄成功', content: pageViews })
+      }).catch(err => {
+        return callback({ status: 'success', message: '取得使用者商品瀏覽紀錄失敗', content: err })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'success', message: '取得使用者商品瀏覽紀錄失敗', content: err })
     }
   }
 }

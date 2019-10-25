@@ -12,6 +12,7 @@ router.get('/coupons', ensureAuthenticated, getUser, isAuthUser, accountControll
 router.get('/orders', ensureAuthenticated, getUser, isAuthUser, accountController.getOrders)
 router.get('/orders/:order_id', ensureAuthenticated, getUser, isAuthUser, accountController.getOrder)
 router.put('/orders/:order_id/cancel', ensureAuthenticated, getUser, isAuthUser, accountController.cancelOrder)
+router.get('/history', ensureAuthenticated, getUser, isAuthUser, accountController.getViewHistory)
 
 // User
 router.post('/signin', accountController.signIn)

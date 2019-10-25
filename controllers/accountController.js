@@ -83,6 +83,12 @@ const userController = {
       return res.json(data)
     })
   },
+
+  getViewHistory: (req, res) => {
+    userService.getViewHistory(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

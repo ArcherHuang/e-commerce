@@ -344,6 +344,28 @@
  */
 
 /********************************************************************
+* Accounts - 取得使用者商品瀏覽紀錄
+* GET http://localhost:3000/accounts/history
+********************************************************************/
+
+/**
+ * @swagger
+ * /accounts/history:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得使用者商品瀏覽紀錄
+ *     produces:
+ *       - application/json
+*     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 取得使用者商品瀏覽紀錄成功
+ */
+
+
+/********************************************************************
 * Products - 取得所有 Product
 * GET http://localhost:3000/products
 ********************************************************************/
