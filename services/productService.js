@@ -195,6 +195,32 @@ const productService = {
     catch (err) {
       return callback({ status: 'error', message: '使用者評論失敗' })
     }
+  },
+
+  putReview: async (req, res, callback) => {
+    try {
+      return Review.findOne({
+        where: {
+          id: req.params.review_id,
+          UserId: req.user.id,
+          ProductId: req.params.product_id
+        }
+      }).then(review => {
+
+        review.update({
+          review: req.body.review || review.review
+        }).then(review => {
+          return callback({ status: 'success', message: '使用者更新評論成功', content: review })
+        }).catch(err => {
+          return callback({ status: 'error', message: '使用者更新評論失敗', content: err })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '評論不存在', content: err })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者更新評論失敗', content: err })
+    }
   }
 }
 

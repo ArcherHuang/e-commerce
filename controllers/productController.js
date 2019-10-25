@@ -31,6 +31,12 @@ const productController = {
       return res.json(data)
     })
   },
+
+  putReview: (req, res) => {
+    productService.putReview(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = productController
