@@ -31,7 +31,7 @@ const productService = {
     if (req.query.category_id && req.query.keyword) {
       const keyword = req.query.keyword ? req.query.keyword : null
       return Product.findAll({
-        include: [Category],
+        include: [Category, Review],
         where: {
           dataStatus: 1,
           CategoryId: req.query.category_id ? req.query.category_id : null,
@@ -45,7 +45,7 @@ const productService = {
         if (products.length !== 0) {
           return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
         } else {
-          return Product.findAll({ include: [Category] }).then(products => {
+          return Product.findAll({ include: [Category, Review] }).then(products => {
             return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
           })
         }
@@ -54,7 +54,7 @@ const productService = {
     } else if (req.query.category_id || req.query.keyword) {
       const keyword = req.query.keyword ? req.query.keyword : null
       return Product.findAll({
-        include: [Category],
+        include: [Category, Review],
         where: {
           dataStatus: 1,
           [Op.or]: [
@@ -68,13 +68,13 @@ const productService = {
         if (products.length !== 0) {
           return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
         } else {
-          return Product.findAll({ include: [Category] }).then(products => {
+          return Product.findAll({ include: [Category, Review] }).then(products => {
             return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
           })
         }
       })
     } else {
-      return Product.findAll({ include: [Category] }).then(products => {
+      return Product.findAll({ include: [Category, Review] }).then(products => {
         return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
       })
     }
@@ -82,7 +82,7 @@ const productService = {
 
   getProduct: (req, res, callback) => {
 
-    return Product.findByPk(req.params.product_id, { include: [Category] }).then(product => {
+    return Product.findByPk(req.params.product_id, { include: [Category, Review] }).then(product => {
       return callback({ status: 'success', message: '取得特定產品成功', content: product })
     })
 
