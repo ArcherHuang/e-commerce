@@ -11,37 +11,42 @@ const cronService = {
 
   sendBirthdayCoupon: function () {
     // 每天 0 時執行
-    new CronJob('* * 0 * * *', async function () {
-      // 取得現在時間
-      let now = moment()
-      let nowYear = moment(now).year()
-      let nowMonth = moment(now).month()
-      let nowDate = moment(now).date()
+    try {
+      new CronJob('* * 0 * * *', async function () {
+        // 取得現在時間
+        let now = moment()
+        let nowYear = moment(now).year()
+        let nowMonth = moment(now).month()
+        let nowDate = moment(now).date()
 
-      // 取得所有使用者資料
-      let users = await User.findAll().then(users => {
-        return users
-      })
+        // 取得所有使用者資料
+        let users = await User.findAll().then(users => {
+          return users
+        })
 
-      for (let i = 0; i < users.length; i++) {
-        // 取得使用者生日的月份與日期
-        let userBirthdayMonth = moment(users[i].birthday).month()
-        let userBirthdayDate = moment(users[i].birthday).date()
+        for (let i = 0; i < users.length; i++) {
+          // 取得使用者生日的月份與日期
+          let userBirthdayMonth = moment(users[i].birthday).month()
+          let userBirthdayDate = moment(users[i].birthday).date()
 
-        // 計算使用者生日與今天的距離
-        let nowTime = moment([nowYear, nowMonth, nowDate])
-        let userBirthday = moment([nowYear, userBirthdayMonth, userBirthdayDate])
-        let diff = userBirthday.diff(nowTime, 'days')
+          // 計算使用者生日與今天的距離
+          let nowTime = moment([nowYear, nowMonth, nowDate])
+          let userBirthday = moment([nowYear, userBirthdayMonth, userBirthdayDate])
+          let diff = userBirthday.diff(nowTime, 'days')
 
-        // 若使用者的生日距今天一週（7 days），則建立並發送 Birthday Coupon
-        if (users[i].role) {
-          if ((diff > 0 && diff <= 7) || (diff <= -358)) {
-            cronService.createAndSendCoupon(users[i].id)
+          // 若使用者的生日距今天一週（7 days），則建立並發送 Birthday Coupon
+          if (users[i].role) {
+            if ((diff > 0 && diff <= 7) || (diff <= -358)) {
+              cronService.createAndSendCoupon(users[i].id)
+            }
           }
-        }
 
-      }
-    }, null, true, 'Asia/Taipei');
+        }
+      }, null, true, 'Asia/Taipei');
+    }
+    catch (err) {
+      console.log(`sendBirthdayCoupon 執行失敗。Err: ${err}`)
+    }
   },
 
   createAndSendCoupon: async function (userId) {
