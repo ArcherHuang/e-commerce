@@ -281,7 +281,7 @@ const userService = {
           dataStatus: 0
         }).then(order => {
 
-          // 發送通知信件
+          // 發送訂單取消通知信件
           let email = req.user.email
           let subject = `AJA Online Store: 訂單已取消（編號: ${order.sn}）`
           let type = 'text'
