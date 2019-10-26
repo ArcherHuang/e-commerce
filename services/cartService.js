@@ -89,15 +89,15 @@ const cartService = {
       if (product.inventory > 0) {
 
         //取得或建立新購物車
-        return Cart.findOrCreate({
+        await Cart.findOrCreate({
           where: {
             id: req.session.cartId || 0,
             dataStatus: 1                  // 不存在（已轉為訂單）0 存在 1 
           },
-        }).spread(function (cart, created) {
+        }).spread(async function (cart, created) {
 
           // 將商品加入購物車
-          return CartItem.findOrCreate({
+          await CartItem.findOrCreate({
             where: {
               CartId: cart.id,
               ProductId: req.body.productId
@@ -106,15 +106,15 @@ const cartService = {
               CartId: cart.id,
               ProductId: req.body.productId
             }
-          }).spread(function (cartItem, created) {
-            return cartItem.update({
+          }).spread(async function (cartItem, created) {
+            await cartItem.update({
               quantity: (cartItem.quantity || 0) + 1
-            }).then(cartItem => {
+            }).then(async (cartItem) => {
               req.session.cartId = cart.id
-              return req.session.save(() => {
+              return req.session.save(async () => {
 
                 //商品庫存減一
-                Product.findByPk(req.body.productId).then(product => {
+                await Product.findByPk(req.body.productId).then(product => {
                   product.update({
                     inventory: product.inventory - 1
                   }).then(product => {
