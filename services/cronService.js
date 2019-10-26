@@ -1,6 +1,8 @@
-const express = require('express');
-const CronJob = require('cron').CronJob;
+const express = require('express')
+const CronJob = require('cron').CronJob
 const moment = require('moment')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 const db = require('../models')
 const { User, Coupon, CouponDistribution } = db
@@ -8,7 +10,6 @@ const { User, Coupon, CouponDistribution } = db
 const cronService = {
 
   sendBirthdayCoupon: function () {
-
     // 每天 0 時執行
     new CronJob('* * 0 * * *', async function () {
       // 取得現在時間
@@ -105,6 +106,38 @@ const cronService = {
     }
     catch (err) {
       console.log(`建立並發送 Birthday Coupon 給使用者  ${userId} 失敗。Err: `, err)
+    }
+  },
+
+  deleteInvalidUser: function () {
+    // 每天 0 時執行
+    try {
+      new CronJob('* * 0 * * *', async function () {
+
+        // 找出帳號建立時間為一天前、尚未通過驗證的使用者
+        let users = await User.findAll({
+          where: {
+            isValid: false,
+            createdAt: {
+              [Op.lt]: moment().subtract(1, 'days')
+            }
+          }
+        })
+
+        // 從資料庫中刪除使用者
+        for (let i = 0; i < users.length; i++) {
+          User.findByPk(users[i].id).then(user => {
+            user.destroy().then(() => {
+              console.log(`刪除使用者 ${users[i].id} ${users[i].email} 成功`)
+            }).catch(err => {
+              console.log(`刪除使用者 ${users[i].id} 失敗。Err: ${err}`)
+            })
+          })
+        }
+      }, null, true, 'Asia/Taipei');
+    }
+    catch (err) {
+      console.log(`deleteInvalidUser 執行失敗。Err: ${err}`)
     }
   }
 }
