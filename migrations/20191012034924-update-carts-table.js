@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: async (queryInterface, Sequelize) => {
     return Promise.all([
-      queryInterface.dropTable('Carts'),
-      queryInterface.createTable('Carts', {
+      await queryInterface.dropTable('Carts'),
+      await queryInterface.createTable('Carts', {
         id: {
           allowNull: false,
           autoIncrement: true,
@@ -26,10 +26,10 @@ module.exports = {
     ]);
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: async (queryInterface, Sequelize) => {
     return Promise.all([
-      queryInterface.dropTable('Carts'),
-      queryInterface.createTable('Carts', {
+      await queryInterface.dropTable('Carts'),
+      await queryInterface.createTable('Carts', {
         id: {
           allowNull: false,
           autoIncrement: true,
