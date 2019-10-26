@@ -85,13 +85,17 @@ const cartService = {
       //驗證商品是否存在
       let product = await Product.findByPk(req.body.productId)
 
-      if (product) {
-        //若商品存在
+      //若商品存在，且庫存大於零
+      if (product.inventory > 0) {
+
+        //取得或建立新購物車
         return Cart.findOrCreate({
           where: {
             id: req.session.cartId || 0
           },
         }).spread(function (cart, created) {
+
+          // 將商品加入購物車
           return CartItem.findOrCreate({
             where: {
               CartId: cart.id,
@@ -107,18 +111,33 @@ const cartService = {
             }).then(cartItem => {
               req.session.cartId = cart.id
               return req.session.save(() => {
-                return callback({ status: 'success', message: '商品加入購物車成功' })
+
+                //商品庫存減一
+                Product.findByPk(req.body.productId).then(product => {
+                  product.update({
+                    inventory: product.inventory - 1
+                  }).then(product => {
+                    return callback({ status: 'success', message: '商品加入購物車成功' })
+                  }).catch(err => {
+                    return callback({ status: 'err', message: '降低存貨失敗', content: err })
+                  })
+                }).catch(err => {
+                  return callback({ status: 'err', message: '找不到商品', content: err })
+                })
               })
             }).catch(err => {
-              return callback({ status: 'error', message: '商品加入購物車失敗' })
+              return callback({ status: 'error', message: '商品加入購物車失敗', content: err })
             })
           })
         }).catch(err => {
-          return callback({ status: 'error', message: '商品加入購物車失敗' })
+          return callback({ status: 'error', message: '商品加入購物車失敗', content: err })
         })
+      } else if (product.inventory === 0) {
+        // 若商品庫存為零
+        return callback({ status: 'error', message: '商品庫存為零，無法加入至購物車' })
       } else {
         //若商品不存在
-        return callback({ status: 'error', message: '商品不存在，加入購物車失敗' })
+        return callback({ status: 'error', message: '商品不存在' })
       }
     }
     catch (err) {
@@ -137,18 +156,29 @@ const cartService = {
 
         //檢查 cart item 是否存在
         if (cartItem) {
-          //檢查購物車中的商品數量，是否超過庫存  
+          //檢查商品庫存  
           Product.findByPk(cartItem.ProductId).then(product => {
-            if (cartItem.quantity >= product.inventory) {
-
-              //若購物車中的商品數量大於等於商品庫存
+            if (product.inventory === 0) {
+              //若商品庫存為零
               return callback({ status: 'error', message: '商品已無庫存' })
             } else {
-              //若購物車中的商品數量小於商品庫存，可以持續增加數量
+              ////若商品庫存不為零
               cartItem.update({
                 quantity: cartItem.quantity + 1,
               }).then((cartItem) => {
-                return callback({ status: 'success', message: '新增商品數量成功' })
+
+                //商品庫存減一
+                Product.findByPk(cartItem.ProductId).then(product => {
+                  product.update({
+                    inventory: product.inventory - 1
+                  }).then(product => {
+                    return callback({ status: 'success', message: '新增商品數量成功' })
+                  }).catch(err => {
+                    return callback({ status: 'err', message: '降低存貨失敗', content: err })
+                  })
+                }).catch(err => {
+                  return callback({ status: 'err', message: '找不到商品', content: err })
+                })
               }).catch(err => {
                 return callback({ status: 'error', message: '新增商品數量失敗' })
               })
@@ -180,12 +210,24 @@ const cartService = {
             cartItem.update({
               quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1
             }).then((cartItem) => {
-              return callback({ status: 'success', message: '減少商品數量成功' })
+
+              //商品庫存加一
+              Product.findByPk(cartItem.ProductId).then(product => {
+                product.update({
+                  inventory: product.inventory + 1
+                }).then(product => {
+                  return callback({ status: 'success', message: '減少購物車商品數量成功' })
+                }).catch(err => {
+                  return callback({ status: 'err', message: '調整存貨失敗', content: err })
+                })
+              }).catch(err => {
+                return callback({ status: 'err', message: '找不到商品', content: err })
+              })
+
             }).catch(err => {
-              return callback({ status: 'error', message: '減少商品數量失敗' })
+              return callback({ status: 'error', message: '減少購物車數量失敗' })
             })
           } else if (cartItem.quantity === 1) {
-
             //若購物車中的商品數量為1，回傳無法減少數量的訊息
             return callback({ status: 'error', message: '商品數量為 1，無法繼續減少商品數量' })
           } else {
@@ -216,7 +258,20 @@ const cartService = {
           cartItem.update({
             dataStatus: 0
           }).then(cartItem => {
-            return callback({ status: 'success', message: '移除購物車商品成功' })
+
+            //商品庫存調整
+            Product.findByPk(cartItem.ProductId).then(product => {
+              product.update({
+                inventory: product.inventory + cartItem.quantity
+              }).then(product => {
+                return callback({ status: 'success', message: '移除購物車商品成功' })
+              }).catch(err => {
+                return callback({ status: 'err', message: '調整存貨失敗', content: err })
+              })
+            }).catch(err => {
+              return callback({ status: 'err', message: '找不到商品', content: err })
+            })
+
           }).catch(err => {
             return callback({ status: 'error', message: '移除購物車商品失敗' })
           })
