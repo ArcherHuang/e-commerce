@@ -1,5 +1,5 @@
 const db = require('../models')
-const { Order, Cart, OrderItem, Product } = db
+const { Order, Cart, OrderItem, CartItem, Product } = db
 const moment = require('moment')
 const crypto = require('crypto')
 const stripe = require('stripe')('sk_test_9nhZ1DE1Nc4xqBeW8XelurKX00Ib8HqOm2')
@@ -46,7 +46,7 @@ const orderService = {
           shippingStatus: 0, // 待出貨 0, 已出貨 1, 取消出貨 2
           paymentStatus: 0,  // 待付款 0, 已付款 1, 取消付款 2
           dataStatus: 1,     // 訂單刪除 0, 訂單存在 1, 訂單取消 2
-        }).then(order => {
+        }).then(async (order) => {
 
           // 將 cart items 放入 order items
           let results = []
@@ -60,6 +60,36 @@ const orderService = {
               })
             )
           }
+
+          // 清空 cart items 以確保商品數量正確
+          await CartItem.findAll({
+            where: {
+              CartId: req.body.cart_id,
+              dataStatus: 1
+            }
+          }).then(async (cartItems) => {
+            for (let i = 0; i < cartItems.length; i++) {
+              await CartItem.findOne({
+                where: {
+                  CartId: req.body.cart_id,
+                  dataStatus: 1
+                }
+              }).then(async (cartItem) => {
+                await cartItem.update({
+                  quantity: 0,
+                  dataStatus: 0
+                }).then(() => {
+                  console.log(`清空 cart item 成功`)
+                }).catch(err => {
+                  console.log(`清空 cart item 失敗。Err: ${err}`)
+                })
+              }).catch(err => {
+                console.log(`找不到 cart item。Err: ${err}`)
+              })
+            }
+          }).catch(err => {
+            console.log(`找不到 cart item。Err: ${err}`)
+          })
 
           return Promise.all(results).then(() => {
             Order.findAll({

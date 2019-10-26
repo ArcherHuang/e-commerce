@@ -253,16 +253,20 @@ const cartService = {
         }
       }).then(cartItem => {
 
+        //紀錄當下商品數量
+        let quantity = cartItem.quantity
+
         //檢查 cart item 是否存在
         if (cartItem) {
           cartItem.update({
+            quantity: 0,
             dataStatus: 0
           }).then(cartItem => {
 
             //商品庫存調整
             Product.findByPk(cartItem.ProductId).then(product => {
               product.update({
-                inventory: product.inventory + cartItem.quantity
+                inventory: product.inventory + quantity
               }).then(product => {
                 return callback({ status: 'success', message: '移除購物車商品成功' })
               }).catch(err => {
