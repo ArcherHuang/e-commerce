@@ -3,6 +3,7 @@ const { Order, Cart, OrderItem, Product } = db
 const moment = require('moment')
 const crypto = require('crypto')
 const stripe = require('stripe')('sk_test_9nhZ1DE1Nc4xqBeW8XelurKX00Ib8HqOm2')
+const sendEmailService = require('./sendEmailService')
 
 // Payment variables
 const URL = process.env.LOCAL_NGROK_URL
