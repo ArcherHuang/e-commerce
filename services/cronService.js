@@ -12,7 +12,8 @@ const cronService = {
   sendBirthdayCoupon: function () {
     // 每天 0 時執行
     try {
-      new CronJob('* * 0 * * *', async function () {
+      new CronJob('0 0 0 * * *', async function () {
+
         // 取得現在時間
         let now = moment()
         let nowYear = moment(now).year()
@@ -117,7 +118,7 @@ const cronService = {
   deleteInvalidUser: function () {
     // 每天 0 時執行
     try {
-      new CronJob('* * 0 * * *', async function () {
+      new CronJob('0 0 0 * * *', async function () {
 
         // 找出帳號建立時間為一天前、尚未通過驗證的使用者
         let users = await User.findAll({
@@ -149,7 +150,7 @@ const cronService = {
   deleteExpiredCoupon: function () {
     try {
       // 每天 0 時執行
-      new CronJob('* * 0 * * *', async function () {
+      new CronJob('0 0 0 * * *', async function () {
 
         // 尋找過期 coupons
         let coupons = await Coupon.findAll({
@@ -183,7 +184,8 @@ const cronService = {
   deleteExpiredCart: function () {
     try {
       // 每天 0 時執行
-      new CronJob('* * 0 * * *', async function () {
+      new CronJob('0 0 0 * * *', async function () {
+
         // 搜尋閒置超過兩天的 cart
         let expiredCarts = await Cart.findAll({
           where: { dataStatus: 1, updatedAt: { [Op.lt]: moment().add(-2, 'days') } },
