@@ -50,6 +50,7 @@ app.use((req, res, next) => {
 //The crone jobs
 cronService.sendBirthdayCoupon()
 cronService.deleteInvalidUser()
+cronService.deleteExpiredCoupon()
 
 app.listen(port, () => {
   db.sequelize.sync()

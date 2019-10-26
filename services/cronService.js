@@ -42,7 +42,7 @@ const cronService = {
           }
 
         }
-      }, null, true, 'Asia/Taipei');
+      }, null, true, 'Asia/Taipei')
     }
     catch (err) {
       console.log(`sendBirthdayCoupon 執行失敗。Err: ${err}`)
@@ -139,10 +139,44 @@ const cronService = {
             })
           })
         }
-      }, null, true, 'Asia/Taipei');
+      }, null, true, 'Asia/Taipei')
     }
     catch (err) {
       console.log(`deleteInvalidUser 執行失敗。Err: ${err}`)
+    }
+  },
+
+  deleteExpiredCoupon: function () {
+    try {
+      // 每天 0 時執行
+      new CronJob('* * 0 * * *', async function () {
+
+        // 尋找過期 coupons
+        let coupons = await Coupon.findAll({
+          where: {
+            dataStatus: 1,
+            expireDate: {
+              [Op.lt]: moment()
+            }
+          }
+        })
+
+        // 刪除過期 coupons
+        for (let i = 0; i < coupons.length; i++) {
+          await Coupon.findByPk(coupons[i].id).then(coupon => {
+            coupon.update({
+              dataStatus: 0
+            }).then(coupon => {
+              console.log(`刪除過期 coupon (id: ${coupons[i].id}) 成功`)
+            }).catch(err => {
+              console.log(`刪除過期 coupon (id: ${coupons[i].id}) 失敗。Err: ${err}`)
+            })
+          })
+        }
+      }, null, true, 'Asia/Taipei')
+    }
+    catch (err) {
+      console.log(`deleteExpiredCoupon 執行失敗。Err: ${err}`)
     }
   }
 }
