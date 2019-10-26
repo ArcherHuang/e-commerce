@@ -1,5 +1,6 @@
 const db = require('../../models')
-const Order = db.Order
+const { Order, User } = db
+const sendEmailService = require('../../services/sendEmailService')
 
 const orderService = {
 
@@ -29,7 +30,7 @@ const orderService = {
   // 訂單取消 dataStatus = 2
 
   // 訂單取消：1 變 2
-  cancelOrder: (req, res, callback) => {
+  cancelOrder: async (req, res, callback) => {
     try {
       Order.findByPk(req.params.order_id)
         .then((order) => {
@@ -37,7 +38,16 @@ const orderService = {
             order.update({
               dataStatus: 2
             })
-              .then((order) => {
+              .then(async (order) => {
+
+                // 發送訂單取消通知信件
+                let user = await User.findByPk(order.UserId)
+                let email = user.email
+                let subject = `AJA Online Store: 訂單已取消（編號: ${order.sn}）`
+                let type = 'text'
+                let info = `您的訂單已被取消（編號: ${order.sn}），請洽服務人員了解詳情，謝謝`
+                sendEmailService.mailInfo({ email, subject, type, info })
+
                 callback({ status: 'success', message: 'Order 已取消訂單成功' })
               })
           } else {
@@ -50,7 +60,7 @@ const orderService = {
   },
 
   // 訂單恢復：2 變 1
-  resumeOrder: (req, res, callback) => {
+  resumeOrder: async (req, res, callback) => {
     try {
       Order.findByPk(req.params.order_id)
         .then((order) => {
@@ -58,7 +68,16 @@ const orderService = {
             order.update({
               dataStatus: 1
             })
-              .then((order) => {
+              .then(async (order) => {
+
+                // 發送訂單恢復通知信件
+                let user = await User.findByPk(order.UserId)
+                let email = user.email
+                let subject = `AJA Online Store: 訂單已恢復（編號: ${order.sn}）`
+                let type = 'text'
+                let info = `您的訂單已恢復（編號: ${order.sn}），若有其他問題，請洽服務人員，謝謝`
+                sendEmailService.mailInfo({ email, subject, type, info })
+
                 callback({ status: 'success', message: 'Order 已恢復訂單成功' })
               })
           } else {
@@ -71,7 +90,7 @@ const orderService = {
   },
 
   // 出貨 shippingStatus = 1
-  shippedOrder: (req, res, callback) => {
+  shippedOrder: async (req, res, callback) => {
     try {
       Order.findByPk(req.params.order_id)
         .then((order) => {
@@ -79,7 +98,16 @@ const orderService = {
             order.update({
               shippingStatus: 1
             })
-              .then((order) => {
+              .then(async (order) => {
+
+                // 發送訂單出貨通知信件
+                let user = await User.findByPk(order.UserId)
+                let email = user.email
+                let subject = `AJA Online Store: 訂單已出貨（編號: ${order.sn}）`
+                let type = 'text'
+                let info = `您的訂單已出貨（編號: ${order.sn}）！`
+                sendEmailService.mailInfo({ email, subject, type, info })
+
                 callback({ status: 'success', message: 'Order 已出貨成功' })
               })
           } else {
@@ -92,7 +120,7 @@ const orderService = {
   },
 
   // 取消出貨 shippingStatus = 2
-  unshippedOrder: (req, res, callback) => {
+  unshippedOrder: async (req, res, callback) => {
     try {
       Order.findByPk(req.params.order_id)
         .then((order) => {
@@ -100,7 +128,16 @@ const orderService = {
             order.update({
               shippingStatus: 2
             })
-              .then((order) => {
+              .then(async (order) => {
+
+                // 發送訂單出貨取消通知信件
+                let user = await User.findByPk(order.UserId)
+                let email = user.email
+                let subject = `AJA Online Store: 訂單已取消出貨（編號: ${order.sn}）`
+                let type = 'text'
+                let info = `您的訂單已取消出貨（編號: ${order.sn}），請洽服務人員了解詳情，謝謝！`
+                sendEmailService.mailInfo({ email, subject, type, info })
+
                 callback({ status: 'success', message: 'Order 已取消出貨成功' })
               })
           } else {
