@@ -7,7 +7,7 @@ const sendEmailService = require('./sendEmailService')
 const signUpValidEmailService = require('./signUpValidEmailService')
 
 const db = require('../models')
-const { User, Product, Order, Coupon, CouponDistribution, Review, PageView } = db
+const { User, Product, Order, OrderItem, Coupon, CouponDistribution, Review, PageView } = db
 
 const userService = {
 
@@ -273,13 +273,16 @@ const userService = {
         where: {
           UserId: req.user.id,
           id: req.params.order_id,
-          dataStatus: 1
-        }
+          dataStatus: 1,
+        },
+        include: [
+          OrderItem
+        ]
       }).then(result => {
         let order = result[0]
         order.update({
           dataStatus: 0
-        }).then(order => {
+        }).then(async (order) => {
 
           // 發送訂單取消通知信件
           let email = req.user.email
@@ -288,17 +291,31 @@ const userService = {
           let info = `您已取消您的訂單（編號: ${order.sn}）`
           sendEmailService.mailInfo({ email, subject, type, info })
 
+          for (let i = 0; i < order.OrderItems.length; i++) {
+            await OrderItem.findOne({
+              where: { dataStatus: 1, OrderId: order.id }
+            }).then(async (item) => {
+
+              let quantity = item.quantity
+              // 更新商品庫存
+              await Product.findByPk(item.ProductId).then(async (product) => {
+                await product.update({ inventory: product.inventory + quantity }).then(() => {
+                  console.log(`成功更新商品 (ID:${item.ProductId}) 庫存，增加 ${quantity}`)
+                }).catch(err => { console.log(`更新商品庫存失敗，Err: ${err}`) })
+              }).catch(err => { console.log(`查詢商品失敗，Err: ${err}`) })
+
+              // 刪除 order item (更新 dataStatus, 商品數量為 0)
+              await item.update({ dataStatus: 0, quantity: 0 }).then(() => {
+                console.log(`成功更新 OrderItem`)
+              }).catch(err => { console.log(`更新 OrderItem 失敗，Err: ${err}`) })
+            })
+          }
+
           return callback({ status: 'success', message: '成功取消該筆訂單' })
-        }).catch(err => {
-          return callback({ status: 'error', message: '取消訂單失敗' })
-        })
-      }).catch(err => {
-        return callback({ status: 'error', message: '取消訂單失敗' })
-      })
+        }).catch(err => { return callback({ status: 'error', message: '取消訂單失敗', content: err }) })
+      }).catch(err => { return callback({ status: 'error', message: '取消訂單失敗', content: err }) })
     }
-    catch (err) {
-      return callback({ status: 'error', message: '取消訂單失敗' })
-    }
+    catch (err) { return callback({ status: 'error', message: '取消訂單失敗', content: err }) }
   },
 
   getCoupons: (req, res, callback) => {
