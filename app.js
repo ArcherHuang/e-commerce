@@ -47,10 +47,11 @@ app.use((req, res, next) => {
   next()
 })
 
-//The crone jobs
+//The cron jobs
 cronService.sendBirthdayCoupon()
 cronService.deleteInvalidUser()
 cronService.deleteExpiredCoupon()
+cronService.deleteExpiredCart()
 
 app.listen(port, () => {
   db.sequelize.sync()

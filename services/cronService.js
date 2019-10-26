@@ -5,7 +5,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 const db = require('../models')
-const { User, Coupon, CouponDistribution } = db
+const { User, Coupon, CouponDistribution, Cart, CartItem, Product } = db
 
 const cronService = {
 
@@ -178,7 +178,61 @@ const cronService = {
     catch (err) {
       console.log(`deleteExpiredCoupon 執行失敗。Err: ${err}`)
     }
+  },
+
+  deleteExpiredCart: function () {
+    try {
+      // 每天 0 時執行
+      new CronJob('* * 0 * * *', async function () {
+        // 搜尋閒置超過兩天的 cart
+        let expiredCarts = await Cart.findAll({
+          where: { dataStatus: 1, updatedAt: { [Op.lt]: moment().add(-2, 'days') } },
+          include: [
+            CartItem,
+            { model: Product, as: "items" },
+          ]
+        })
+
+        for (let i = 0; i < expiredCarts.length; i++) {
+          for (let j = 0; j < expiredCarts[i].CartItems.length; j++) {
+
+            await CartItem.findOne({
+              where: { dataStatus: 1, CartId: expiredCarts[i].id }
+            }).then(async (cartItem) => {
+
+              // 更新商品庫存
+              await Product.findByPk(cartItem.ProductId).then(async product => {
+                await product.update({
+                  inventory: product.inventory + cartItem.quantity
+                }).then(() => {
+                  console.log(`成功更新商品 (ID:${cartItem.ProductId}) 庫存，增加 ${cartItem.quantity}`)
+                }).catch(err => { console.log(`更新商品庫存失敗，Err: ${err}`) })
+              }).then(() => { }).catch(err => { console.log(`查詢商品失敗，Err: ${err}`) })
+
+              // 刪除 cart item (更新 dataStatus, 商品數量為 0)
+              await cartItem.update({ dataStatus: 0, quantity: 0 }).then(() => {
+                console.log(`成功更新 CartItem`)
+              }).catch(err => { console.log(`更新 CartItem 失敗，Err: ${err}`) })
+            }).catch(err => { console.log(`Err: ${err}`) })
+          }
+
+          // 刪除 cart (更新 Cart 的 dataStatus)
+          await Cart.findByPk(expiredCarts[i].id).then(cart => {
+            cart.update({
+              dataStatus: 0
+            }).then(cart => {
+              console.log(`更新 Cart (ID: ${cart.id}) 成功`)
+            }).catch(err => { console.log(`更新 Cart 失敗，Err: ${err}`) })
+          })
+        }
+
+      }, null, true, 'Asia/Taipei')
+    }
+    catch (err) {
+      console.log(`deleteExpiredCart 執行失敗。Err: ${err}`)
+    }
   }
+
 }
 
 module.exports = cronService
