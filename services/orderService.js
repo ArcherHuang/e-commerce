@@ -27,7 +27,8 @@ const orderService = {
 
       return Cart.findOne({
         where: {
-          Id: req.body.cart_id
+          Id: req.body.cart_id,
+          dataStatus: 1,
         },
         include: [
           { model: Product, as: "items" }
@@ -89,6 +90,10 @@ const orderService = {
             }
           }).catch(err => {
             console.log(`找不到 cart item。Err: ${err}`)
+          })
+
+          cart.update({
+            dataStatus: 0, // 不存在（已轉為訂單）0 存在 1 
           })
 
           return Promise.all(results).then(() => {

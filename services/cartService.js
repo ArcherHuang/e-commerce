@@ -91,7 +91,8 @@ const cartService = {
         //取得或建立新購物車
         return Cart.findOrCreate({
           where: {
-            id: req.session.cartId || 0
+            id: req.session.cartId || 0,
+            dataStatus: 1                  // 不存在（已轉為訂單）0 存在 1 
           },
         }).spread(function (cart, created) {
 
