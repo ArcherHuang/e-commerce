@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const swaggerDocument = require('./swagger/swaggerDoc')
 const session = require('express-session')
+const CronJob = require('cron').CronJob;
+const cronService = require('./services/cronService.js');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -44,6 +46,9 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
+
+//The crone jobs
+cronService.sendBirthdayCoupon();
 
 app.listen(port, () => {
   db.sequelize.sync()
