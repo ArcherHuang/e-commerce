@@ -119,6 +119,14 @@ const orderService = {
         order.update({
           paymentStatus: 1,  // 待付款 0, 已付款 1, 取消付款 2
         }).then(order => {
+
+          // 發送訂單付款成功通知信件
+          let email = req.user.email
+          let subject = `AJA Online Store: 訂單付款成功（編號: ${order.sn}）`
+          let type = 'text'
+          let info = `您的訂單已成功付款（編號: ${order.sn}）`
+          sendEmailService.mailInfo({ email, subject, type, info })
+
           return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
         }).catch(err => {
           return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
@@ -164,6 +172,14 @@ const orderService = {
               return order.update({
                 paymentStatus: 1,     // 待付款 0, 已付款 1, 取消付款 2
               }).then(order => {
+
+                // 發送訂單付款成功通知信件
+                let email = req.user.email
+                let subject = `AJA Online Store: 訂單付款成功（編號: ${order.sn}）`
+                let type = 'text'
+                let info = `您的訂單已成功付款（編號: ${order.sn}）`
+                sendEmailService.mailInfo({ email, subject, type, info })
+
                 return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
               }).catch(err => {
                 return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
