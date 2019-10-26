@@ -29,42 +29,47 @@ const userService = {
 
   signIn: async (req, res, callback) => {
 
-    const email = req.body.email === undefined ? '' : req.body.email.trim()
-    const password = req.body.password === undefined ? '' : req.body.password.trim()
+    try {
+      const email = req.body.email === undefined ? '' : req.body.email.trim()
+      const password = req.body.password === undefined ? '' : req.body.password.trim()
 
-    if (email.length == 0 || password.length == 0) {
-      return callback({ status: 'error', message: '請輸入登入資訊 !' })
-    }
-
-    if (!validator.isEmail(email)) {
-      return callback({ status: 'error', message: '請輸入正確的 email !' })
-    }
-
-    const user = await User.findOne({
-      where: {
-        email: email,
-        isValid: 1
+      if (email.length == 0 || password.length == 0) {
+        return callback({ status: 'error', message: '請輸入登入資訊 !' })
       }
-    })
 
-    if (!user) return res.status(401).json({ status: 'error', message: '使用者不存在，或尚未通過信箱驗證' })
-    if (!bcrypt.compareSync(password, user.password)) {
-      return callback({ status: 'error', message: '密碼不正確' })
-    }
-
-    const payload = { id: user.id }
-    const token = jwt.sign(payload, process.env.JWT_SECRET)
-
-    req.session.user = user
-
-    return callback({
-      status: 'success', message: '登入成功', token, user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role
+      if (!validator.isEmail(email)) {
+        return callback({ status: 'error', message: '請輸入正確的 email !' })
       }
-    })
+
+      const user = await User.findOne({
+        where: {
+          email: email,
+          isValid: true
+        }
+      })
+
+      if (!user) return res.status(401).json({ status: 'error', message: '使用者不存在，或尚未通過信箱驗證' })
+      if (!bcrypt.compareSync(password, user.password)) {
+        return callback({ status: 'error', message: '密碼不正確' })
+      }
+
+      const payload = { id: user.id }
+      const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+      req.session.user = user
+
+      return callback({
+        status: 'success', message: '登入成功', token, user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '使用者登入失敗', content: err })
+    }
 
   },
 
