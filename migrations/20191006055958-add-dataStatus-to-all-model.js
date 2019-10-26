@@ -53,7 +53,7 @@ module.exports = {
       queryInterface.removeColumn('Orders', 'dataStatus'),
       queryInterface.removeColumn('OrderItems', 'dataStatus'),
       queryInterface.removeColumn('PageViews', 'dataStatus'),
-      queryInterface.removeColumn('Payment', 'dataStatus'),
+      queryInterface.removeColumn('Payments', 'dataStatus'),
       queryInterface.removeColumn('Products', 'dataStatus'),
       queryInterface.removeColumn('Reviews', 'dataStatus'),
     ]);
