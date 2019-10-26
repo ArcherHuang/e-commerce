@@ -295,6 +295,21 @@ const productService = {
     catch (err) {
       return callback({ status: 'error', message: '使用者移除商品評論失敗', content: err })
     }
+  },
+
+  getCategories: (req, res, callback) => {
+    try {
+      return Category.findAll({
+        include: [Product]
+      }).then(categories => {
+        return callback({ status: 'success', message: '取得分類資料成功', content: categories })
+      }).catch(err => {
+        return callback({ status: 'error', message: '取得分類資料失敗' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取得分類資料失敗' })
+    }
   }
 }
 
