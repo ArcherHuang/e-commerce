@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const moment = require('moment')
 const passport = require('passport')
-
+const sendEmailService = require('./sendEmailService')
 const signUpValidEmailService = require('./signUpValidEmailService')
 
 const db = require('../models')
@@ -280,6 +280,14 @@ const userService = {
         order.update({
           dataStatus: 0
         }).then(order => {
+
+          // 發送通知信件
+          let email = req.user.email
+          let subject = `AJA Online Store: 訂單已取消（編號: ${order.sn}）`
+          let type = 'text'
+          let info = `您已取消您的訂單（編號: ${order.sn}）`
+          sendEmailService.mailInfo({ email, subject, type, info })
+
           return callback({ status: 'success', message: '成功取消該筆訂單' })
         }).catch(err => {
           return callback({ status: 'error', message: '取消訂單失敗' })
