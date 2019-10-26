@@ -421,6 +421,25 @@
  */
 
 /********************************************************************
+* Products - 取得 Category 資料
+* GET http://localhost:3000/products/categories
+********************************************************************/
+
+/**
+ * @swagger
+ * /products/categories:
+ *   get:
+ *     tags:
+ *      - Products
+ *     description: Account - 取得 Category 資料
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 取得 Category 資料成功
+ */
+
+/********************************************************************
 * Products - Like 特定 Product
 * POST http://localhost:3000/products/:product_id/like
 ********************************************************************/
