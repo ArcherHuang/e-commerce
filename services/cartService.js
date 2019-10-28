@@ -15,61 +15,9 @@ const cartService = {
           { model: Product, as: "items" },
         ]
       }).then(cart => {
-
-        if (cart) {
-          // 計算總金額
-          cart = cart || { items: [] }
-          let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
-
-          // 計算折扣後的金額
-          return CouponDistribution.findByPk(cart.CouponDistributionId).then(result => {
-
-            if (result) {
-              Coupon.findByPk(result.CouponId).then(coupon => {
-                if (coupon.discount > 0 && coupon.amount > 0) {
-                  // 同時使用百分比折扣與定額折扣
-                  totalPrice = (totalPrice - coupon.amount) * (1 - coupon.discount / 100)
-                  totalPrice = Math.ceil(totalPrice)
-                } else if (coupon.discount > 0) {
-                  // 使用百分比折扣
-                  totalPrice = totalPrice * (1 - coupon.discount / 100)
-                  totalPrice = Math.ceil(totalPrice)
-                } else if (coupon.amount > 0) {
-                  // 使用定額折扣
-                  totalPrice = totalPrice - coupon.amount
-                  totalPrice = Math.ceil(totalPrice)
-                } else {
-                  // 沒有折扣
-                  totalPrice = Math.ceil(totalPrice)
-                }
-
-                cart.update({
-                  totalPrice: totalPrice
-                }).then(cart => {
-                  return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart })
-                }).catch(err => {
-                  return callback({ status: 'error', message: '取得購物車資訊失敗' })
-                })
-
-              }).catch(err => {
-                return callback({ status: 'error', message: '取得 Coupon 資訊失敗' })
-              })
-            } else {
-              totalPrice = Math.ceil(totalPrice)
-              cart.update({
-                totalPrice: totalPrice
-              }).then(cart => {
-                return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart })
-              }).catch(err => {
-                return callback({ status: 'error', message: '取得購物車資訊失敗' })
-              })
-            }
-          }).catch(err => {
-            return callback({ status: 'error', message: '取得 Coupon Distribution 資訊失敗' })
-          })
-        } else {
-          return callback({ status: 'error', message: '取得購物車資訊失敗，購物車不存在' })
-        }
+        // 計算購物車總金額
+        cartService.checkTotalPrice(cart.id)
+        return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart })
       }).catch(err => {
         return callback({ status: 'error', message: '取得購物車資訊失敗' })
       })
@@ -125,6 +73,9 @@ const cartService = {
                 }).catch(err => {
                   return callback({ status: 'err', message: '找不到商品', content: err })
                 })
+
+                // 計算購物車總金額
+                cartService.checkTotalPrice(cartItem.CartId)
               })
             }).catch(err => {
               return callback({ status: 'error', message: '商品加入購物車失敗', content: err })
@@ -180,6 +131,9 @@ const cartService = {
                 }).catch(err => {
                   return callback({ status: 'err', message: '找不到商品', content: err })
                 })
+
+                // 計算購物車總金額
+                cartService.checkTotalPrice(cartItem.CartId)
               }).catch(err => {
                 return callback({ status: 'error', message: '新增商品數量失敗' })
               })
@@ -217,6 +171,8 @@ const cartService = {
                 product.update({
                   inventory: product.inventory + 1
                 }).then(product => {
+                  // 計算購物車總金額
+                  cartService.checkTotalPrice(cartItem.CartId)
                   return callback({ status: 'success', message: '減少購物車商品數量成功' })
                 }).catch(err => {
                   return callback({ status: 'err', message: '調整存貨失敗', content: err })
@@ -269,6 +225,8 @@ const cartService = {
               product.update({
                 inventory: product.inventory + quantity
               }).then(product => {
+                // 計算購物車總金額
+                cartService.checkTotalPrice(cartItem.CartId)
                 return callback({ status: 'success', message: '移除購物車商品成功' })
               }).catch(err => {
                 return callback({ status: 'err', message: '調整存貨失敗', content: err })
@@ -276,7 +234,6 @@ const cartService = {
             }).catch(err => {
               return callback({ status: 'err', message: '找不到商品', content: err })
             })
-
           }).catch(err => {
             return callback({ status: 'error', message: '移除購物車商品失敗' })
           })
@@ -320,6 +277,8 @@ const cartService = {
             cart.update({
               CouponDistributionId: result.id
             }).then(() => {
+              // 計算購物車總金額
+              cartService.checkTotalPrice(cart.id)
               return callback({ status: 'success', message: '使用 coupon 成功' })
             }).catch(err => {
               return callback({ status: 'error', message: '使用 coupon 失敗' })
@@ -347,6 +306,8 @@ const cartService = {
         return cart.update({
           CouponDistributionId: null
         }).then(cart => {
+          // 計算購物車總金額
+          cartService.checkTotalPrice(cart.id)
           return callback({ status: 'success', message: '從購物車中移除 coupon 成功' })
         }).catch(err => {
           return callback({ status: 'error', message: '從購物車中移除 coupon 失敗' })
@@ -359,6 +320,78 @@ const cartService = {
       return callback({ status: 'error', message: '從購物車中移除 coupon 失敗' })
     }
   },
+
+  checkTotalPrice: (cartId) => {
+    try {
+      return Cart.findOne({
+        where: {
+          id: cartId
+        },
+        include: [
+          CartItem,
+          { model: Product, as: "items" },
+        ]
+      }).then(cart => {
+
+        if (cart) {
+          // 計算總金額
+          cart = cart || { items: [] }
+          let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
+
+          // 計算折扣後的金額
+          return CouponDistribution.findByPk(cart.CouponDistributionId).then(result => {
+
+            if (result) {
+              Coupon.findByPk(result.CouponId).then(coupon => {
+                if (coupon.discount > 0 && coupon.amount > 0) {
+                  // 同時使用百分比折扣與定額折扣
+                  totalPrice = (totalPrice - coupon.amount) * (1 - coupon.discount / 100)
+                  totalPrice = Math.ceil(totalPrice)
+                } else if (coupon.discount > 0) {
+                  // 使用百分比折扣
+                  totalPrice = totalPrice * (1 - coupon.discount / 100)
+                  totalPrice = Math.ceil(totalPrice)
+                } else if (coupon.amount > 0) {
+                  // 使用定額折扣
+                  totalPrice = totalPrice - coupon.amount
+                  totalPrice = Math.ceil(totalPrice)
+                } else {
+                  // 沒有折扣
+                  totalPrice = Math.ceil(totalPrice)
+                }
+
+                cart.update({
+                  totalPrice: totalPrice
+                }).then(cart => {
+                  console.log(`更新購物車（ID: ${cart.id}）總金額成功，總金額為 ${cart.totalPrice}`)
+                }).catch(err => {
+                  console.log(`更新購物車（ID: ${cart.id}）總金額失敗。Err: ${err}`)
+                })
+              }).catch(err => {
+                return callback({ status: 'error', message: '取得 Coupon 資訊失敗' })
+              })
+            } else {
+              totalPrice = Math.ceil(totalPrice)
+              cart.update({
+                totalPrice: totalPrice
+              }).then(cart => {
+                console.log(`更新購物車（ID: ${cart.id}）總金額成功，總金額為 ${cart.totalPrice}`)
+              }).catch(err => {
+                console.log(`更新購物車（ID: ${cart.id}）總金額失敗。Err: ${err}`)
+              })
+            }
+          }).catch(err => {
+            console.log(`更新購物車（ID: ${cart.id}）總金額失敗。Err: ${err}`)
+          })
+        } else {
+          console.log(`更新購物車（ID: ${cart.id}）總金額失敗，購物車不存在。Err: ${err}`)
+        }
+      }).catch(err => {
+        console.log(`更新購物車（ID: ${cart.id}）總金額失敗，購物車不存在。Err: ${err}`)
+      })
+    }
+    catch (err) { console.log(`更新購物車（ID: ${cart.id}）總金額失敗，購物車不存在。Err: ${err}`) }
+  }
 
 }
 
