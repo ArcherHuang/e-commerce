@@ -116,16 +116,16 @@ const cronService = {
   },
 
   deleteInvalidUser: function () {
-    // 每天 0 時執行
+    // 每隔 15 分鐘執行一次
     try {
-      new CronJob('0 0 0 * * *', async function () {
+      new CronJob('* */15 * * * *', async function () {
 
-        // 找出帳號建立時間為一天前、尚未通過驗證的使用者
+        // 找出帳號建立時間為15分鐘前、尚未通過驗證的使用者
         let users = await User.findAll({
           where: {
             isValid: false,
             createdAt: {
-              [Op.lt]: moment().subtract(1, 'days')
+              [Op.lt]: moment().subtract(15, 'minutes')
             }
           }
         })
