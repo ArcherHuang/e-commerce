@@ -3,11 +3,12 @@ const bodyParser = require('body-parser')
 const swaggerDocument = require('./swagger/swaggerDoc')
 const session = require('express-session')
 const CronJob = require('cron').CronJob;
-const cronService = require('./services/cronService.js');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+
+const cronService = require('./services/cronService')
 
 const helpers = require('./_helpers')
 // const passport = require('./config/passport')

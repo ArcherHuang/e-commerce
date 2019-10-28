@@ -4,6 +4,8 @@ const moment = require('moment')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
+const sendEmailService = require('./sendEmailService')
+
 const db = require('../models')
 const { User, Coupon, CouponDistribution, Cart, CartItem, Product } = db
 
@@ -11,9 +13,15 @@ const cronService = {
 
   sendBirthdayCoupon: function () {
     // 每天 0 時執行
+    // Seconds: 0 - 59
+    // Minutes: 0 - 59
+    // Hours: 0 - 23
+    // Day of Month: 1 - 31
+    // Months: 0 - 11(Jan - Dec)
+    // Day of Week: 0 - 6(Sun - Sat)
+
     try {
       new CronJob('0 0 0 * * *', async function () {
-
         // 取得現在時間
         let now = moment()
         let nowYear = moment(now).year()
@@ -38,7 +46,7 @@ const cronService = {
           // 若使用者的生日距今天一週（7 days），則建立並發送 Birthday Coupon
           if (users[i].role) {
             if ((diff > 0 && diff <= 7) || (diff <= -358)) {
-              cronService.createAndSendCoupon(users[i].id)
+              cronService.createAndSendCoupon(users[i].id, users[i].email, userBirthdayMonth + 1)
             }
           }
 
@@ -50,7 +58,7 @@ const cronService = {
     }
   },
 
-  createAndSendCoupon: async function (userId) {
+  createAndSendCoupon: async function (userId, userEmail, userBirthdayMonth) {
     try {
       // 檢查今年是否已經發過 Birthday Coupon 給該使用者
       let checkResult = await CouponDistribution.findAll({
@@ -98,7 +106,29 @@ const cronService = {
             CouponId: coupon.id,
             UserId: userId,
             usageStatus: 1
-          }).then(() => {
+          }).then(async () => {
+            const data = {
+              email: userEmail,
+              subject: `【 專屬於您的優惠 】aja 商店會員 ${userBirthdayMonth} 月壽星生日禮! HAPPY BIRTHDAY!`,
+              type: 'text',
+              info: `
+                ☆ 此信件為系統發出信件，請勿直接回覆，感謝您的配合 ☆
+
+                親愛的會員 您好：
+                在這特別的日子裡，
+                aja 特別為您準備了 ${userBirthdayMonth} 月份壽星的生日禮金：25 元
+                Coupon 代碼：${sn}
+
+                祝福您 生日快樂 心想事成！
+                
+                生日 Coupon 使用方法：
+                1. 生日 Coupon 已轉入到您的會員帳戶內，請登入會員確認。
+                2. 一張訂單限用一張 Coupon，結帳時可以直接抵扣訂單金額。
+                3. 逾期或是抵扣後則不可再使用，此張生日 Coupon 有效期限為 30 天。
+                `
+            }
+
+            await sendEmailService.mailInfo(data)
             console.log(`成功建立並發送 Birthday Coupon 給使用者 ${userId} `)
           }).catch(err => {
             console.log(`發送 Birthday Coupon 給使用者  ${userId} 失敗。Err: `, err)
