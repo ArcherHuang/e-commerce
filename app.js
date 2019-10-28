@@ -52,6 +52,7 @@ cronService.sendBirthdayCoupon()
 cronService.deleteInvalidUser()
 cronService.deleteExpiredCoupon()
 cronService.deleteExpiredCart()
+cronService.deleteExpiredOrderItems()
 
 app.listen(port, () => {
   db.sequelize.sync()

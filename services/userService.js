@@ -281,7 +281,7 @@ const userService = {
       }).then(result => {
         let order = result[0]
         order.update({
-          dataStatus: 0
+          dataStatus: 2       // dataStatus: 刪除 0 存在 1 取消 2
         }).then(async (order) => {
 
           // 發送訂單取消通知信件
