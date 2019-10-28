@@ -348,9 +348,47 @@ const userService = {
 
     try {
       if (req.user) {
-        let user = req.user
-        user.password = null
-        return callback({ status: 'success', message: '取得當前使用者資料成功', content: user })
+
+        // 取得使用者資訊，以及與商品互動的資訊
+        return User.findAll({
+          where: {
+            id: req.user.id
+          },
+          include: [
+            Review,
+            { model: Coupon, as: "couponsOwned" },
+            { model: Product, as: "productLiked" },
+            { model: Product, as: "productViewed" },
+            { model: Product, as: "productReviewed" },
+          ]
+        }).then(async (result) => {
+          let user = result[0]
+          user.password = null
+
+          // 取得過去成功付款的訂單資訊
+          let orders = await Order.findAll({
+            where: {
+              UserId: req.user.id,
+              paymentStatus: 1
+            },
+            include: [
+              {
+                model: Product,
+                as: 'items',
+              }
+            ]
+          })
+
+          // 取得購買過的商品資訊
+          let purchased = []
+          for (let i = 1; i < orders.length; i++) {
+            for (let j = 1; j < orders[i].items.length; j++) {
+              purchased.push(orders[i].items[j])
+            }
+          }
+
+          return callback({ status: 'success', message: '取得當前使用者資料成功', content: user, orders: orders, purchasedProducts: purchased })
+        })
       } else {
         return callback({ status: 'success', message: '使用者尚未登入' })
       }

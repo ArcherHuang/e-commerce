@@ -14,6 +14,12 @@ const productController = {
     })
   },
 
+  getCategories: (req, res) => {
+    productService.getCategories(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
   likeProduct: (req, res) => {
     productService.likeProduct(req, res, (data) => {
       return res.json(data)
