@@ -306,6 +306,10 @@ const cartService = {
           console.log(`couponDistribution (ID: ${couponDistribution.id}) 資訊更新失敗`)
           return callback({ status: 'error', message: '加入 coupon 失敗', content: err })
         })
+<<<<<<< HEAD
+=======
+
+>>>>>>> c0e52c9baf997fd208aefc92a8cf5f690d9208ba
         // 計算購物車總金額
         cartService.checkTotalPrice(cart.id)
         return callback({ status: 'success', message: '加入 coupon 成功' })

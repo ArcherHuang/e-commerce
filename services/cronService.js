@@ -7,7 +7,7 @@ const Op = Sequelize.Op
 const sendEmailService = require('./sendEmailService')
 
 const db = require('../models')
-const { User, Coupon, CouponDistribution, Cart, CartItem, Product } = db
+const { User, Coupon, CouponDistribution, Cart, CartItem, Order, OrderItem, Product } = db
 
 const cronService = {
 
@@ -146,16 +146,16 @@ const cronService = {
   },
 
   deleteInvalidUser: function () {
-    // 每天 0 時執行
+    // 每隔 15 分鐘執行一次
     try {
-      new CronJob('0 0 0 * * *', async function () {
+      new CronJob('* */15 * * * *', async function () {
 
-        // 找出帳號建立時間為一天前、尚未通過驗證的使用者
+        // 找出帳號建立時間為15分鐘前、尚未通過驗證的使用者
         let users = await User.findAll({
           where: {
             isValid: false,
             createdAt: {
-              [Op.lt]: moment().subtract(1, 'days')
+              [Op.lt]: moment().subtract(15, 'minutes')
             }
           }
         })
@@ -262,6 +262,59 @@ const cronService = {
     }
     catch (err) {
       console.log(`deleteExpiredCart 執行失敗。Err: ${err}`)
+    }
+  },
+
+  deleteExpiredOrderItems: function () {
+    try {
+      // 每六小時執行一次
+      new CronJob('0 0 */6 * * *', async function () {
+
+        // 搜尋被「取消」超過兩天的 orders (dataStatus: 刪除 0 存在 1 取消 2)
+        let expiredOrders = await Order.findAll({
+          where: { dataStatus: 2, updatedAt: { [Op.lt]: moment().add(-2, 'days') } },
+          include: [
+            OrderItem,
+            { model: Product, as: "items" },
+          ]
+        })
+
+        for (let j = 0; j < expiredOrders.length; j++) {
+          console.log(`Order: ${expiredOrders[j].id}`)
+          for (let i = 0; i < expiredOrders[j].OrderItems.length; i++) {
+            await OrderItem.findOne({
+              where: { dataStatus: 1, OrderId: expiredOrders[j].id }
+            }).then(async (item) => {
+              console.log(`Item with product ${item.ProductId} & Q: ${item.quantity}`)
+              let quantity = item.quantity
+              // 更新商品庫存
+              await Product.findByPk(item.ProductId).then(async (product) => {
+                await product.update({ inventory: product.inventory + quantity }).then(() => {
+                  console.log(`成功更新商品 (ID:${item.ProductId}) 庫存，增加 ${quantity}`)
+                }).catch(err => { console.log(`更新商品庫存失敗，Err: ${err}`) })
+              }).catch(err => { console.log(`查詢商品失敗，Err: ${err}`) })
+
+              // 刪除 order item (更新 dataStatus, 商品數量為 0)
+              await item.update({ dataStatus: 0, quantity: 0 }).then(() => {
+                console.log(`成功更新 OrderItem`)
+              }).catch(err => { console.log(`更新 OrderItem 失敗，Err: ${err}`) })
+            })
+          }
+
+          // 刪除訂單
+          await expiredOrders[j].update({
+            dataStatus: 0,                  // dataStatus: 刪除 0 存在 1 取消 2
+          }).then(() => {
+            console.log(`更新 Order dataStatus 成功`)
+          }).catch(err => {
+            console.log(`更新 Order dataStatus  失敗，Err: ${err}`)
+          })
+        }
+        console.log(`deleteExpiredOrder 執行成功`)
+      }, null, true, 'Asia/Taipei')
+    }
+    catch (err) {
+      console.log(`deleteExpiredOrder 執行失敗。Err: ${err}`)
     }
   }
 
