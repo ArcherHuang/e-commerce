@@ -276,7 +276,6 @@ const cartService = {
         }
       })
 
-<<<<<<< HEAD
       if (cart && coupon && couponDistribution) {
         // 將 coupon 放入購物車
         await cart.update({
@@ -286,34 +285,6 @@ const cartService = {
         }).catch(err => {
           console.log(`將 coupon 放入購物車失敗`)
           return callback({ status: 'error', message: '加入 coupon 失敗', content: err })
-=======
-        // 確認使用者是否擁有該 coupon，且 coupon 未被使用
-        return CouponDistribution.findOne({
-          where: {
-            CouponId: coupon.id,
-            UserId: req.user.id,
-            usageStatus: "1"  // unused 1, used 2, expired 3, deleted 0
-          }
-        }).then(result => {
-          // 將有效 coupon 加入 cart
-          return Cart.findOne({
-            where: {
-              id: req.session.cartId
-            },
-          }).then(cart => {
-            cart.update({
-              CouponDistributionId: result.id
-            }).then(() => {
-              // 計算購物車總金額
-              cartService.checkTotalPrice(cart.id)
-              return callback({ status: 'success', message: '使用 coupon 成功' })
-            }).catch(err => {
-              return callback({ status: 'error', message: '使用 coupon 失敗' })
-            })
-          }).catch(err => {
-            return callback({ status: 'error', message: '購物車不存在' })
-          })
->>>>>>> feature/calculateTotalPrice
         })
 
         // 更新 coupon 資訊
@@ -336,6 +307,8 @@ const cartService = {
           return callback({ status: 'error', message: '加入 coupon 失敗', content: err })
         })
 
+        // 計算購物車總金額
+        cartService.checkTotalPrice(cart.id)
         return callback({ status: 'success', message: '加入 coupon 成功' })
       } else {
         // 回傳：將 coupon 放入購物車失敗
@@ -359,13 +332,7 @@ const cartService = {
         await cart.update({
           CouponDistributionId: null
         }).then(cart => {
-<<<<<<< HEAD
           console.log(`更新 cart (ID: ${cart.id}) 成功`)
-=======
-          // 計算購物車總金額
-          cartService.checkTotalPrice(cart.id)
-          return callback({ status: 'success', message: '從購物車中移除 coupon 成功' })
->>>>>>> feature/calculateTotalPrice
         }).catch(err => {
           console.log(`更新 cart (ID: ${cart.id}) 失敗`)
           return callback({ status: 'error', message: '從購物車中移除 coupon 失敗', content: err })
@@ -390,6 +357,9 @@ const cartService = {
           console.log(`更新 coupon (ID: ${coupon.id}) 失敗`)
           return callback({ status: 'error', message: '從購物車中移除 coupon 失敗', content: err })
         })
+
+        // 計算購物車總金額
+        cartService.checkTotalPrice(cart.id)
         return callback({ status: 'success', message: '從購物車中移除 coupon 成功' })
       } else {
         return callback({ status: 'error', message: '從購物車中移除 coupon 失敗', content: err })
