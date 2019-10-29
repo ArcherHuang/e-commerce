@@ -11,6 +11,9 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
+      category: {
+        type: Sequelize.STRING
+      },
       content: {
         type: Sequelize.TEXT
       },
