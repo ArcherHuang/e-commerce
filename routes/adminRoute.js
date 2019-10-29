@@ -8,6 +8,8 @@ const adminCategoryController = require('../controllers/admin/categoryController
 const adminCouponController = require('../controllers/admin/couponController')
 const adminProductController = require('../controllers/admin/productController')
 const adminOrderController = require('../controllers/admin/orderController')
+const adminNotificationController = require('../controllers/admin/notificationController')
+
 
 // User
 router.get('/users', adminUserController.editUsers)
@@ -41,5 +43,8 @@ router.put('/orders/:order_id/cancel', adminOrderController.cancelOrder)
 router.put('/orders/:order_id/resume', adminOrderController.resumeOrder)
 router.put('/orders/:order_id/shipped', adminOrderController.shippedOrder)
 router.put('/orders/:order_id/unshipped', adminOrderController.unshippedOrder)
+
+// Notification
+router.get('/notifications', adminNotificationController.getNotifications)
 
 module.exports = router
