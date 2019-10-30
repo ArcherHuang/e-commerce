@@ -23,14 +23,14 @@ const notificationService = {
       // 若商品存在，且數量小於 10
       if (product && product.inventory === 0) {
         Notification.create({
-          type: "Warning",
+          type: "warning",            // warning 警告訊息
           category: "Inventory",
           content: `Product (ID: ${productId}) 已無庫存`,
           dataStatus: 1
         })
       } else if (product && product.inventory < 10) {
         Notification.create({
-          type: "Warning",
+          type: "warning",            // warning 警告訊息
           category: "Inventory",
           content: `Product (ID: ${productId}) 過低，僅剩 ${product.inventory}`,
           dataStatus: 1
