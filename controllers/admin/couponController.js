@@ -26,6 +26,12 @@ const couponController = {
     })
   },
 
+  sendCoupon: (req, res, callback) => {
+    adminCouponService.sendCoupon(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
 }
 
 module.exports = couponController

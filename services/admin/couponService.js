@@ -3,7 +3,8 @@ const moment = require('moment')
 const { Op } = require('sequelize')
 
 const db = require('../../models')
-const Coupon = db.Coupon
+const { Coupon, CouponDistribution, User, Notification } = db
+const sendEmailService = require('../sendEmailService')
 
 const adminCouponService = {
 
@@ -161,6 +162,82 @@ const adminCouponService = {
 
   },
 
+  sendCoupon: async (req, res, callback) => {
+
+    try {
+      // 檢查 coupon 是否存在，且數量大於 1
+      let coupon = await Coupon.findOne({
+        where:
+        {
+          id: req.params.coupon_id,
+          dataStatus: 1,
+          numberOfLimitation: {
+            [Op.gte]: 1
+          }
+        }
+      })
+
+      // 檢查使用者是否存在且通過驗證
+      let user = await User.findOne({
+        where: {
+          email: req.body.email,
+          isValid: true || 1
+        }
+      })
+
+      if (coupon && user) {
+        // 發送 coupon 給使用者
+        await CouponDistribution.create({
+          UserId: user.id,
+          CouponId: coupon.id,
+          usageStatus: 1
+        })
+
+        // 調整 coupon 數量
+        await coupon.update({
+          numberOfLimitation: coupon.numberOfLimitation - 1
+        })
+
+        // 發送通知給使用者
+        const data = {
+          email: user.email,
+          subject: `【 AJA Online Store 】您獲得一張新的優惠券！`,
+          type: 'text',
+          info: `
+                ☆ 此信件為系統發出信件，請勿直接回覆，感謝您的配合 ☆
+
+                親愛的會員 您好：
+                您獲得了一張優惠券 ${coupon.name}，Coupon 代碼為：${coupon.sn}
+
+                祝福您 購物愉快！
+                
+                Coupon 使用方法：
+                1. Coupon 已轉入到您的會員帳戶內，請登入會員確認。
+                2. 一張訂單限用一張 Coupon，結帳時可以直接抵扣訂單金額。
+                3. 逾期或是抵扣後則不可再使用，有效期限請參見您的會員帳戶。
+                `
+        }
+
+        await sendEmailService.mailInfo(data)
+
+        // 系統記錄
+        await Notification.create({
+          type: "log",
+          category: "coupon",
+          content: `成功發送 coupon (id: ${coupon.id}) 給使用者 ${user.email}`,
+          dataStatus: 1
+        })
+
+        return callback({ status: 'success', message: '發送 coupon 成功' })
+
+      } else {
+        return callback({ status: 'error', message: '發送 coupon 失敗，找不到對應的 coupon 與使用者' })
+      }
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '發送 coupon 失敗', content: err })
+    }
+  }
 }
 
 module.exports = adminCouponService  

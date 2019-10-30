@@ -171,3 +171,36 @@
  *       200:
  *         description: 刪除 Coupon 成功
  */
+
+
+/********************************************************************
+* Admin - 發送 Coupon
+* POST http://localhost:3000/admin/coupons/:coupon_id/send
+********************************************************************/
+
+/**
+ * @swagger
+ * /admin/coupons/{coupon_id}/send:
+ *   post:
+ *     tags:
+ *      - Admin
+ *     description: Admin - 發送 Coupon
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: coupon_id
+ *         type: integer
+ *         required: true
+ *         description: coupon_id
+ *       - name: email
+ *         description: 預寄送的使用者 email
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: 新增 Coupon 成功
+ */

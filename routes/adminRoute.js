@@ -28,6 +28,7 @@ router.put('/coupons/:coupon_id', adminCouponController.putCoupon)
 router.delete('/coupons/:coupon_id', adminCouponController.deleteCoupon)
 router.get('/coupons', adminCouponController.getCoupons)
 router.get('/coupons/:coupon_id', adminCouponController.getCoupons)
+router.post('/coupons/:coupon_id/send', adminCouponController.sendCoupon)
 
 // Product
 router.get('/products', adminProductController.getProducts)
