@@ -1,5 +1,5 @@
 const db = require('../../models')
-const { Order, User } = db
+const { Order, User, Discount } = db
 const sendEmailService = require('../../services/sendEmailService')
 
 const orderService = {
@@ -160,6 +160,16 @@ const orderService = {
 
   // 待出貨 shippingStatus = 0
 
+  getDiscounts: async (req, res, callback) => {
+    try {
+      await Discount.findAll().then(discounts => {
+        return callback({ status: 'success', message: '取得 discount 資訊成功', content: discounts })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'success', message: '取得 discount 資訊失敗', content: err })
+    }
+  }
 }
 
 module.exports = orderService  

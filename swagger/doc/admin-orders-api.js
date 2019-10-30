@@ -153,3 +153,24 @@
  *       200:
  *         description: Order 取消出貨成功
  */
+
+/********************************************************************
+* Admin - 取得所有 Discount
+* GET http://localhost:3000/admin/orders/discounts
+********************************************************************/
+
+/**
+ * @swagger
+ * /admin/orders/discounts:
+ *   get:
+ *     tags:
+ *      - Admin
+ *     description: Admin - 取得所有 Discounts
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 取得所有 Discounts 成功
+ */

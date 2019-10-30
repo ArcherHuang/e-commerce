@@ -32,6 +32,11 @@ let orderController = {
     })
   },
 
+  getDiscounts: (req, res, callback) => {
+    orderService.getDiscounts(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 
 }
 
