@@ -1,5 +1,5 @@
 const db = require('../../models')
-const { Notification } = db
+const { Notification, Product } = db
 
 const notificationService = {
 
@@ -16,6 +16,31 @@ const notificationService = {
     }
   },
 
+  checkInventory: async (productId) => {
+    try {
+      let product = await Product.findByPk(productId)
+
+      // 若商品存在，且數量小於 10
+      if (product && product.inventory === 0) {
+        Notification.create({
+          type: "Warning",
+          category: "Inventory",
+          content: `Product (ID: ${productId}) 已無庫存`,
+          dataStatus: 1
+        })
+      } else if (product && product.inventory < 10) {
+        Notification.create({
+          type: "Warning",
+          category: "Inventory",
+          content: `Product (ID: ${productId}) 過低，僅剩 ${product.inventory}`,
+          dataStatus: 1
+        })
+      }
+    }
+    catch (err) {
+      console.log(`checkInventory 失敗，Err: ${err}`)
+    }
+  }
 }
 
 module.exports = notificationService 
