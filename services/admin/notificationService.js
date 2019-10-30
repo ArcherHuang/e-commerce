@@ -32,7 +32,7 @@ const notificationService = {
         Notification.create({
           type: "warning",            // warning 警告訊息
           category: "Inventory",
-          content: `Product (ID: ${productId}) 過低，僅剩 ${product.inventory}`,
+          content: `Product (ID: ${productId}) 庫存過低，僅剩 ${product.inventory}`,
           dataStatus: 1
         })
       }
