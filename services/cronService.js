@@ -117,7 +117,7 @@ const cronService = {
 
                 親愛的會員 您好：
                 在這特別的日子裡，
-                aja 特別為您準備了 ${userBirthdayMonth} 月份壽星的生日禮金：25 元
+                aja 特別為您準備了 ${userBirthdayMonth} 月份壽星的生日折扣：25% 購物折扣
                 Coupon 代碼：${sn}
 
                 祝福您 生日快樂 心想事成！
