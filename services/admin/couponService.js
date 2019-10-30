@@ -237,6 +237,21 @@ const adminCouponService = {
     catch (err) {
       return callback({ status: 'error', message: '發送 coupon 失敗', content: err })
     }
+  },
+
+  getCouponHistory: async (req, res, callback) => {
+
+    try {
+      await CouponDistribution.findAll({
+        include: [Coupon, User],
+        order: [['updatedAt', 'DESC']]
+      }).then(result => {
+        return callback({ status: 'success', message: '取得 Coupon 使用紀錄成功', content: result })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取得 Coupon 使用紀錄失敗', content: err })
+    }
   }
 }
 

@@ -32,6 +32,12 @@ const couponController = {
     })
   },
 
+  getCouponHistory: (req, res, callback) => {
+    adminCouponService.getCouponHistory(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
 }
 
 module.exports = couponController

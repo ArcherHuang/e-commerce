@@ -204,3 +204,24 @@
  *       200:
  *         description: 新增 Coupon 成功
  */
+
+/********************************************************************
+* Admin - 取得所有 Coupon 使用紀錄
+* GET http://localhost:3000/admin/coupons/history
+********************************************************************/
+
+/**
+ * @swagger
+ * /admin/coupons/history:
+ *   get:
+ *     tags:
+ *      - Admin
+ *     description: Admin - 取得所有 Coupon 使用紀錄
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 取得所有 Coupon 使用紀錄成功
+ */
