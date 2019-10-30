@@ -32,6 +32,29 @@ let orderController = {
     })
   },
 
+  getDiscounts: (req, res, callback) => {
+    orderService.getDiscounts(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  createDiscount: (req, res, callback) => {
+    orderService.createDiscount(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  editDiscount: (req, res, callback) => {
+    orderService.editDiscount(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  cancelDiscount: (req, res, callback) => {
+    orderService.cancelDiscount(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 
 }
 
