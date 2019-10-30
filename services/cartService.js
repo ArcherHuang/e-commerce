@@ -1,7 +1,7 @@
 const validator = require('validator')
 const moment = require('moment')
 const db = require('../models')
-const { Cart, CartItem, Coupon, CouponDistribution, Product } = db
+const { Cart, CartItem, Coupon, CouponDistribution, Product, Discount } = db
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
@@ -396,10 +396,10 @@ const cartService = {
           let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
 
           // 計算折扣後的金額
-          return CouponDistribution.findByPk(cart.CouponDistributionId).then(result => {
+          return CouponDistribution.findByPk(cart.CouponDistributionId).then(async result => {
 
             if (result) {
-              Coupon.findByPk(result.CouponId).then(coupon => {
+              Coupon.findByPk(result.CouponId).then(async coupon => {
                 if (coupon.discount > 0 && coupon.amount > 0) {
                   // 同時使用百分比折扣與定額折扣
                   totalPrice = (totalPrice - coupon.amount) * (1 - coupon.discount / 100)
@@ -417,7 +417,14 @@ const cartService = {
                   totalPrice = Math.ceil(totalPrice)
                 }
 
-                cart.update({
+                // 加入 Admin 購物車折扣
+                let adminDiscount = await Discount.findOne({ where: { dataStatus: 1 } })
+
+                if (adminDiscount && (totalPrice >= adminDiscount.requireAmount)) {
+                  totalPrice = Math.ceil(totalPrice * (1 - (adminDiscount.discountAmount / 100)))
+                }
+
+                await cart.update({
                   totalPrice: totalPrice
                 }).then(cart => {
                   console.log(`更新購物車（ID: ${cart.id}）總金額成功，總金額為 ${cart.totalPrice}`)
@@ -429,6 +436,14 @@ const cartService = {
               })
             } else {
               totalPrice = Math.ceil(totalPrice)
+
+              // 加入 Admin 購物車折扣
+              let adminDiscount = await Discount.findOne({ where: { dataStatus: 1 } })
+
+              if (adminDiscount && (totalPrice >= adminDiscount.requireAmount)) {
+                totalPrice = Math.ceil(totalPrice * (1 - (adminDiscount.discountAmount / 100)))
+              }
+
               cart.update({
                 totalPrice: totalPrice
               }).then(cart => {
