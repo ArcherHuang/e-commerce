@@ -8,7 +8,7 @@ const sendEmailService = require('./sendEmailService')
 const notificationService = require('./admin/notificationService')
 
 const db = require('../models')
-const { User, Coupon, CouponDistribution, Cart, CartItem, Order, OrderItem, Product } = db
+const { User, Coupon, CouponDistribution, Cart, CartItem, Order, OrderItem, Product, Notification } = db
 
 const cronService = {
 
@@ -130,7 +130,13 @@ const cronService = {
             }
 
             await sendEmailService.mailInfo(data)
-            console.log(`成功建立並發送 Birthday Coupon 給使用者 ${userId} `)
+            // console.log(`成功建立並發送 Birthday Coupon 給使用者 ${userId} `)
+            await Notification.create({
+              type: "log",
+              category: "coupon",
+              content: `成功發送 Birthday coupon (id: ${coupon.id}) 給使用者 ${userEmail}`,
+              dataStatus: 1
+            })
           }).catch(err => {
             console.log(`發送 Birthday Coupon 給使用者  ${userId} 失敗。Err: `, err)
           })
@@ -164,8 +170,14 @@ const cronService = {
         // 從資料庫中刪除使用者
         for (let i = 0; i < users.length; i++) {
           User.findByPk(users[i].id).then(user => {
-            user.destroy().then(() => {
-              console.log(`刪除使用者 ${users[i].id} ${users[i].email} 成功`)
+            user.destroy().then(async () => {
+              //console.log(`刪除使用者 ${users[i].id} ${users[i].email} 成功`)
+              await Notification.create({
+                type: "log",
+                category: "user",
+                content: `使用者 ${users[i].email} 驗證逾期已被刪除`,
+                dataStatus: 1
+              })
             }).catch(err => {
               console.log(`刪除使用者 ${users[i].id} 失敗。Err: ${err}`)
             })
@@ -198,8 +210,14 @@ const cronService = {
           await Coupon.findByPk(coupons[i].id).then(coupon => {
             coupon.update({
               dataStatus: 0
-            }).then(coupon => {
-              console.log(`刪除過期 coupon (id: ${coupons[i].id}) 成功`)
+            }).then(async coupon => {
+              // console.log(`刪除過期 coupon (id: ${coupons[i].id}) 成功`)
+              await Notification.create({
+                type: "log",
+                category: "coupon",
+                content: `刪除過期 coupon (id: ${coupon.id}`,
+                dataStatus: 1
+              })
             }).catch(err => {
               console.log(`刪除過期 coupon (id: ${coupons[i].id}) 失敗。Err: ${err}`)
             })
@@ -255,8 +273,15 @@ const cronService = {
           await Cart.findByPk(expiredCarts[i].id).then(cart => {
             cart.update({
               dataStatus: 0
-            }).then(cart => {
-              console.log(`更新 Cart (ID: ${cart.id}) 成功`)
+            }).then(async cart => {
+
+              await Notification.create({
+                type: "log",
+                category: "transaction",
+                content: `刪除過期 cart (id: ${cart.id}`,
+                dataStatus: 1
+              })
+              // console.log(`更新 Cart (ID: ${cart.id}) 成功`)
             }).catch(err => { console.log(`更新 Cart 失敗，Err: ${err}`) })
           })
         }
@@ -309,8 +334,14 @@ const cronService = {
           // 刪除訂單
           await expiredOrders[j].update({
             dataStatus: 0,                  // dataStatus: 刪除 0 存在 1 取消 2
-          }).then(() => {
-            console.log(`更新 Order dataStatus 成功`)
+          }).then(async () => {
+            await Notification.create({
+              type: "log",
+              category: "transaction",
+              content: `刪除過期 order (id: ${expiredOrders[j].id}`,
+              dataStatus: 1
+            })
+            // console.log(`更新 Order dataStatus 成功`)
           }).catch(err => {
             console.log(`更新 Order dataStatus  失敗，Err: ${err}`)
           })
