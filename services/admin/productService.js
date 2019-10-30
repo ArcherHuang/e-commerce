@@ -7,6 +7,7 @@ const { Product, Category, Carousel, User } = db
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const notificationService = require('./notificationService')
 
 const productService = {
 
@@ -174,10 +175,15 @@ const productService = {
           weight,
           CategoryId: req.body.category_id
         })
-          .then((product) => {
+          .then(async (product) => {
+
+            //檢查商品庫存
+            await notificationService.checkInventory(product.id)
+
             callback({ status: 'success', message: '商品資料建立成功' })
           })
       }
+
 
     } else {
       return callback(productFieldCheckResult)
@@ -217,7 +223,9 @@ const productService = {
                 height,
                 weight,
                 CategoryId: req.body.category_id
-              }).then((product) => {
+              }).then(async (product) => {
+                //檢查商品庫存
+                await notificationService.checkInventory(product.id)
                 callback({ status: 'success', message: '商品更新成功' })
               })
             })
@@ -236,7 +244,9 @@ const productService = {
               height,
               weight,
               CategoryId: req.body.category_id
-            }).then((product) => {
+            }).then(async (product) => {
+              //檢查商品庫存
+              await notificationService.checkInventory(product.id)
               callback({ status: 'success', message: '商品更新成功' })
             })
           })
