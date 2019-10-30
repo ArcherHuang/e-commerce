@@ -36,6 +36,12 @@ let orderController = {
     orderService.getDiscounts(req, res, (data) => {
       return res.json(data)
     })
+  },
+
+  createDiscount: (req, res, callback) => {
+    orderService.createDiscount(req, res, (data) => {
+      return res.json(data)
+    })
   }
 
 }
