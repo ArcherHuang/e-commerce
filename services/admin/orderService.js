@@ -177,10 +177,6 @@ const orderService = {
       const requireAmount = parseInt(req.body.requireAmount)
       const discountAmount = parseInt(req.body.discountAmount)
 
-      console.log(discountName)
-      console.log(requireAmount)
-      console.log(discountAmount)
-
       // 檢查 discount name 不得為空值
       // 檢查 requireAmount 需大於等於零
       // 檢查 discountAmount 需介於大於 0 且小於 100
@@ -216,6 +212,65 @@ const orderService = {
     }
     catch (err) {
       return callback({ status: 'error', message: '建立 discount 失敗', content: err })
+    }
+  },
+
+  editDiscount: async (req, res, callback) => {
+    try {
+      const discountName = req.body.name.trim()
+      const requireAmount = parseInt(req.body.requireAmount)
+      const discountAmount = parseInt(req.body.discountAmount)
+
+      // 檢查 discount name 不得為空值
+      // 檢查 requireAmount 需大於等於零
+      // 檢查 discountAmount 需介於大於 0 且小於 100
+      if (discountName.length >= 1 && requireAmount > 0 && (discountAmount > 0 && discountAmount < 100)) {
+
+        // 修改新的 discount
+        await Discount.findOne({
+          where: {
+            id: req.params.discount_id,
+            dataStatus: 1
+          }
+        }).then(async discount => {
+          await discount.update({
+            name: discountName,
+            requireAmount: requireAmount,
+            discountAmount: discountAmount,
+            dataStatus: 1
+          }).then(discount => {
+            return callback({ status: 'success', message: '修改 discount 成功', content: discount })
+          })
+        })
+
+      } else {
+        return callback({ status: 'error', message: '修改 discount 失敗，輸入資料有誤' })
+      }
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '修改 discount 失敗', content: err })
+    }
+  },
+
+  cancelDiscount: async (req, res, callback) => {
+    try {
+      await Discount.findOne({
+        where: {
+          id: req.params.discount_id,
+          dataStatus: 1
+        }
+      }).then(discount => {
+        discount.update({
+          dataStatus: 0
+        }).then(() => {
+          return callback({ status: 'success', message: '取消 discount 成功' })
+        })
+      }).catch(err => {
+        return callback({ status: 'error', message: '取消 discount 失敗' })
+      })
+    }
+    catch (err) {
+      return callback({ status: 'error', message: '取消 discount 失敗' })
     }
   }
 }

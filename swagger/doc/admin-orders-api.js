@@ -211,3 +211,72 @@
  *       200:
  *         description: 建立 Discount 成功
  */
+
+/********************************************************************
+* Admin - 修改 Discount
+* PUT http://localhost:3000/admin/orders/discounts/:discount_id/edit
+********************************************************************/
+
+/**
+ * @swagger
+ * /admin/orders/discounts/{discount_id}/edit:
+ *   put:
+ *     tags:
+ *      - Admin
+ *     description: Admin - 修改 Discount
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: discount_id
+ *         type: integer
+ *         required: true
+ *         description: discount_id
+ *       - name: name
+ *         type: string
+ *         in: formData
+ *         required: true
+ *         description: Name of the discount
+ *       - name: requireAmount
+ *         type: integer
+ *         in: formData
+ *         required: true
+ *         description: 折扣指定額度（需大於 0）
+ *       - name: discountAmount
+ *         type: integer
+ *         in: formData
+ *         required: true
+ *         description: 折扣數量（需大於 0 且小於 100）
+ *     responses:
+ *       200:
+ *         description: 修改 Discount 成功
+ */
+
+/********************************************************************
+* Admin - 取消 Discount
+* PUT http://localhost:3000/admin/orders/discounts/:discount_id/cancel
+********************************************************************/
+
+/**
+ * @swagger
+ * /admin/orders/discounts/{discount_id}/cancel:
+ *   put:
+ *     tags:
+ *      - Admin
+ *     description: Admin - 取消 Discount
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: discount_id
+ *         type: integer
+ *         required: true
+ *         description: discount_id
+ *     responses:
+ *       200:
+ *         description: 取消 Discount
+ */
