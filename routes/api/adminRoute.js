@@ -3,12 +3,12 @@ const router = express.Router()
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
-const adminUserController = require('../controllers/admin/userController')
-const adminCategoryController = require('../controllers/admin/categoryController')
-const adminCouponController = require('../controllers/admin/couponController')
-const adminProductController = require('../controllers/admin/productController')
-const adminOrderController = require('../controllers/admin/orderController')
-const adminNotificationController = require('../controllers/admin/notificationController')
+const adminUserController = require('../../controllers/api/admin/userController')
+const adminCategoryController = require('../../controllers/api/admin/categoryController')
+const adminCouponController = require('../../controllers/api/admin/couponController')
+const adminProductController = require('../../controllers/api/admin/productController')
+const adminOrderController = require('../../controllers/api/admin/orderController')
+const adminNotificationController = require('../../controllers/api/admin/notificationController')
 
 
 // User

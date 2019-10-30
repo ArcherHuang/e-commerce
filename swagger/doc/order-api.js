@@ -1,11 +1,11 @@
 /********************************************************************
 * Orders - 建立訂單
-* POST http://localhost:3000/orders
+* POST http://localhost:3000/api/orders
 ********************************************************************/
 
 /**
  * @swagger
- * /orders:
+ * /api/orders:
  *   post:
  *     tags:
  *      - Orders
@@ -43,12 +43,12 @@
 
 /********************************************************************
 * Order - 建立交易參數
-* GET http://localhost:3000/orders/:order_id/payment
+* GET http://localhost:3000/api/orders/:order_id/payment
 ********************************************************************/
 
 /**
  * @swagger
- * /orders/{order_id}/payment:
+ * /api/orders/{order_id}/payment:
  *   get:
  *     tags:
  *      - Orders

@@ -1,4 +1,4 @@
-const productService = require('../../services/admin/productService')
+const productService = require('../../../services/admin/productService')
 
 const productController = {
 

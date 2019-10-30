@@ -1,4 +1,4 @@
-const adminCouponService = require('../../services/admin/couponService')
+const adminCouponService = require('../../../services/admin/couponService')
 
 const couponController = {
 

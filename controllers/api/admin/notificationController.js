@@ -1,4 +1,4 @@
-const notificationService = require('../../services/admin/notificationService')
+const notificationService = require('../../../services/admin/notificationService')
 
 const notificationController = {
 

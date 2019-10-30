@@ -1,0 +1,40 @@
+{{> messages}}
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+
+      <form class="form-signin" action="/accounts/signup" method="POST" style="width: 100%;">
+        <div class="text-center mb-4">
+          <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+        </div>
+
+        <h6 class="text-secondary"><small>(<i class="fas fa-star-of-life text-danger"></i>)</small> 代表必填欄位</h6>
+        <div class="form-label-group">
+          <label for="name">Name <small>(<i class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Name" value="{{name}}" required>
+        </div>
+        <div class="form-label-group">
+          <label for="email">Email <small>(<i class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="text" name="email" id="email" class="form-control" placeholder="Email" value="{{email}}"
+            required>
+        </div>
+        <div class="form-label-group">
+          <label for="password">Password <small>(<i class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+            value="{{password}}" required>
+        </div>
+        <div class="form-label-group">
+          <label for="passwordCheck">Password Check <small>(<i
+                class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="password" name="passwordCheck" id="passwordCheck" class="form-control"
+            placeholder="Password Check" value="{{passwordCheck}}" required>
+        </div>
+        <br />
+        <button class="btn btn-outline-primary btn-block" type="submit">Submit</button>
+        <a href="/accounts/signin" class="btn btn-outline-danger btn-block">Sign In</a>
+        <a href="/accounts/reset-password" class="btn btn-outline-dark btn-block">Forgot Password</a>
+        <p class="mt-5 mb-3 text-muted text-center">© 2017-2018</p>
+      </form>
+    </div>
+  </div>
+</div>

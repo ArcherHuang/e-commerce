@@ -1,11 +1,11 @@
 /********************************************************************
 * Cart - 將商品加入購物車
-* GET http://localhost:3000/carts
+* GET http://localhost:3000/api/carts
 ********************************************************************/
 
 /**
  * @swagger
- * /carts:
+ * /api/carts:
  *   get:
  *     tags:
  *      - Cart
@@ -19,12 +19,12 @@
 
 /********************************************************************
 * Cart - 將商品加入購物車
-* POST http://localhost:3000/carts
+* POST http://localhost:3000/api/carts
 ********************************************************************/
 
 /**
  * @swagger
- * /carts:
+ * /api/carts:
  *   post:
  *     tags:
  *      - Cart
@@ -44,12 +44,12 @@
 
 /********************************************************************
 * Cart - 增加購物車中的商品數量
-* POST http://localhost:3000/carts/:cartItem_id/add
+* POST http://localhost:3000/api/carts/:cartItem_id/add
 ********************************************************************/
 
 /**
  * @swagger
- * /carts/{cartItem_id}/add:
+ * /api/carts/{cartItem_id}/add:
  *   post:
  *     tags:
  *      - Cart
@@ -69,12 +69,12 @@
 
 /********************************************************************
 * Cart - 減少購物車中的商品數量
-* POST http://localhost:3000/carts/:cartItem_id/sub
+* POST http://localhost:3000/api/carts/:cartItem_id/sub
 ********************************************************************/
 
 /**
  * @swagger
- * /carts/{cartItem_id}/sub:
+ * /api/carts/{cartItem_id}/sub:
  *   post:
  *     tags:
  *      - Cart
@@ -94,12 +94,12 @@
 
 /********************************************************************
 * Cart - 移除購物車中的商品
-* POST http://localhost:3000/carts/:cartItem_id/delete
+* POST http://localhost:3000/api/carts/:cartItem_id/delete
 ********************************************************************/
 
 /**
  * @swagger
- * /carts/{cartItem_id}/delete:
+ * /api/carts/{cartItem_id}/delete:
  *   post:
  *     tags:
  *      - Cart
@@ -119,12 +119,12 @@
 
 /********************************************************************
 * Cart - 將 coupon 加入購物車
-* POST http://localhost:3000/carts/addCoupon
+* POST http://localhost:3000/api/carts/addCoupon
 ********************************************************************/
 
 /**
  * @swagger
- * /carts/addCoupon:
+ * /api/carts/addCoupon:
  *   post:
  *     tags:
  *      - Cart
@@ -146,12 +146,12 @@
 
 /********************************************************************
 * Cart - 將 coupon 加入購物車
-* POST http://localhost:3000/carts/removeCoupon
+* POST http://localhost:3000/api/carts/removeCoupon
 ********************************************************************/
 
 /**
  * @swagger
- * /carts/removeCoupon:
+ * /api/carts/removeCoupon:
  *   post:
  *     tags:
  *      - Cart

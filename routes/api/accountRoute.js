@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const { ensureAuthenticated, isAuthUser, getUser } = require('../config/auth')
-const accountController = require('../controllers/accountController')
-const forgetPasswordController = require('../controllers/forgetPasswordController')
+const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
+const accountController = require('../../controllers/api/accountController')
+const forgetPasswordController = require('../../controllers/api/forgetPasswordController')
 
 // Member
 router.get('/', ensureAuthenticated, getUser, isAuthUser, accountController.getProfile)

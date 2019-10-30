@@ -1,11 +1,11 @@
 /********************************************************************
 * Admin - 取得所有 Product
-* GET http://localhost:3000/admin/products
+* GET http://localhost:3000/api/admin/products
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/products:
+ * /api/admin/products:
  *   get:
  *     tags:
  *      - Admin
@@ -32,12 +32,12 @@
 
 /********************************************************************
 * Admin - 取得特定 Product
-* GET http://localhost:3000/admin/products/:product_id
+* GET http://localhost:3000/api/admin/products/:product_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/products/{product_id}:
+ * /api/admin/products/{product_id}:
  *   get:
  *     tags:
  *      - Admin
@@ -59,12 +59,12 @@
 
 /********************************************************************
 * Admin - 新增 Product
-* POST http://localhost:3000/admin/products
+* POST http://localhost:3000/api/admin/products
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/products:
+ * /api/admin/products:
  *   post:
  *     tags:
  *      - Admin
@@ -136,12 +136,12 @@
 
 /********************************************************************
 * Admin - 修改 Product
-* PUT http://localhost:3000/admin/products/:product_id
+* PUT http://localhost:3000/api/admin/products/:product_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/products/{product_id}:
+ * /api/admin/products/{product_id}:
  *   put:
  *     tags:
  *      - Admin
@@ -218,12 +218,12 @@
 
 /********************************************************************
 * Admin - 刪除 Product
-* DELETE http://localhost:3000/admin/products/:product_id
+* DELETE http://localhost:3000/api/admin/products/:product_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/products/{product_id}:
+ * /api/admin/products/{product_id}:
  *   delete:
  *     tags:
  *      - Admin
