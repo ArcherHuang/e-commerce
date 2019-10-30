@@ -5,6 +5,8 @@ const { Cart, CartItem, Coupon, CouponDistribution, Product } = db
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
+const notificationService = require('./admin/notificationService')
+
 const cartService = {
 
   getCart: (req, res, callback) => {
@@ -69,6 +71,8 @@ const cartService = {
                   product.update({
                     inventory: product.inventory - 1
                   }).then(product => {
+                    // 檢查庫存
+                    notificationService.checkInventory(product.id)
                     return callback({ status: 'success', message: '商品加入購物車成功' })
                   }).catch(err => {
                     return callback({ status: 'err', message: '降低存貨失敗', content: err })
@@ -127,6 +131,8 @@ const cartService = {
                   product.update({
                     inventory: product.inventory - 1
                   }).then(product => {
+                    // 檢查庫存
+                    notificationService.checkInventory(product.id)
                     return callback({ status: 'success', message: '新增商品數量成功' })
                   }).catch(err => {
                     return callback({ status: 'err', message: '降低存貨失敗', content: err })
@@ -176,6 +182,8 @@ const cartService = {
                 }).then(product => {
                   // 計算購物車總金額
                   cartService.checkTotalPrice(cartItem.CartId)
+                  // 檢查庫存
+                  notificationService.checkInventory(product.id)
                   return callback({ status: 'success', message: '減少購物車商品數量成功' })
                 }).catch(err => {
                   return callback({ status: 'err', message: '調整存貨失敗', content: err })
@@ -230,6 +238,8 @@ const cartService = {
               }).then(product => {
                 // 計算購物車總金額
                 cartService.checkTotalPrice(cartItem.CartId)
+                // 檢查庫存
+                notificationService.checkInventory(product.id)
                 return callback({ status: 'success', message: '移除購物車商品成功' })
               }).catch(err => {
                 return callback({ status: 'err', message: '調整存貨失敗', content: err })

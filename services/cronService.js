@@ -5,6 +5,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 const sendEmailService = require('./sendEmailService')
+const notificationService = require('./admin/notificationService')
 
 const db = require('../models')
 const { User, Coupon, CouponDistribution, Cart, CartItem, Order, OrderItem, Product } = db
@@ -236,7 +237,9 @@ const cronService = {
               await Product.findByPk(cartItem.ProductId).then(async product => {
                 await product.update({
                   inventory: product.inventory + cartItem.quantity
-                }).then(() => {
+                }).then(product => {
+                  // 檢查庫存
+                  notificationService.checkInventory(product.id)
                   console.log(`成功更新商品 (ID:${cartItem.ProductId}) 庫存，增加 ${cartItem.quantity}`)
                 }).catch(err => { console.log(`更新商品庫存失敗，Err: ${err}`) })
               }).then(() => { }).catch(err => { console.log(`查詢商品失敗，Err: ${err}`) })
@@ -289,7 +292,9 @@ const cronService = {
               let quantity = item.quantity
               // 更新商品庫存
               await Product.findByPk(item.ProductId).then(async (product) => {
-                await product.update({ inventory: product.inventory + quantity }).then(() => {
+                await product.update({ inventory: product.inventory + quantity }).then(product => {
+                  // 檢查庫存
+                  notificationService.checkInventory(product.id)
                   console.log(`成功更新商品 (ID:${item.ProductId}) 庫存，增加 ${quantity}`)
                 }).catch(err => { console.log(`更新商品庫存失敗，Err: ${err}`) })
               }).catch(err => { console.log(`查詢商品失敗，Err: ${err}`) })
