@@ -28,15 +28,16 @@ app.use(cors())
 swaggerDocument(app)
 
 app.engine(
-  'handlebars',
+  '.hbs',
   handlebars({
+    extname: '.hbs',
     defaultLayout: 'main',
     partialsDir: __dirname + '/views/partials/',
     helpers: require('./config/handlebars-helpers')
   })
 )
 
-app.set('view engine', 'handlebars')
+app.set('view engine', '.hbs')
 app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
