@@ -1,1 +1,10 @@
-products
+{{!-- Main page --}}
+{{> navBar this}}
+{{> slider this}}
+{{> banner}}
+{{> bestSellProducts}}
+{{> discountArea}}
+{{!-- 傳輸所有資料至partial -> this --}}
+{{!-- 傳輸products資料至partial -> products="products" --}}
+{{> productCard products="products"}}
+{{> footer}}

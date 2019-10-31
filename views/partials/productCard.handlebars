@@ -1,0 +1,42 @@
+{{!---------------------- All Products --------------------------}}
+<div class="product-area pb-60">
+  <div class="container">
+      <div class="section-title text-center mb-40">
+          <h2>All Products</h2>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text</p>
+      </div>
+
+      <div class="row">
+        {{!---------------------- Product Card--------------------------}}
+         {{#each products}}
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+              <div class="product-wrap mb-35">
+                  <div class="product-img mb-15">
+                      <a href="product-details.html"><img src="{{this.image}}" alt="product"></a>
+                      <div class="product-action">
+                          <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
+                          <a title="Wishlist" href="#"><i class="la la-heart-o"></i></a>
+                          <a title="Compare" href="#"><i class="la la-retweet"></i></a>
+                      </div>
+                  </div>
+
+                  <div class="product-content">
+                      <span>{{this.name}}</span>
+                      <h4><a href="product-details.html">{{this.deacription}}</a></h4>
+                      <div class="price-addtocart">
+                          <div class="product-price">
+                              <span>$210.00</span>
+                          </div>
+                          <div class="product-addtocart">
+                              <a title="Add To Cart" href="#">+ Add To Cart</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        {{/each}}
+          
+         
+      </div>
+  </div>
+</div>
