@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const { ensureAuthenticated, isAuthUser, getUser } = require('../config/auth')
-const productController = require('../controllers/productController')
+const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
+const productController = require('../../controllers/api/productController')
 
 router.get('/', productController.getProducts)
 router.get('/categories', productController.getCategories)

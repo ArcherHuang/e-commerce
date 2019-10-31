@@ -1,4 +1,4 @@
-const forgotPasswordService = require('../services/forgotPasswordService.js')
+const forgotPasswordService = require('../../services/forgotPasswordService.js')
 
 const forgetPasswordController = {
 

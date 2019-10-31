@@ -1,4 +1,4 @@
-const orderService = require('../../services/admin/orderService')
+const orderService = require('../../../services/admin/orderService')
 
 let orderController = {
 

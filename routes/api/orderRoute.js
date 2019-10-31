@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const { ensureAuthenticated, isAuthAdmin, isAuthUser, getUser } = require('../config/auth')
-const orderController = require('../controllers/orderController')
+const { ensureAuthenticated, isAuthAdmin, isAuthUser, getUser } = require('../../config/auth')
+const orderController = require('../../controllers/api/orderController')
 
 router.post('/', ensureAuthenticated, getUser, isAuthUser, orderController.postOrder)
 router.get('/:order_id/payment', ensureAuthenticated, getUser, isAuthUser, orderController.getPayment)

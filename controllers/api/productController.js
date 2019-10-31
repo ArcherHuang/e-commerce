@@ -1,4 +1,4 @@
-const productService = require('../services/productService.js')
+const productService = require('../../services/productService.js')
 
 const productController = {
 

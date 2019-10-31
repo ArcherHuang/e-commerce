@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const cartController = require('../controllers/cartController')
-const { ensureAuthenticated, isAuthUser, getUser } = require('../config/auth')
+const cartController = require('../../controllers/api/cartController')
+const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
 
 router.get('/', cartController.getCart)
 router.post('/', cartController.postCart)

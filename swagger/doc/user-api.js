@@ -1,11 +1,11 @@
 /********************************************************************
 * Accounts - 取得 Profile
-* GET http://localhost:3000/accounts
+* GET http://localhost:3000/api/accounts
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts:
+ * /api/accounts:
  *   get:
  *     tags:
  *      - Accounts
@@ -21,12 +21,12 @@
 
 /********************************************************************
 * Accounts - 修改 Profile
-* PUT http://localhost:3000/accounts
+* PUT http://localhost:3000/api/accounts
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts:
+ * /api/accounts:
  *   put:
  *     tags:
  *      - Accounts
@@ -59,12 +59,12 @@
 
 /********************************************************************
 * Accounts - 取得使用者擁有的 Coupons
-* GET http://localhost:3000/accounts/coupons
+* GET http://localhost:3000/api/accounts/coupons
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/coupons:
+ * /api/accounts/coupons:
  *   get:
  *     tags:
  *      - Accounts
@@ -80,12 +80,12 @@
 
 /********************************************************************
 * Accounts - 取得 Orders
-* GET http://localhost:3000/accounts/orders
+* GET http://localhost:3000/api/accounts/orders
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/orders:
+ * /api/accounts/orders:
  *   get:
  *     tags:
  *      - Accounts
@@ -101,12 +101,12 @@
 
 /********************************************************************
 * Accounts - 取得 Order
-* GET http://localhost:3000/accounts/orders/:order_id
+* GET http://localhost:3000/api/accounts/orders/:order_id
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/orders/{order_id}:
+ * /api/accounts/orders/{order_id}:
  *   get:
  *     tags:
  *      - Accounts
@@ -128,12 +128,12 @@
 
 /********************************************************************
 * Accounts - 取消 Order
-* PUT http://localhost:3000/accounts/orders/:order_id/cancel
+* PUT http://localhost:3000/api/accounts/orders/:order_id/cancel
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/orders/{order_id}/cancel:
+ * /api/accounts/orders/{order_id}/cancel:
  *   put:
  *     tags:
  *      - Accounts
@@ -155,12 +155,12 @@
 
 /********************************************************************
 * Accounts - 使用者登入
-* POST http://localhost:3000/accounts/signin
+* POST http://localhost:3000/api/accounts/signin
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/signin:
+ * /api/accounts/signin:
  *   post:
  *     tags:
  *      - Accounts
@@ -185,12 +185,12 @@
 
 /********************************************************************
 * Accounts - 使用者註冊
-* POST http://localhost:3000/accounts/signup
+* POST http://localhost:3000/api/accounts/signup
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/signup:
+ * /api/accounts/signup:
  *   post:
  *     tags:
  *      - Accounts
@@ -240,12 +240,12 @@
 
 /********************************************************************
 * Accounts - 註冊後驗證 email
-* GET http://localhost:3000/accounts/email-valid/:token
+* GET http://localhost:3000/api/accounts/email-valid/:token
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/email-valid/{token}:
+ * /api/accounts/email-valid/{token}:
  *   get:
  *     tags:
  *      - Accounts
@@ -265,12 +265,12 @@
 
 /********************************************************************
 * Accounts - 設定連結時效與寄發 mail
-* POST http://localhost:3000/accounts/reset-password
+* POST http://localhost:3000/api/accounts/reset-password
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/reset-password:
+ * /api/accounts/reset-password:
  *   post:
  *     tags:
  *      - Accounts
@@ -290,12 +290,12 @@
 
 /********************************************************************
 * Accounts - 驗證所收到的 email 連結是否還在有效期限內
-* GET http://localhost:3000/accounts/reset-password/{token}
+* GET http://localhost:3000/api/accounts/reset-password/{token}
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/reset-password/{token}:
+ * /api/accounts/reset-password/{token}:
  *   get:
  *     tags:
  *      - Accounts
@@ -315,12 +315,12 @@
 
 /********************************************************************
 * Accounts - 設定密碼
-* PUT http://localhost:3000/accounts/modify-password
+* PUT http://localhost:3000/api/accounts/modify-password
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/modify-password:
+ * /api/accounts/modify-password:
  *   put:
  *     tags:
  *      - Accounts
@@ -345,19 +345,19 @@
 
 /********************************************************************
 * Accounts - 取得使用者商品瀏覽紀錄
-* GET http://localhost:3000/accounts/history
+* GET http://localhost:3000/api/accounts/history
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/history:
+ * /api/accounts/history:
  *   get:
  *     tags:
  *      - Accounts
  *     description: Account - 取得使用者商品瀏覽紀錄
  *     produces:
  *       - application/json
-*     security:
+ *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
@@ -367,12 +367,12 @@
 
 /********************************************************************
 * Products - 取得所有 Product
-* GET http://localhost:3000/products
+* GET http://localhost:3000/api/products
 ********************************************************************/
 
 /**
  * @swagger
- * /products:
+ * /api/products:
  *   get:
  *     tags:
  *      - Products
@@ -397,12 +397,12 @@
 
 /********************************************************************
 * Products - 取得特定 Product
-* GET http://localhost:3000/products/:product_id
+* GET http://localhost:3000/api/products/:product_id
 ********************************************************************/
 
 /**
  * @swagger
- * /products/{product_id}:
+ * /api/products/{product_id}:
  *   get:
  *     tags:
  *      - Products
@@ -422,12 +422,12 @@
 
 /********************************************************************
 * Products - 取得 Category 資料
-* GET http://localhost:3000/products/categories
+* GET http://localhost:3000/api/products/categories
 ********************************************************************/
 
 /**
  * @swagger
- * /products/categories:
+ * /api/products/categories:
  *   get:
  *     tags:
  *      - Products
@@ -441,12 +441,12 @@
 
 /********************************************************************
 * Products - Like 特定 Product
-* POST http://localhost:3000/products/:product_id/like
+* POST http://localhost:3000/api/products/:product_id/like
 ********************************************************************/
 
 /**
  * @swagger
- * /products/{product_id}/like:
+ * /api/products/{product_id}/like:
  *   post:
  *     tags:
  *      - Products
@@ -468,12 +468,12 @@
 
 /********************************************************************
 * Products - Unlike 特定 Product
-* POST http://localhost:3000/products/:product_id/unlike
+* POST http://localhost:3000/api/products/:product_id/unlike
 ********************************************************************/
 
 /**
  * @swagger
- * /products/{product_id}/unlike:
+ * /api/products/{product_id}/unlike:
  *   post:
  *     tags:
  *      - Products
@@ -495,12 +495,12 @@
 
 /********************************************************************
 * Products - 建立 Product 評論
-* POST http://localhost:3000/products/:product_id/reviews
+* POST http://localhost:3000/api/products/:product_id/reviews
 ********************************************************************/
 
 /**
  * @swagger
- * /products/{product_id}/reviews:
+ * /api/products/{product_id}/reviews:
  *   post:
  *     tags:
  *      - Products
@@ -527,12 +527,12 @@
 
 /********************************************************************
 * Products - 修改 Product 的評論
-* PUT http://localhost:3000/products/:product_id/reviews/:review_id
+* PUT http://localhost:3000/api/products/:product_id/reviews/:review_id
 ********************************************************************/
 
 /**
  * @swagger
- * /products/{product_id}/reviews/{review_id}:
+ * /api/products/{product_id}/reviews/{review_id}:
  *   put:
  *     tags:
  *      - Products
@@ -564,12 +564,12 @@
 
 /********************************************************************
 * Products - 移除 Product 的評論
-* DELETE http://localhost:3000/products/:product_id/reviews/:review_id
+* DELETE http://localhost:3000/api/products/:product_id/reviews/:review_id
 ********************************************************************/
 
 /**
  * @swagger
- * /products/{product_id}/reviews/{review_id}:
+ * /api/products/{product_id}/reviews/{review_id}:
  *   delete:
  *     tags:
  *      - Products
@@ -596,12 +596,12 @@
 
 /********************************************************************
 * Accounts - 取得當前使用者資料
-* GET http://localhost:3000/accounts/currentUser
+* GET http://localhost:3000/api/accounts/currentUser
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/currentUser:
+ * /api/accounts/currentUser:
  *   get:
  *     tags:
  *      - Accounts
@@ -617,12 +617,12 @@
 
 /********************************************************************
 * Accounts - 使用者登出
-* GET http://localhost:3000/accounts/logout
+* GET http://localhost:3000/api/accounts/logout
 ********************************************************************/
 
 /**
  * @swagger
- * /accounts/logout:
+ * /api/accounts/logout:
  *   get:
  *     tags:
  *      - Accounts
@@ -636,12 +636,12 @@
 
 /********************************************************************
 * Auths - 使用者使用 Facebook 登入
-* GET http://localhost:3000/auth/facebook
+* GET http://localhost:3000/api/auth/facebook
 ********************************************************************/
 
 /**
  * @swagger
- * /auth/facebook:
+ * /api/auth/facebook:
  *   get:
  *     tags:
  *      - Auths

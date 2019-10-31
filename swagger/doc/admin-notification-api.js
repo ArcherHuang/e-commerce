@@ -1,11 +1,11 @@
 /********************************************************************
 * Admin - 取得 notification 清單
-* GET http://localhost:3000/admin/notifications
+* GET http://localhost:3000/api/admin/notifications
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/notifications:
+ * /api/admin/notifications:
  *   get:
  *     tags:
  *      - Admin

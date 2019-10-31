@@ -1,4 +1,4 @@
-const categoryService = require('../../services/admin/categoryService')
+const categoryService = require('../../../services/admin/categoryService')
 
 let categoryController = {
 

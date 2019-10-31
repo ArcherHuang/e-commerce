@@ -1,11 +1,11 @@
 /********************************************************************
 * Admin - 取得所有 Order
-* GET http://localhost:3000/admin/orders
+* GET http://localhost:3000/api/admin/orders
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders:
+ * /api/admin/orders:
  *   get:
  *     tags:
  *      - Admin
@@ -21,12 +21,12 @@
 
 /********************************************************************
 * Admin - 取得特定 Order
-* GET http://localhost:3000/admin/orders/:order_id
+* GET http://localhost:3000/api/admin/orders/:order_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/{order_id}:
+ * /api/admin/orders/{order_id}:
  *   get:
  *     tags:
  *      - Admin
@@ -48,12 +48,12 @@
 
 /********************************************************************
 * Admin - Order 取消
-* PUT http://localhost:3000/admin/orders/:order_id/cancel
+* PUT http://localhost:3000/api/admin/orders/:order_id/cancel
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/{order_id}/cancel:
+ * /api/admin/orders/{order_id}/cancel:
  *   put:
  *     tags:
  *      - Admin
@@ -75,12 +75,12 @@
 
 /********************************************************************
 * Admin - Order 恢復
-* PUT http://localhost:3000/admin/orders/:order_id/resume
+* PUT http://localhost:3000/api/admin/orders/:order_id/resume
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/{order_id}/resume:
+ * /api/admin/orders/{order_id}/resume:
  *   put:
  *     tags:
  *      - Admin
@@ -102,12 +102,12 @@
 
 /********************************************************************
 * Admin - Order 出貨
-* PUT http://localhost:3000/admin/orders/:order_id/shipped
+* PUT http://localhost:3000/api/admin/orders/:order_id/shipped
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/{order_id}/shipped:
+ * /api/admin/orders/{order_id}/shipped:
  *   put:
  *     tags:
  *      - Admin
@@ -129,12 +129,12 @@
 
 /********************************************************************
 * Admin - Order 取消出貨
-* PUT http://localhost:3000/admin/orders/:order_id/unshipped
+* PUT http://localhost:3000/api/admin/orders/:order_id/unshipped
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/{order_id}/unshipped:
+ * /api/admin/orders/{order_id}/unshipped:
  *   put:
  *     tags:
  *      - Admin
@@ -156,12 +156,12 @@
 
 /********************************************************************
 * Admin - 取得所有 Discount
-* GET http://localhost:3000/admin/orders/discounts
+* GET http://localhost:3000/api/admin/orders/discounts
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/discounts:
+ * /api/admin/orders/discounts:
  *   get:
  *     tags:
  *      - Admin
@@ -177,12 +177,12 @@
 
 /********************************************************************
 * Admin - 建立 Discount
-* POST http://localhost:3000/admin/orders/discounts
+* POST http://localhost:3000/api/admin/orders/discounts
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/discounts:
+ * /api/admin/orders/discounts:
  *   post:
  *     tags:
  *      - Admin
@@ -214,12 +214,12 @@
 
 /********************************************************************
 * Admin - 修改 Discount
-* PUT http://localhost:3000/admin/orders/discounts/:discount_id/edit
+* PUT http://localhost:3000/api/admin/orders/discounts/:discount_id/edit
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/discounts/{discount_id}/edit:
+ * /api/admin/orders/discounts/{discount_id}/edit:
  *   put:
  *     tags:
  *      - Admin
@@ -256,12 +256,12 @@
 
 /********************************************************************
 * Admin - 取消 Discount
-* PUT http://localhost:3000/admin/orders/discounts/:discount_id/cancel
+* PUT http://localhost:3000/api/admin/orders/discounts/:discount_id/cancel
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/orders/discounts/{discount_id}/cancel:
+ * /api/admin/orders/discounts/{discount_id}/cancel:
  *   put:
  *     tags:
  *      - Admin

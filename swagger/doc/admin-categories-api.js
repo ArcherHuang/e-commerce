@@ -1,11 +1,11 @@
 /********************************************************************
 * Admin - 取得所有分類
-* GET http://localhost:3000/admin/categories
+* GET http://localhost:3000/api/admin/categories
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/categories:
+ * /api/admin/categories:
  *   get:
  *     tags:
  *      - Admin
@@ -21,12 +21,12 @@
 
 /********************************************************************
 * Admin - 取得特定分類
-* GET http://localhost:3000/admin/categories/:category_id
+* GET http://localhost:3000/api/admin/categories/:category_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/categories/{category_id}:
+ * /api/admin/categories/{category_id}:
  *   get:
  *     tags:
  *      - Admin
@@ -48,12 +48,12 @@
 
 /********************************************************************
 * Admin - 新增分類
-* POST http://localhost:3000/admin/categories
+* POST http://localhost:3000/api/admin/categories
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/categories:
+ * /api/admin/categories:
  *   post:
  *     tags:
  *      - Admin
@@ -75,12 +75,12 @@
 
 /********************************************************************
 * Admin - 修改分類
-* POST http://localhost:3000/admin/categories/:category_id
+* POST http://localhost:3000/api/admin/categories/:category_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/categories/{category_id}:
+ * /api/admin/categories/{category_id}:
  *   put:
  *     tags:
  *      - Admin
@@ -107,12 +107,12 @@
 
 /********************************************************************
 * Admin - 刪除分類
-* DELETE http://localhost:3000/admin/categories/:category_id
+* DELETE http://localhost:3000/api/admin/categories/:category_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/categories/{category_id}:
+ * /api/admin/categories/{category_id}:
  *   delete:
  *     tags:
  *      - Admin

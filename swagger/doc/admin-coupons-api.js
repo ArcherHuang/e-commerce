@@ -1,11 +1,11 @@
 /********************************************************************
 * Admin - 取得所有 Coupon
-* GET http://localhost:3000/admin/coupons
+* GET http://localhost:3000/api/admin/coupons
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons:
+ * /api/admin/coupons:
  *   get:
  *     tags:
  *      - Admin
@@ -21,12 +21,12 @@
 
 /********************************************************************
 * Admin - 取得特定 Coupon
-* GET http://localhost:3000/admin/coupons/:coupon_id
+* GET http://localhost:3000/api/admin/coupons/:coupon_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons/{coupon_id}:
+ * /api/admin/coupons/{coupon_id}:
  *   get:
  *     tags:
  *      - Admin
@@ -48,12 +48,12 @@
 
 /********************************************************************
 * Admin - 新增 Coupon
-* POST http://localhost:3000/admin/coupons
+* POST http://localhost:3000/api/admin/coupons
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons:
+ * /api/admin/coupons:
  *   post:
  *     tags:
  *      - Admin
@@ -95,12 +95,12 @@
 
 /********************************************************************
 * Admin - 修改 Coupon
-* PUT http://localhost:3000/admin/coupons/:coupon_id
+* PUT http://localhost:3000/api/admin/coupons/:coupon_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons/{coupon_id}:
+ * /api/admin/coupons/{coupon_id}:
  *   put:
  *     tags:
  *      - Admin
@@ -147,12 +147,12 @@
 
 /********************************************************************
 * Admin - 刪除 Coupon
-* DELETE http://localhost:3000/admin/coupons/:coupon_id
+* DELETE http://localhost:3000/api/admin/coupons/:coupon_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons/{coupon_id}:
+ * /api/admin/coupons/{coupon_id}:
  *   delete:
  *     tags:
  *      - Admin
@@ -175,12 +175,12 @@
 
 /********************************************************************
 * Admin - 發送 Coupon
-* POST http://localhost:3000/admin/coupons/:coupon_id/send
+* POST http://localhost:3000/api/admin/coupons/:coupon_id/send
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons/{coupon_id}/send:
+ * /api/admin/coupons/{coupon_id}/send:
  *   post:
  *     tags:
  *      - Admin
@@ -207,12 +207,12 @@
 
 /********************************************************************
 * Admin - 取得所有 Coupon 使用紀錄
-* GET http://localhost:3000/admin/coupons/history
+* GET http://localhost:3000/api/admin/coupons/history
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/coupons/history:
+ * /api/admin/coupons/history:
  *   get:
  *     tags:
  *      - Admin

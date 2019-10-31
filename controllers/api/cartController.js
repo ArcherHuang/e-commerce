@@ -1,4 +1,4 @@
-const cartService = require('../services/cartService.js')
+const cartService = require('../../services/cartService.js')
 
 const cartController = {
 

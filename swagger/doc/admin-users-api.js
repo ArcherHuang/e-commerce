@@ -1,11 +1,11 @@
 /********************************************************************
 * Admin - 取得使用者清單
-* GET http://localhost:3000/admin/users
+* GET http://localhost:3000/api/admin/users
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/users:
+ * /api/admin/users:
  *   get:
  *     tags:
  *      - Admin
@@ -21,12 +21,12 @@
 
 /********************************************************************
 * Admin - 使用者權限變更
-* PUT http://localhost:3000/admin/users/:user_id
+* PUT http://localhost:3000/api/admin/users/:user_id
 ********************************************************************/
 
 /**
  * @swagger
- * /admin/users/{user_id}:
+ * /api/admin/users/{user_id}:
  *   put:
  *     tags:
  *      - Admin
