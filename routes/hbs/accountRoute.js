@@ -11,5 +11,7 @@ router.post('/signin', accountController.signIn)
 
 router.get('/logout', accountController.logout)
 router.get('/signup', accountController.signUpView)
+router.post('/signup', accountController.signUp)
+router.get('/email-valid/:token', accountController.checkEmail)
 
 module.exports = router

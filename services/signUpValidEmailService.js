@@ -69,7 +69,7 @@ const signUpValidEmailService = {
         // console.log(`token: ${token}`)
         // console.log(`reply: ${reply}`)
         if (reply === null || reply === '') {
-          return callback({ status: 'error', message: '5 分鐘的時效已過，請重新註冊帳號 ~' })
+          resolve({ status: 'error', message: '5 分鐘的時效已過，請重新註冊帳號 ~' })
         } else {
           const parseReply = JSON.parse(reply)
           // console.log(`email: ${parseReply.email}`)
