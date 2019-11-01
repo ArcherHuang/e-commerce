@@ -31,35 +31,8 @@
 </head>
 
 <body>
-
-  {{!-- Navbar --}}
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark mt-0">
-    <a class="navbar-brand" href="/">---</a>
-    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-      </ul>
-      <div>
-        {{#ifCond user.role 'admin'}}
-        <a href="/admin" style="color: white;margin-right: 10px;">Admin 後台</a>
-        {{/ifCond}}
-        {{#if user}}
-        <span style="color: white;margin-right: 10px;">Hi, {{user.email}}</span>
-        <a href="/accounts/users/{{user.id}}" style="color: white;margin-right: 10px;">Profile</a>
-        <a href="/accounts/logout"><button class="btn btn-outline-success my-2 my-sm-0">LogOut</button></a>
-        {{/if}}
-      </div>
-    </div>
-  </nav>
-  <br />
-
-  <main role="main">
-    <div class="album py-5">
-      <div class="container">
-        {{{body}}}
-      </div>
-    </div>
-  </main>
-
+  {{{body}}}
+     
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5d94bb6816d7ba86"></script>
 
 </body>
