@@ -29,6 +29,21 @@
           <input type="password" name="passwordCheck" id="passwordCheck" class="form-control"
             placeholder="Password Check" value="{{passwordCheck}}" required>
         </div>
+        <div class="form-label-group">
+          <label for="phone">Phone <small>(<i class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="text" name="phone" id="phone" class="form-control" placeholder="phone" value="{{phone}}"
+            required>
+        </div>
+        <div class="form-label-group">
+          <label for="address">Address <small>(<i class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="text" name="address" id="address" class="form-control" placeholder="address" value="{{address}}"
+            required>
+        </div>
+        <div class="form-label-group">
+          <label for="birthday">Birthday <small>(<i class="fas fa-star-of-life text-danger"></i>)</small></label>
+          <input type="date" name="birthday" id="birthday" class="form-control" placeholder="birthday"
+            value="{{birthday}}" required>
+        </div>
         <br />
         <button class="btn btn-outline-primary btn-block" type="submit">Submit</button>
         <a href="/accounts/signin" class="btn btn-outline-danger btn-block">Sign In</a>

@@ -48,7 +48,7 @@ const userService = {
         }
       })
 
-      if (!user) return res.status(401).json({ status: 'error', message: '使用者不存在，或尚未通過信箱驗證' })
+      if (!user) return callback({ status: 'error', message: '使用者不存在或尚未通過信箱驗證' })
       if (!bcrypt.compareSync(password, user.password)) {
         return callback({ status: 'error', message: '密碼不正確' })
       }
