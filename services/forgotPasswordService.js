@@ -56,7 +56,7 @@ const forgotPasswordService = {
                 親愛的會員 您好：
                 請點選以下連結來重置您的網路帳號密碼
                 
-                ${host}/reset-password/${token}
+                ${host}/accounts/reset-password/${token}
 
                 此連結將在 5 分鐘後逾時失效，逾時請再重新驗證申請。
                 若您並無要求重置密碼，很有可能是遭有心人士使用；
