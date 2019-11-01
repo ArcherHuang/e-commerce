@@ -4,7 +4,7 @@
     Version: 2
 
 -----------------------------------------------------------------------------------
-    ×îÐÂ×îÈ«×îºÃµÄBootstrapÄ£°å£ºhttp://www.bootstrapmb.com
+    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½Ãµï¿½BootstrapÄ£ï¿½å£ºhttp://www.bootstrapmb.com
     CSS INDEX
     ===================
 	
@@ -1780,6 +1780,7 @@ button, input, optgroup, select, textarea {
   border-radius: 50px;
 }
 
+/* ------------ a ---------------- */
 .btn-hover a {
   position: relative;
   -webkit-transition: all .5s ease-in-out 0s;
@@ -1837,6 +1838,67 @@ button, input, optgroup, select, textarea {
 .btn-hover.hover-border-none a:hover {
   border: none;
 }
+/* ------------ a end ---------------- */
+
+/* ------------ button ---------------- */
+.btn-hover button {
+  position: relative;
+  -webkit-transition: all .5s ease-in-out 0s;
+  -o-transition: all .5s ease-in-out 0s;
+  transition: all .5s ease-in-out 0s;
+}
+
+.btn-hover button:hover {
+  border: 1px solid #ff5151;
+  color: #fff;
+}
+
+.btn-hover button::before, .btn-hover button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  z-index: -1;
+}
+
+.btn-hover button::after {
+  width: 0;
+  left: auto;
+  right: 0;
+  background: #ff5151;
+}
+
+.btn-hover button.black-color::after {
+  background: #373737;
+}
+
+.btn-hover button.white-color::after {
+  background: #fff;
+}
+
+.btn-hover button:hover::after {
+  width: 100%;
+  left: 0;
+  right: auto;
+}
+
+.btn-hover.btn-hover-radious button::before, .btn-hover.btn-hover-radious button::after {
+  border-radius: 50px;
+}
+
+.btn-hover.hover-border-none button.black-color::after {
+  border-radius: 5px;
+}
+
+.btn-hover.hover-border-none button:hover {
+  border: none;
+}
+/* ------------ button end ---------------- */
 
 .section-padding-1 .container-fluid {
   padding: 0 185px;
@@ -9301,6 +9363,21 @@ button, input, optgroup, select, textarea {
 .product-wrap .product-content .price-addtocart .product-addtocart a:hover {
   color: #212529;
 }
+/* --------- button ------------- */
+.product-wrap .product-content .price-addtocart .product-addtocart button {
+  color: #ff5151;
+  border: 0px;
+  opacity: 0;
+  visibility: hidden;
+  margin-right: 0;
+  -webkit-transition: all .5s ease 0s;
+  -o-transition: all .5s ease 0s;
+  transition: all .5s ease 0s;
+}
+
+.product-wrap .product-content .price-addtocart .product-addtocart button:hover {
+  color: #212529;
+}
 
 .product-wrap .product-content.product-content-padding {
   padding: 21px 20px;
@@ -9419,8 +9496,18 @@ button, input, optgroup, select, textarea {
   margin-right: 30px;
 }
 
+.product-wrap:hover .product-content .product-addtocart button {
+  opacity: 1;
+  visibility: visible;
+  margin-right: 30px;
+}
+
 @media only screen and (min-width: 576px) and (max-width: 767px) {
   .product-wrap:hover .product-content .product-addtocart a {
+    margin-right: 15px;
+  }
+
+  .product-wrap:hover .product-content .product-addtocart button {
     margin-right: 15px;
   }
 }
@@ -9930,7 +10017,7 @@ button, input, optgroup, select, textarea {
   margin-left: 5px;
 }
 
-.product-details-content .pro-details-buy-now a {
+.product-details-content .pro-details-buy-now button {
   display: inline-block;
   font-size: 14px;
   line-height: 1;
@@ -9944,7 +10031,7 @@ button, input, optgroup, select, textarea {
   z-index: 1;
 }
 
-.product-details-content .pro-details-buy-now a:hover {
+.product-details-content .pro-details-buy-now button:hover {
   color: #ffffff;
 }
 
