@@ -198,6 +198,31 @@ const userController = {
     }
   },
 
+  getCoupons: async (req, res) => {
+    await userService.getCoupons(req, res, async (data) => {
+      try {
+        let coupons = data.content
+
+        // 加入 coupon 的使用狀況
+        coupons = await coupons.map(r => ({
+          name: r.name,
+          sn: r.sn,
+          amount: r.amount,
+          discount: r.discount,
+          expireDate: r.expireDate,
+          status: (r.dataStatus == 1 && r.numberOfLimitation > 0 && r.CouponDistribution.usageStatus == '1') ? '有效' : '已無法使用',
+        }))
+        await res.render('accountsCoupons', { coupons: coupons })
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        req.flash('error_messages', "取得訂單細節失敗")
+        res.redirect('/accounts')
+      }
+    })
+
+  },
+
   // 將 dataStatus 轉為文字
   transformDataStatus: (d) => {
     if (d == 0) {
