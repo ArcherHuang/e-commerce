@@ -251,7 +251,13 @@ const userService = {
         where: {
           UserId: req.user.id,
           id: req.params.order_id
-        }
+        },
+        include: [
+          {
+            model: Product,
+            as: 'items',
+          }
+        ]
       }).then(result => {
         let order = result[0]
         if (order) {

@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt-nodejs')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const moment = require('moment')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 const db = require('../models')
 const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageView } = db

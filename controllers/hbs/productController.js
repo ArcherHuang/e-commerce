@@ -31,9 +31,7 @@ const productController = {
         console.log('----------------req.user----------------------',req.user)
 
         return res.render('shop', {
-          products: data.content,
-          carousels: data.carousels, 
-          categories: data.categories
+          products: data.content
         })
       } else {
         return req.flash('error_messages', data['message'])
@@ -41,22 +39,21 @@ const productController = {
     })
   },
 
-  getProduct: (req, res) => {
-    productService.getProduct(req, res, (data) => {
-      if (data['status'] === 'success') {
-        req.flash('success_messages', data['message'])
-        console.log(req.user)
-        console.log('123')
-
-        return res.render('productDetail', {
-          product: data.content
-        })
-      } else {
-        return req.flash('error_messages', data['message'])
+  unlikeProduct: async (req, res) => {
+    await productService.unlikeProduct(req, res, (data) => {
+      try {
+        if (data['status'] == 'success') {
+          req.flash('success_messages', "成功將商品移出 wishlist")
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        req.flash('error_messages', "無法將商品移出 wishlist")
+        res.redirect('back')
       }
     })
-  },
-
+  }
 }
 
 module.exports = productController

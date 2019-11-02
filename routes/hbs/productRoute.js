@@ -9,5 +9,6 @@ const productController = require('../../controllers/hbs/productController')
 router.get('/', productController.getProducts)
 router.get('/shop', productController.getShop)
 router.get('/:product_id', productController.getProduct)
+router.post('/:product_id/unlike', productController.unlikeProduct)
 
 module.exports = router
