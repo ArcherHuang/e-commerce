@@ -5,7 +5,8 @@ const passport = require('passport')
 const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
 const productController = require('../../controllers/hbs/productController')
 
-router.get('/', productController.getProducts)
+
+router.get('/main', productController.getProducts)
 router.get('/shop', productController.getShop)
 router.get('/:product_id', productController.getProduct)
 

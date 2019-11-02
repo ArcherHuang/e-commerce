@@ -210,6 +210,7 @@ const userService = {
             }
             user.update({
               name: req.body.name,
+              email: req.body.email,
               phone: req.body.phone,
               address: req.body.address,
               birthday: req.body.birthday,
@@ -250,7 +251,13 @@ const userService = {
         where: {
           UserId: req.user.id,
           id: req.params.order_id
-        }
+        },
+        include: [
+          {
+            model: Product,
+            as: 'items',
+          }
+        ]
       }).then(result => {
         let order = result[0]
         if (order) {

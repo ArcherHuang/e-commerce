@@ -1,6 +1,7 @@
 const passport = require('passport')
 const passportJWT = require('passport-jwt')
 const passportFB = require('passport-facebook')
+const LocalStrategy = require('passport-local')
 const JwtStrategy = passportJWT.Strategy
 const ExtractJwt = passportJWT.ExtractJwt
 const FacebookStrategy = passportFB.Strategy
@@ -15,15 +16,26 @@ jwtOptions.secretOrKey = process.env.JWT_SECRET
 
 module.exports = passport => {
 
-  passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
-    try {
-      const user = await User.findByPk(jwt_payload.id)
-      if (!user) return done(null, false)
-      return done(null, user)
-    } catch (error) {
-      done(error, false)
-    }
-  }))
+  passport.use(
+    new LocalStrategy({
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true
+    }, (req, username, password, cb) => {
+      User.findOne({
+        where: { email: username }
+      })
+        .then(user => {
+          if (!user)
+            return cb(null, false, req.flash('error_messages', 'Wrong email or password'))
+
+          if (!bcrypt.compareSync(password, user.password))
+            return cb(null, false, req.flash('error_messages', 'Wrong email or password'))
+
+          return cb(null, user)
+        })
+    })
+  )
 
   passport.use(
     new FacebookStrategy({
@@ -65,10 +77,20 @@ module.exports = passport => {
   passport.serializeUser((user, done) => {
     done(null, user.id)
   })
-  passport.deserializeUser((id, done) => {
-    User.findByPk(id, (err, user) => {
-      done(err, user)
+  passport.deserializeUser((id, cb) => {
+    User.findByPk(id).then(user => {
+      return cb(null, user)
     })
   })
+
+  passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
+    try {
+      const user = await User.findByPk(jwt_payload.id)
+      if (!user) return done(null, false)
+      return done(null, user)
+    } catch (error) {
+      done(error, false)
+    }
+  }))
 }
 

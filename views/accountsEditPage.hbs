@@ -1,0 +1,67 @@
+{{> messages}}
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    <h3>會員專區</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="/accounts">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/coupons">Coupons</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/wishlist">Wish List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/reviews">Your Reviews</a>
+      </li>
+    </ul>
+    <br>
+    <h4>編輯個人資料</h4>
+    <br>
+    <form action="/accounts?_method=PUT" method="POST">
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Name</b></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="name" id="name" placeholder="Your name" value="{{user.name}}"
+            required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Email</b></label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" name="email" id="email" placeholder="Your email"
+            value="{{user.email}}" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Phone</b></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="phone" id="phone" placeholder="Your phone number"
+            value="{{user.phone}}" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Address</b></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="address" id="address" placeholder="Your address"
+            value="{{user.address}}" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Birthday (DD/MM/YYYY)</b></label>
+        <div class="col-sm-10">
+          <input type="date" name="birthday" id="birthday" class="form-control" placeholder="birthday"
+            value="{{momentFormat user.birthday}}" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-outline-primary btn-round btn-sm">Submit</button>
+    </form>
+  </div>
+</div>

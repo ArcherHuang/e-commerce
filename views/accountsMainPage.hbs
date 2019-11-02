@@ -1,0 +1,56 @@
+{{> messages}}
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    <h3>會員專區</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="/accounts">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/coupons">Coupons</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/wishlist">Wish List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/reviews">Your Reviews</a>
+      </li>
+    </ul>
+    <br>
+    <h4>個人資料</h4>
+    <br>
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <th scope="row">Name</th>
+          <td>{{user.name}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Email</th>
+          <td>{{user.email}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Phone</th>
+          <td>{{user.phone}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Address</th>
+          <td>{{user.address}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Birthday</th>
+          <td>{{momentFormat user.birthday}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <a href="/accounts/edit" class="btn btn-outline-primary btn-round btn-sm">Edit Profile</a>
+
+  </div>
+</div>

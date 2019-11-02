@@ -31,9 +31,7 @@ const productController = {
         console.log('----------------req.user----------------------',req.user)
 
         return res.render('shop', {
-          products: data.content,
-          carousels: data.carousels, 
-          categories: data.categories
+          products: data.content
         })
       } else {
         return req.flash('error_messages', data['message'])
@@ -56,7 +54,6 @@ const productController = {
       }
     })
   },
-
 }
 
 module.exports = productController

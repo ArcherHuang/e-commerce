@@ -8,7 +8,10 @@ const forgetPasswordController = require('../../controllers/hbs/forgetPasswordCo
 
 // User
 router.get('/signin', accountController.signInView)
-router.post('/signin', accountController.signIn)
+router.post('/signin', passport.authenticate('local', {
+  failureRedirect: '/signin',
+  failureFlash: true
+}), accountController.signIn)
 
 router.get('/logout', accountController.logout)
 router.get('/signup', accountController.signUpView)
@@ -20,5 +23,15 @@ router.get('/reset-password/:token', forgetPasswordController.getRedisKey)
 router.post('/reset-password', forgetPasswordController.setRedisKey)
 router.get('/modfiy-password', forgetPasswordController.modifyPasswordView)
 router.put('/modfiy-password', forgetPasswordController.resetPassword)
+
+// Member
+router.get('/', accountController.getProfile)
+router.get('/edit', accountController.getProfileEditPage)
+router.put('/', accountController.putProfile)
+router.get('/orders', accountController.getOrders)
+router.get('/orders/:order_id', accountController.getOrder)
+router.put('/orders/:order_id/cancel', accountController.cancelOrder)
+router.get('/coupons', accountController.getCoupons)
+router.get('/wishlist', accountController.getWishList)
 
 module.exports = router
