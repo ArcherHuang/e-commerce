@@ -12,7 +12,7 @@ const productController = {
         const startNum = Math.floor(Math.random() * range) + 1
         const randomProducts = data.content.slice(startNum, startNum + num)
 
-        return res.render('products', {
+        return res.render('index', {
           products: data.content, 
           randomProducts: randomProducts,
           carousels: data.carousels, 
