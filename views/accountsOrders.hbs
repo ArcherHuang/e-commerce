@@ -32,6 +32,7 @@
           <th scope="col">訂單狀態</th>
           <th scope="col">付款狀態</th>
           <th scope="col">出貨狀態</th>
+          <th scope="col">＃</th>
         </tr>
       </thead>
       <tbody>
@@ -64,6 +65,9 @@
             <p class="text-dark">{{this.shippingStatusString}}</p>
           </td>
           {{/ifCond}}
+          <td>
+            <a href="/accounts/orders/{{this.id}}" class="btn btn-outline-info btn-sm">Detail</a>
+          </td>
         </tr>
         {{/each}}
       </tbody>
