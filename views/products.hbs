@@ -1,5 +1,5 @@
 {{!-- Main page --}}
-{{> products/navBar this}}
+{{> navBar this}}
 {{> products/slider this}}
 {{> products/banner}}
 {{!-- {{> products/bestSellProducts}} --}}
@@ -7,15 +7,15 @@
 <div class="product-area pb-60">
     <div class="container">
         <div class="section-title text-center mb-40">
-            <h2>All Products</h2>
+            <h2>推薦產品</h2>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text</p>
         </div>
 
         <div class="row">
           {{!-- 傳輸所有資料至partial -> this --}}
           {{!-- 傳輸products資料至partial -> products=products --}}
-          {{> products/productCard randomProducts=randomProducts}}
+          {{> productCard items=randomProducts}}
         </div>
     </div>
 </div>
-{{> products/footer}}
+{{> footer}}
