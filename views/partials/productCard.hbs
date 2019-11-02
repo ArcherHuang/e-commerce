@@ -1,11 +1,11 @@
 {{!---------------------- All Products --------------------------}}
 
             {{!---------------------- Product Card--------------------------}}
-            {{#each randomProducts}}
+            {{#each items}}
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                 <div class="product-wrap mb-35">
                     <div class="product-img mb-15">
-                        <a href="product-details.html"><img src="{{this.image}}" alt="product"></a>
+                        <a href="/products/{{this.id}}"><img src="{{this.image}}" alt="product"></a>
                         <div class="product-action">
                              <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
                              <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
@@ -15,15 +15,15 @@
                     </div>
 
                     <div class="product-content">
-                        <span>{{this.name}}</span>
-                        <h4><a href="product-details.html">{{this.deacription}}</a></h4>
+                        <span>{{this.Category.name}}</span>
+                        <h4><a href="/products/{{this.id}}">{{this.name}}</a></h4>
                         <div class="price-addtocart">
                             <div class="product-price">
                                 <span>$ {{this.price}}</span>
                             </div>
                             <form>
                                 <div class="product-addtocart">
-                                    <button type="submit">+ Add To Cart</button>
+                                    <button type="submit">+ 新增至購物車</button>
                                 </div>
                             </form>
                         </div>
@@ -33,7 +33,7 @@
            
       
 
-<!-- Modal -->
+{{!---------------- Modal ------------------------}}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -1,0 +1,11 @@
+<div class="sidebar-widget shop-sidebar-border pt-40">
+      <h4 class="sidebar-title">Categories 類別</h4>
+      <div class="shop-catigory mt-20">
+          <ul id="faq">
+             <li> <a href="?category_id=">All</a></li>
+            {{#each categories}}
+              <li> <a href="?category_id={{this.id}}">{{this.name}}</a></li>
+            {{/each}}
+          </ul>
+      </div>
+  </div>
