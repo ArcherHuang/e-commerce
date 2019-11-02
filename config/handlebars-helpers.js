@@ -11,6 +11,11 @@ module.exports = {
 
   moment: function (a) {
     return moment(a).fromNow()
+  },
+
+  momentFormat: function (a) {
+    return moment(a).format('YYYY-MM-DD')
   }
+
 
 }
