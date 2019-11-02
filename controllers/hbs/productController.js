@@ -23,18 +23,33 @@ const productController = {
       }
     })
   },
+
   getShop: (req, res) => {
     productService.getProducts(req, res, (data) => {
+      if (data['status'] === 'success') {
+        req.flash('success_messages', data['message'])
+        console.log('----------------req.user----------------------',req.user)
+
+        return res.render('shop', {
+          products: data.content,
+          carousels: data.carousels, 
+          categories: data.categories
+        })
+      } else {
+        return req.flash('error_messages', data['message'])
+      }
+    })
+  },
+
+  getProduct: (req, res) => {
+    productService.getProduct(req, res, (data) => {
       if (data['status'] === 'success') {
         req.flash('success_messages', data['message'])
         console.log(req.user)
         console.log('123')
 
-        return res.render('shop', {
-          products: data.content, 
-          randomProducts: randomProducts,
-          carousels: data.carousels, 
-          categories: data.categories
+        return res.render('productDetail', {
+          product: data.content
         })
       } else {
         return req.flash('error_messages', data['message'])
