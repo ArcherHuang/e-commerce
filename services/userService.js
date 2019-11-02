@@ -210,6 +210,7 @@ const userService = {
             }
             user.update({
               name: req.body.name,
+              email: req.body.email,
               phone: req.body.phone,
               address: req.body.address,
               birthday: req.body.birthday,

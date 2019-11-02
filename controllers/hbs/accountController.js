@@ -69,7 +69,36 @@ const userController = {
         console.log(`Err: ${err}`)
       }
     })
-  }
+  },
 
+  getProfileEditPage: async (req, res) => {
+    await userService.getProfile(req, res, async (data) => {
+      try {
+        if (data['status'] == 'success') {
+          await res.render('accountsEditPage', {
+            user: data.content,
+          })
+        } else {
+          req.flash('error_messages', "請先登入")
+          res.redirect('/products')
+        }
+      } catch (err) {
+        req.flash('error_messages', "無法取得使用者個人頁面")
+        console.log(`Err: ${err}`)
+      }
+    })
+  },
+
+  putProfile: async (req, res) => {
+    await userService.putProfile(req, res, (data) => {
+      if (data['status'] == 'success') {
+        req.flash('success_messages', "更新個人資訊成功")
+        res.redirect('/accounts')
+      } else {
+        req.flash('error_messages', "更新個人資訊失敗")
+        res.redirect('/accounts/edit')
+      }
+    })
+  }
 }
 module.exports = userController

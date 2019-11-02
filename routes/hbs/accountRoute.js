@@ -24,6 +24,9 @@ router.post('/reset-password', forgetPasswordController.setRedisKey)
 router.get('/modfiy-password', forgetPasswordController.modifyPasswordView)
 router.put('/modfiy-password', forgetPasswordController.resetPassword)
 
+// Member
 router.get('/', accountController.getProfile)
+router.get('/edit', accountController.getProfileEditPage)
+router.put('/', accountController.putProfile)
 
 module.exports = router
