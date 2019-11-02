@@ -12,11 +12,29 @@ const productController = {
         const startNum = Math.floor(Math.random() * range) + 1
         const randomProducts = data.content.slice(startNum, startNum + num)
 
-        return res.render('products', {
-          products: data.content,
+        return res.render('index', {
+          products: data.content, 
           randomProducts: randomProducts,
-          carousels: data.carousels,
+          carousels: data.carousels, 
           categories: data.categories
+        })
+      } else {
+        return req.flash('error_messages', data['message'])
+      }
+    })
+  },
+  getShop: (req, res) => {
+    productService.getProducts(req, res, (data) => {
+      if (data['status'] === 'success') {
+        req.flash('success_messages', data['message'])
+        console.log(`1_req_user_req_user_req_user_req_user: ${req.user}`)
+        const num = 12
+        const range = data.content.length - num
+        const startNum = Math.floor(Math.random() * range) + 1
+        const randomProducts = data.content.slice(startNum, startNum + num)
+
+        return res.render('shop', {
+          products: data.content
         })
       } else {
         return req.flash('error_messages', data['message'])

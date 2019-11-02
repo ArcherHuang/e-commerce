@@ -5,7 +5,9 @@ const passport = require('passport')
 const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
 const productController = require('../../controllers/hbs/productController')
 
-router.get('/products', productController.getProducts)
-router.post('/products/:product_id/unlike', productController.unlikeProduct)
+
+router.get('/', productController.getProducts)
+router.get('/shop', productController.getShop)
+router.post('/:product_id/unlike', productController.unlikeProduct)
 
 module.exports = router
