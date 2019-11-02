@@ -1,4 +1,9 @@
 const userService = require('../../services/userService.js')
+const express = require('express')
+const app = express()
+
+const db = require('../../models')
+const { User, Product, Order, OrderItem, Coupon, CouponDistribution, Review, PageView } = db
 
 const userController = {
 
@@ -44,6 +49,27 @@ const userController = {
     res.redirect('/signin')
   },
 
-}
+  getProfile: async (req, res) => {
 
+    await userService.getProfile(req, res, async (data) => {
+      try {
+        if (data['status'] == 'success') {
+          await res.render('accountsMainPage', {
+            user: data.content,
+            productLiked: data.content.productLiked,
+            productViewed: data.content.productViewed,
+            productReviewed: data.content.productReviewed,
+          })
+        } else {
+          req.flash('error_messages', "請先登入")
+          res.redirect('/products')
+        }
+      } catch (err) {
+        req.flash('error_messages', "無法取得使用者個人頁面")
+        console.log(`Err: ${err}`)
+      }
+    })
+  }
+
+}
 module.exports = userController
