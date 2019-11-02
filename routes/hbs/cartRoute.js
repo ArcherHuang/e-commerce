@@ -3,9 +3,8 @@ const router = express.Router()
 const passport = require('passport')
 
 const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
-const productController = require('../../controllers/hbs/productController')
+const cartController = require('../../controllers/hbs/cartController')
 
-router.get('/products', productController.getProducts)
-router.post('/products/:product_id/unlike', productController.unlikeProduct)
+router.post('/', cartController.postCart)
 
 module.exports = router

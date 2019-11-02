@@ -201,26 +201,51 @@ const userController = {
   getCoupons: async (req, res) => {
     await userService.getCoupons(req, res, async (data) => {
       try {
-        let coupons = data.content
+        if (data['status'] == 'success') {
+          let coupons = data.content
 
-        // 加入 coupon 的使用狀況
-        coupons = await coupons.map(r => ({
-          name: r.name,
-          sn: r.sn,
-          amount: r.amount,
-          discount: r.discount,
-          expireDate: r.expireDate,
-          status: (r.dataStatus == 1 && r.numberOfLimitation > 0 && r.CouponDistribution.usageStatus == '1') ? '有效' : '已無法使用',
-        }))
-        await res.render('accountsCoupons', { coupons: coupons })
+          // 加入 coupon 的使用狀況
+          coupons = await coupons.map(r => ({
+            name: r.name,
+            sn: r.sn,
+            amount: r.amount,
+            discount: r.discount,
+            expireDate: r.expireDate,
+            status: (r.dataStatus == 1 && r.numberOfLimitation > 0 && r.CouponDistribution.usageStatus == '1') ? '有效' : '已無法使用',
+          }))
+          res.render('accountsCoupons', { coupons: coupons })
+        }
       }
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "取得訂單細節失敗")
-        res.redirect('/accounts')
+        res.redirect('back')
       }
     })
 
+  },
+
+  getWishList: async (req, res) => {
+    await userService.getProfile(req, res, async (data) => {
+      try {
+        if (data['status'] == 'success') {
+          let products = data.content.productLiked
+          products = await products.map(r => ({
+            id: r.id,
+            name: r.name,
+            description: r.description,
+            price: r.price,
+            inventory: r.inventory,
+            likeStatus: r.Like.dataStatus
+          }))
+          res.render('accountsWishList', { products: products })
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        res.redirect('back')
+      }
+    })
   },
 
   // 將 dataStatus 轉為文字
