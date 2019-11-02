@@ -108,6 +108,7 @@ const userController = {
 
           let orders = data.content
           orders = orders.map(r => ({
+            id: r.id,
             totalAmount: r.totalAmount,
             dataStatus: r.dataStatus,
             paymentStatus: r.paymentStatus,
@@ -129,6 +130,72 @@ const userController = {
         console.log(`ERR: ${err}`)
       }
     })
+  },
+
+  getOrder: async (req, res) => {
+
+    await userService.getOrder(req, res, (data) => {
+      try {
+        if (data['status'] == 'success') {
+
+          // 取得訂單資訊
+          let order = data.content
+          // 取得產品資訊
+          let products = data.content.items
+          // 整理產品資訊
+          order = {
+            id: order.id,
+            name: order.name,
+            phone: order.phone,
+            address: order.address,
+            totalAmount: order.totalAmount,
+            dataStatus: order.dataStatus,
+            paymentStatus: order.paymentStatus,
+            shippingStatus: order.shippingStatus,
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt,
+            // 將資料狀態轉換成字串顯示
+            dataStatusString: userController.transformDataStatus(order.dataStatus),
+            shippingStatusString: userController.transformShippingStatus(order.shippingStatus),
+            paymentStatusString: userController.transformPaymentStatus(order.paymentStatus),
+          }
+
+          // 取出訂單中的商品數量
+          products = products.map(r => ({
+            id: r.id,
+            name: r.name,
+            description: r.description,
+            price: r.price,
+            quantity: r.OrderItem.quantity
+          }))
+
+          res.render('accountsOrderDetails', { order: order, products: products })
+        } else {
+          req.flash('error_messages', "取得訂單細節失敗")
+          res.redirect('/accounts/orders')
+        }
+      }
+      catch (err) {
+        console.log(`ERR: ${err}`)
+      }
+    })
+  },
+
+  cancelOrder: async (req, res) => {
+    try {
+      await userService.cancelOrder(req, res, (data) => {
+        if (data['status'] == 'success') {
+          // req.flash('success_messages', "取消訂單成功")
+          res.redirect('back')
+        } else {
+          // req.flash('error_messages', "取消訂單失敗")
+          res.redirect('back')
+        }
+      })
+    }
+    catch (err) {
+      console.log(`ERR: ${err}`)
+    }
   },
 
   // 將 dataStatus 轉為文字

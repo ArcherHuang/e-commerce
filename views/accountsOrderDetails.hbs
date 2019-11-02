@@ -1,0 +1,140 @@
+{{> messages}}
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    <h3>會員專區</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/accounts/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/coupons">Coupons</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/reviews">Wish List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/reviews">Your Reviews</a>
+      </li>
+    </ul>
+    <br>
+    <h4>訂單細節</h4>
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+    <br>
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <th scope="row">訂單狀態</th>
+          {{#ifCond order.dataStatus 1}}
+          <td>
+            <p class="text-dark"><b>{{order.dataStatusString}}</b></p>
+          </td> {{else}} <td>
+            <p class="text-muted">{{order.dataStatusString}}</p>
+          </td>
+          {{/ifCond}}
+          {{#ifCond order.dataStatus 1}}
+          <td>
+            <form class="" action="/accounts/orders/{{order.id}}/cancel?_method=PUT" method="post">
+              <input class="btn btn-outline-danger btn-sm" style="width: 74px;height:31px" type="submit" value="取消訂單" />
+            </form>
+          </td>
+          {{/ifCond}}
+        </tr>
+        <tr>
+          <th scope="row">付款狀態</th>
+          {{#ifCond order.paymentStatus '0'}}
+          <td>
+            <p class="text-danger">{{order.paymentStatusString}}</p>
+          </td>
+          {{else}}
+          <td>
+            <p class="text-dark">{{order.paymentStatusString}}</p>
+          </td>
+          {{/ifCond}}
+          {{#ifCond order.paymentStatus '0'}}
+          <td>
+            <a href="/orders/{{this.id}}/payment" class="btn btn-success btn-sm">立即付款</a>
+          </td>
+          {{/ifCond}}
+        </tr>
+        <tr>
+          <th scope="row">出貨狀態</th>
+          {{#ifCond order.shippingStatus '0'}}
+          <td>
+            <p class="text-danger">{{order.shippingStatusString}}</p>
+          </td>
+          {{else}}
+          <td>
+            <p class="text-dark">{{order.shippingStatusString}}</p>
+          </td>
+          {{/ifCond}}
+        </tr>
+        <tr>
+          <th scope="row">姓名</th>
+          <td>{{order.name}}</td>
+        </tr>
+        <tr>
+          <th scope="row">電話</th>
+          <td>{{order.phone}}</td>
+        </tr>
+        <tr>
+          <th scope="row">地址</th>
+          <td>{{order.address}}</td>
+        </tr>
+        <tr>
+          <th scope="row">金額</th>
+          <td>{{order.totalAmount}}</td>
+        </tr>
+        <tr>
+          <th scope="row">訂單更新日期</th>
+          <td>{{momentFormat order.updatedAt}}</td>
+        </tr>
+        <tr>
+          <th scope="row">訂單建立日期</th>
+          <td>{{momentFormat order.createdAt}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav class="navbar navbar-light bg-light">
+      <span class="navbar-text">
+        <h4>產品資訊</h4>
+      </span>
+    </nav>
+    <table class="table table-hover" id="dataTable">
+      <thead>
+        <tr>
+          <th scope="col">名稱</th>
+          <th scope="col" style="width: 50%">敘述</th>
+          <th scope="col">單價</th>
+          <th scope="col">購買數量</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each products}}
+        <tr>
+          <td>
+            <a href="/products/{{this.id}}">
+              <p class="text-primary">{{this.name}}</p>
+            </a>
+          </td>
+          <td>{{this.description}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.quantity}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+  </div>
+</div>
