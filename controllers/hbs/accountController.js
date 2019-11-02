@@ -99,6 +99,78 @@ const userController = {
         res.redirect('/accounts/edit')
       }
     })
-  }
+  },
+
+  getOrders: async (req, res) => {
+    await userService.getOrders(req, res, (data) => {
+      try {
+        if (data['status'] == 'success') {
+
+          let orders = data.content
+          orders = orders.map(r => ({
+            totalAmount: r.totalAmount,
+            dataStatus: r.dataStatus,
+            paymentStatus: r.paymentStatus,
+            shippingStatus: r.shippingStatus,
+            createdAt: r.createdAt,
+            updatedAt: r.updatedAt,
+            // 將資料狀態轉換成字串顯示
+            dataStatusString: userController.transformDataStatus(r.dataStatus),
+            shippingStatusString: userController.transformShippingStatus(r.shippingStatus),
+            paymentStatusString: userController.transformPaymentStatus(r.paymentStatus),
+          }))
+          res.render('accountsOrders', { orders: orders })
+        } else {
+          req.flash('error_messages', "取得訂單清單失敗")
+          res.redirect('/accounts')
+        }
+      }
+      catch (err) {
+        console.log(`ERR: ${err}`)
+      }
+    })
+  },
+
+  // 將 dataStatus 轉為文字
+  transformDataStatus: (d) => {
+    if (d == 0) {
+      d = "已刪除"
+    } else if (d == 1) {
+      d = "成立"
+    } else if (d == 2) {
+      d = "已取消"
+    } else {
+      d = "狀態有誤"
+    }
+    return d
+  },
+
+  // 將 paymentStatus 轉為文字
+  transformPaymentStatus: (d) => {
+    if (d == 0) {
+      d = "待付款"
+    } else if (d == 1) {
+      d = "已付款"
+    } else if (d == 2) {
+      d = "取消付款"
+    } else {
+      d = "狀態有誤"
+    }
+    return d
+  },
+
+  // 將 shippingStatus 轉為文字
+  transformShippingStatus: (d) => {
+    if (d == 0) {
+      d = "待出貨"
+    } else if (d == 1) {
+      d = "已出貨"
+    } else if (d == 2) {
+      d = "取消出貨"
+    } else {
+      d = "狀態有誤"
+    }
+    return d
+  },
 }
 module.exports = userController

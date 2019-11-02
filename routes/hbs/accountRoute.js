@@ -28,5 +28,6 @@ router.put('/modfiy-password', forgetPasswordController.resetPassword)
 router.get('/', accountController.getProfile)
 router.get('/edit', accountController.getProfileEditPage)
 router.put('/', accountController.putProfile)
+router.get('/orders', accountController.getOrders)
 
 module.exports = router
