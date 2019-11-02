@@ -27,11 +27,8 @@ const productController = {
     productService.getProducts(req, res, (data) => {
       if (data['status'] === 'success') {
         req.flash('success_messages', data['message'])
-        console.log(`1_req_user_req_user_req_user_req_user: ${req.user}`)
-        const num = 12
-        const range = data.content.length - num
-        const startNum = Math.floor(Math.random() * range) + 1
-        const randomProducts = data.content.slice(startNum, startNum + num)
+        console.log(req.user)
+        console.log('123')
 
         return res.render('shop', {
           products: data.content, 
