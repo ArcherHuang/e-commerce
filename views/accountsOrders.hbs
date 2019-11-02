@@ -1,0 +1,78 @@
+{{> messages}}
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    <h3>會員專區</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link  active" href="/accounts/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/coupons">Coupons</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/wishlist">Wish List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/reviews">Your Reviews</a>
+      </li>
+    </ul>
+    <br>
+    <h4>訂單資料</h4>
+    <br>
+    <table class="table table-hover" id="dataTable">
+      <thead>
+        <tr>
+          <th scope="col">日期</th>
+          <th scope="col">金額</th>
+          <th scope="col">訂單狀態</th>
+          <th scope="col">付款狀態</th>
+          <th scope="col">出貨狀態</th>
+          <th scope="col">＃</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each orders}}
+        <tr>
+          <td>{{momentFormat this.createdAt}}</td>
+          <td>{{this.totalAmount}}</td>
+          {{#ifCond this.dataStatus 1}}
+          <td>
+            <p class="text-dark"><b>{{this.dataStatusString}}</b></p>
+          </td> {{else}} <td>
+            <p class="text-muted">{{this.dataStatusString}}</p>
+          </td>
+          {{/ifCond}}
+          {{#ifCond this.paymentStatus '0'}}
+          <td>
+            <p class="text-danger">{{this.paymentStatusString}}</p>
+          </td>
+          {{else}}
+          <td>
+            <p class="text-dark">{{this.paymentStatusString}}</p>
+          </td>
+          {{/ifCond}}
+          {{#ifCond this.shippingStatus '0'}}
+          <td>
+            <p class="text-danger">{{this.shippingStatusString}}</p>
+          </td>
+          {{else}}
+          <td>
+            <p class="text-dark">{{this.shippingStatusString}}</p>
+          </td>
+          {{/ifCond}}
+          <td>
+            <a href="/accounts/orders/{{this.id}}" class="btn btn-outline-info btn-sm">Detail</a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <br>
+  </div>
+</div>
