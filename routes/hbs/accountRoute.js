@@ -9,7 +9,7 @@ const forgetPasswordController = require('../../controllers/hbs/forgetPasswordCo
 // User
 router.get('/signin', accountController.signInView)
 router.post('/signin', passport.authenticate('local', {
-  failureRedirect: '/signin',
+  failureRedirect: '/accounts/signin',
   failureFlash: true
 }), accountController.signIn)
 
