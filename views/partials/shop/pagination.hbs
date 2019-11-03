@@ -1,12 +1,21 @@
 <div class="pagination-style text-center">
     <ul>
-        <li><a class="prev" href="#"><i class="la la-angle-left"></i></a></li>
-        <li><a href="#">01</a></li>
-        <li><a href="#">02</a></li>
-        <li><a class="active" href="#">03</a></li>
-        <li><a href="#">04</a></li>
-        <li><a href="#">05</a></li>
-        <li><a href="#">06</a></li>
-        <li><a class="next" href="#"><i class="la la-angle-right"></i></a></li>
+        <li>
+            <a class="prev" href="/products/shop?page={{prev}}&category_id={{category_id}}">
+                <i class="la la-angle-left"></i>
+            </a>
+        </li>
+        {{#each totalPages}}
+            {{#ifCond this ../page}}
+                <li><a class="active" href="#">{{this}}</a></li>
+            {{else}}
+                <li><a href="/products/shop?page={{this}}&categoryId={{../category_id}}">{{this}}</a></li>
+            {{/ifCond}}
+        {{/each}}
+        <li>
+            <a class="next" href="/products/shop?page={{next}}&category_id={{category_id}}">
+                <i class="la la-angle-right"></i>
+            </a>
+        </li>
     </ul>
 </div>
