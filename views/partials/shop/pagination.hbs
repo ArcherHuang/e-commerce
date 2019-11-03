@@ -1,7 +1,7 @@
 <div class="pagination-style text-center">
     <ul>
         <li>
-            <a class="prev" href="/products/shop?page={{prev}}&category_id={{category_id}}">
+            <a class="prev" href="/products/shop?page={{prev}}&category_id={{category_id}}&keyword={{keyword}}">
                 <i class="la la-angle-left"></i>
             </a>
         </li>
@@ -9,11 +9,11 @@
             {{#ifCond this ../page}}
                 <li><a class="active" href="#">{{this}}</a></li>
             {{else}}
-                <li><a href="/products/shop?page={{this}}&category_id={{../category_id}}">{{this}}</a></li>
+                <li><a href="/products/shop?page={{this}}&category_id={{../category_id}}&keyword={{../keyword}}">{{this}}</a></li>
             {{/ifCond}}
         {{/each}}
         <li>
-            <a class="next" href="/products/shop?page={{next}}&category_id={{category_id}}">
+            <a class="next" href="/products/shop?page={{next}}&category_id={{category_id}}&keyword={{keyword}}">
                 <i class="la la-angle-right"></i>
             </a>
         </li>
