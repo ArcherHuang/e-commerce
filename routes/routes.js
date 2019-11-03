@@ -6,10 +6,12 @@ const { ensureAuthenticated, isAuthAdmin, getUser } = require('../config/auth')
 
 const accountRoute = require('./hbs/accountRoute')
 const cartRoute = require('./hbs/cartRoute')
+const orderRoute = require('./hbs/orderRoute')
 const productRoute = require('./hbs/productRoute')
 
 router.use('/accounts', accountRoute)
 router.use('/carts', cartRoute)
+router.use('/orders', orderRoute)
 router.use('/products', productRoute)
 
 // 將其他 routes 導回首頁
