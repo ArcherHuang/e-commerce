@@ -390,6 +390,11 @@
  *         schema:
  *           type: string
  *         description: Put in keyword that user want to query
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Put in page number that user want to query
  *     responses:
  *       200:
  *         description: 取得所有 Product 成功

@@ -11,73 +11,100 @@ const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageV
 const productService = {
 
   getProducts: async (req, res, callback) => {
+    try {
+      // 此程式會取出的資料
+      let products
+      let currentUser
+      let carousels
+      let categories
 
-    let carousels = await Carousel.findAll({
-      where: {
-        dataStatus: 1
+      // 取出 carousels
+      carousels = await Carousel.findAll({ where: { dataStatus: 1 } })
+      // 取出 categories
+      categories = await Category.findAll({ where: { dataStatus: 1 } })
+      // 取出 current user  
+      if (req.session.user) {
+        currentUser = await User.findByPk(req.session.user.id)
+      } else {
+        currentUser = []
       }
-    })
-    let categories = await Category.findAll({
-      where: {
-        dataStatus: 1
-      }
-    })
-    let currentUser
 
-    if (req.session.user) {
-      currentUser = await User.findByPk(req.session.user.id)
-    } else {
-      currentUser = []
+      // 取出商品
+      if (req.query.category_id && req.query.keyword) {
+        // 若同時存在分類與關鍵字搜尋，會優先搜尋分類，再搜尋關鍵字
+        const keyword = req.query.keyword ? req.query.keyword : null
+        products = await Product.findAll({
+          include: [Category, Review],
+          where: {
+            dataStatus: 1,
+            CategoryId: req.query.category_id ? req.query.category_id : null,
+            [Op.or]: [
+              { name: { [Op.like]: '%' + keyword + '%' } },
+              { description: { [Op.like]: '%' + keyword + '%' } }
+            ]
+          },
+          order: [['updatedAt', 'DESC']]
+        })
+      } else if (req.query.category_id || req.query.keyword) {
+        // 若分類與關鍵字搜尋其中之一存在
+        const keyword = req.query.keyword ? req.query.keyword : null
+        products = await Product.findAll({
+          include: [Category, Review],
+          where: {
+            dataStatus: 1,
+            [Op.or]: [
+              { CategoryId: req.query.category_id ? req.query.category_id : null, },
+              { name: { [Op.like]: '%' + keyword + '%' } },
+              { description: { [Op.like]: '%' + keyword + '%' } }
+            ]
+          },
+          order: [['updatedAt', 'DESC']]
+        })
+      } else {
+        // 沒有分類或關鍵字搜尋，取出所有商品
+        products = await Product.findAll({ include: [Category, Review] })
+      }
+
+      // pagination setting
+      const pageLimit = 12
+      let offset = 0
+      let page
+      let pages = Math.ceil(products.length / pageLimit)
+      let totalPages = Array.from({ length: pages }).map((item, index) => index + 1)
+
+      // 驗證 page，避免有小於 1 或大於 totalPages 數量的值輸入
+      if (Number(req.query.page) > totalPages.length) {
+        page = totalPages.length
+      } else if (Number(req.query.page) < 1) {
+        page = 1
+      } else {
+        page = Number(req.query.page) || 1
+      }
+
+      if (page) { offset = (page - 1) * pageLimit }
+      let prev = page - 1 < 1 ? 1 : page - 1
+      let next = page + 1 > pages ? pages : page + 1
+      let theLastProductIndex = offset + pageLimit
+
+      products = products.slice(offset, theLastProductIndex)
+
+      return callback({
+        status: 'success',
+        message: '取得搜尋產品清單成功',
+        content: products,
+        carousels: carousels,
+        categories: categories,
+        currentUser: currentUser,
+        totalPages: totalPages,
+        prev: prev,
+        next: next
+      })
     }
-
-    if (req.query.category_id && req.query.keyword) {
-      const keyword = req.query.keyword ? req.query.keyword : null
-      return Product.findAll({
-        include: [Category, Review],
-        where: {
-          dataStatus: 1,
-          CategoryId: req.query.category_id ? req.query.category_id : null,
-          [Op.or]: [
-            { name: { [Op.like]: '%' + keyword + '%' } },
-            { description: { [Op.like]: '%' + keyword + '%' } }
-          ]
-        },
-        order: [['updatedAt', 'DESC']]
-      }).then(products => {
-        if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
-        } else {
-          return Product.findAll({ include: [Category, Review] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
-          })
-        }
-      })
-
-    } else if (req.query.category_id || req.query.keyword) {
-      const keyword = req.query.keyword ? req.query.keyword : null
-      return Product.findAll({
-        include: [Category, Review],
-        where: {
-          dataStatus: 1,
-          [Op.or]: [
-            { CategoryId: req.query.category_id ? req.query.category_id : null, },
-            { name: { [Op.like]: '%' + keyword + '%' } },
-            { description: { [Op.like]: '%' + keyword + '%' } }
-          ]
-        },
-        order: [['updatedAt', 'DESC']]
-      }).then(products => {
-        if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
-        } else {
-          return Product.findAll({ include: [Category, Review] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
-          })
-        }
-      })
-    } else {
-      return Product.findAll({ include: [Category, Review] }).then(products => {
-        return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({
+        status: 'error',
+        message: '取得搜尋產品清單失敗',
       })
     }
   },
