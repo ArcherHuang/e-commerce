@@ -163,10 +163,21 @@
                   </div>
                 </div>
               </div>
-              <div class="search-wrap common-style ml-25">
-                <button class="search-active">
-                  <i class="la la-search"></i>
-                </button>
+          </div>
+          <!-- main-search start -->
+          <div class="main-search-active">
+              <div class="sidebar-search-icon  border">
+                  <button class="search-close"><span class="la la-close"></span></button>
+              </div>
+              <div class="sidebar-search-input">
+                  <form action="/products/shop">
+                      <div class="form-search">
+                          <input id="search" class="input-text" name="keyword" value="{{keyword}}" placeholder="搜尋賣場..." type="search">
+                          <button>
+                              <i class="la la-search"></i>
+                          </button>
+                      </div>
+                  </form>
               </div>
             </div>
           </div>
@@ -300,38 +311,46 @@
 
   <!-- mobile menu -->
   <div class="mobile-off-canvas-active">
-    <a class="mobile-aside-close"><i class="la la-close"></i></a>
-    <div class="header-mobile-aside-wrap">
-      <div class="mobile-search">
-        <form class="search-form" action="#">
-          <input type="text" placeholder="搜尋整個賣場...">
-          <button class="button-search"><i class="la la-search"></i></button>
-        </form>
-      </div>
-      <div class="mobile-menu-wrap">
-        <!-- mobile menu start -->
-        <div class="mobile-navigation">
-          <!-- mobile menu navigation start -->
-          <nav>
-            <ul class="mobile-menu">
-              <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-              <li><a href="/products/shop"><b>SHOP</b> 展示中心</a></li>
-            </ul>
-          </nav>
-          <!-- mobile menu navigation end -->
-        </div>
-        <!-- mobile menu end -->
-      </div>
-      <div class="mobile-curr-lang-wrap">
-        <div class="single-mobile-curr-lang">
-          <a class="mobile-account-active" href="/accounts/users/{{user.id}}"><b>ACCOUNTS</b> 會員中心<i
-              class="la la-angle-down"></i></a>
-          <div class="lang-curr-dropdown account-dropdown-active">
-            <ul>
-              <li><a href="/accounts/signin">Sign In 登入 </a></li>
-              <li><a href="/accounts/signup">Sign Up 新增帳號 </a></li>
-              <li><a href="/accounts/users/{{user.id}}">Accounts 會員中心 </a></li>
-            </ul>
+      <a class="mobile-aside-close"><i class="la la-close"></i></a>
+      <div class="header-mobile-aside-wrap">
+          <div class="mobile-search">
+              <form class="search-form" action="/products/shop">
+                  <input type="text" name="keyword" value="{{keyword}}" placeholder="搜尋賣場...">
+                  <button class="button-search"><i class="la la-search"></i></button>
+              </form>
+          </div>
+          <div class="mobile-menu-wrap">
+              <!-- mobile menu start -->
+              <div class="mobile-navigation">
+                  <!-- mobile menu navigation start -->
+                  <nav>
+                      <ul class="mobile-menu">
+                          <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
+                          <li><a href="/products/shop"><b>SHOP</b> 展示中心</a></li>
+                      </ul>
+                  </nav>
+                  <!-- mobile menu navigation end -->
+              </div>
+              <!-- mobile menu end -->
+          </div>
+          <div class="mobile-curr-lang-wrap">
+              <div class="single-mobile-curr-lang">
+                  <a class="mobile-account-active" href="/accounts/users/{{user.id}}"><b>ACCOUNTS</b> 會員中心<i class="la la-angle-down"></i></a>
+                  <div class="lang-curr-dropdown account-dropdown-active">
+                      <ul>
+                          <li><a href="/accounts/signin">Sign In 登入 </a></li>
+                          <li><a href="/accounts/signup">Sign Up 新增帳號 </a></li>
+                          <li><a href="/accounts/users/{{user.id}}">Accounts 會員中心 </a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="mobile-social-wrap">
+              <a class="facebook" href="#"><i class="ti-facebook"></i></a>
+              <a class="twitter" href="#"><i class="ti-twitter-alt"></i></a>
+              <a class="pinterest" href="#"><i class="ti-pinterest"></i></a>
+              <a class="instagram" href="#"><i class="ti-instagram"></i></a>
+              <a class="google" href="#"><i class="ti-google"></i></a>
           </div>
         </div>
       </div>
