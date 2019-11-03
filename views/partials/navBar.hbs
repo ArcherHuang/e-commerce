@@ -176,9 +176,9 @@
                   <button class="search-close"><span class="la la-close"></span></button>
               </div>
               <div class="sidebar-search-input">
-                  <form>
+                  <form action="/products/shop">
                       <div class="form-search">
-                          <input id="search" class="input-text" value="" placeholder="Search Now" type="search">
+                          <input id="search" class="input-text" name="keyword" value="{{keyword}}" placeholder="搜尋賣場..." type="search">
                           <button>
                               <i class="la la-search"></i>
                           </button>
@@ -301,8 +301,8 @@
       <a class="mobile-aside-close"><i class="la la-close"></i></a>
       <div class="header-mobile-aside-wrap">
           <div class="mobile-search">
-              <form class="search-form" action="#">
-                  <input type="text" placeholder="搜尋整個賣場...">
+              <form class="search-form" action="/products/shop">
+                  <input type="text" name="keyword" value="{{keyword}}" placeholder="搜尋賣場...">
                   <button class="button-search"><i class="la la-search"></i></button>
               </form>
           </div>

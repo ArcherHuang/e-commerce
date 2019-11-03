@@ -11,16 +11,14 @@ const productController = {
           const range = data.content.length - num
           const startNum = Math.floor(Math.random() * range)
           const randomProducts = data.content.slice(startNum, startNum + num)
+          const keyword = req.query.keyword || ''
 
-          // const regex = new RegExp(req.query.keyword, 'i')
-          // restaurants = restaurants.filter((restaurant) => restaurant.name.match(regex))
-          // console.log('----------category_id--------------',Number(req.query.category_id))
-          
           return res.render('index', {
             products: data.content,
             randomProducts: randomProducts,
             carousels: data.carousels,
-            categories: data.categories
+            categories: data.categories,
+            keyword: keyword
           })
         } else {
           return req.flash('error_messages', data['message'])
@@ -41,6 +39,7 @@ const productController = {
 
           const page = Number(req.query.page) || 1
           const category_id = Number(req.query.category_id) || ''
+          const keyword = req.query.keyword || ''
 
           return res.render('shop', {
             products: data.content,
@@ -49,7 +48,8 @@ const productController = {
             page: page,
             totalPages: data.totalPages,
             prev: data.prev,
-            next: data.next
+            next: data.next,
+            keyword: keyword
           })
         } else {
           return req.flash('error_messages', data['message'])
