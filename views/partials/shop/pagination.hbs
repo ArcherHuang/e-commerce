@@ -9,7 +9,7 @@
             {{#ifCond this ../page}}
                 <li><a class="active" href="#">{{this}}</a></li>
             {{else}}
-                <li><a href="/products/shop?page={{this}}&categoryId={{../category_id}}">{{this}}</a></li>
+                <li><a href="/products/shop?page={{this}}&category_id={{../category_id}}">{{this}}</a></li>
             {{/ifCond}}
         {{/each}}
         <li>
