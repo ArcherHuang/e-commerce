@@ -20,7 +20,7 @@ const signUpValidEmailService = {
 
     return new Promise(resolve => {
 
-      const host = process.env.DEPLOY_VIEW_SERVER
+      const host = process.env.DEPLOY_VIEW_SERVER || "http://localhost:3000"
       const token = uuidv4().replace(/-/g, '') + uuidv4().replace(/-/g, '')
       const item = JSON.stringify({
         email,

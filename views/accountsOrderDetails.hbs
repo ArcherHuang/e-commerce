@@ -61,7 +61,7 @@
           {{/ifCond}}
           {{#ifCond order.paymentStatus '0'}}
           <td>
-            <a href="/orders/{{this.id}}/payment" class="btn btn-success btn-sm">立即付款</a>
+            <a href="/orders/{{order.id}}/payment" class="btn btn-success btn-sm">立即付款</a>
           </td>
           {{/ifCond}}
         </tr>

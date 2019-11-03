@@ -23,7 +23,7 @@ const userController = {
 
   signIn: (req, res) => {
     userService.signIn(req, res, (data) => {
-      userController.responseMessageAction(req, res, data, '/products', '/accounts/signin')
+      userController.responseMessageAction(req, res, data, '/products/main', '/accounts/signin')
     })
   },
 
@@ -46,7 +46,7 @@ const userController = {
   logout: (req, res) => {
     req.flash('success_messages', '登出成功！')
     req.logout()
-    res.redirect('/signin')
+    res.redirect('/accounts/signin')
   },
 
   getProfile: async (req, res) => {
@@ -62,11 +62,12 @@ const userController = {
           })
         } else {
           req.flash('error_messages', "請先登入")
-          res.redirect('/products')
+          res.redirect('/products/main')
         }
       } catch (err) {
         req.flash('error_messages', "無法取得使用者個人頁面")
         console.log(`Err: ${err}`)
+        res.redirect('back')
       }
     })
   },
@@ -79,24 +80,32 @@ const userController = {
             user: data.content,
           })
         } else {
-          req.flash('error_messages', "請先登入")
-          res.redirect('/products')
+          req.flash('error_messages', "無法取得使用者個人頁面")
+          res.redirect('/products/main')
         }
       } catch (err) {
         req.flash('error_messages', "無法取得使用者個人頁面")
         console.log(`Err: ${err}`)
+        res.redirect('back')
       }
     })
   },
 
   putProfile: async (req, res) => {
     await userService.putProfile(req, res, (data) => {
-      if (data['status'] == 'success') {
-        req.flash('success_messages', "更新個人資訊成功")
-        res.redirect('/accounts')
-      } else {
+      try {
+        if (data['status'] == 'success') {
+          req.flash('success_messages', "更新個人資訊成功")
+          res.redirect('/accounts')
+        } else {
+          req.flash('error_messages', "更新個人資訊失敗")
+          res.redirect('/accounts/edit')
+        }
+      }
+      catch (err) {
         req.flash('error_messages', "更新個人資訊失敗")
-        res.redirect('/accounts/edit')
+        console.log(`Err: ${err}`)
+        res.redirect('back')
       }
     })
   },
@@ -128,6 +137,7 @@ const userController = {
       }
       catch (err) {
         console.log(`ERR: ${err}`)
+        res.redirect('back')
       }
     })
   },
@@ -177,6 +187,7 @@ const userController = {
       }
       catch (err) {
         console.log(`ERR: ${err}`)
+        res.redirect('back')
       }
     })
   },
@@ -195,6 +206,7 @@ const userController = {
     }
     catch (err) {
       console.log(`ERR: ${err}`)
+      res.redirect('back')
     }
   },
 
