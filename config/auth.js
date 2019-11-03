@@ -29,5 +29,13 @@ module.exports = {
       return res.json({ status: 'error', message: 'Permission denied' })
     }
 
+  },
+
+  authenticatedAdmin: (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.role == 'admin') { return next() }
+      return res.redirect('/products/main')
+    }
+    res.redirect('/accounts/signin')
   }
 }
