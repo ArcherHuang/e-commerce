@@ -185,17 +185,15 @@ const orderService = {
   postStripePayment: async (req, res, callback) => {
     try {
       // 驗證表單輸入金額是否和訂單資料庫一致
-      console.log(`=== REQ BODY: ${req.body.sn} ====`)
       let isAmountCorrect = false
       let order = await Order.findOne({ where: { sn: req.body.sn } }).then(order => { return order })
-      console.log(`=== ORDER: ${order.id} ====`)
 
       if (parseFloat(order.totalAmount) === parseFloat(req.body.amount)) {
         isAmountCorrect = true
       } else {
         isAmountCorrect = false
       }
-      console.log(`==== isAmountCorrect: ${isAmountCorrect} ====`)
+
       if (isAmountCorrect) {
         return stripe.charges.create({
           amount: parseInt((req.body.amount / 22) * 100),   // 台幣轉換成新幣，乘以 100 變成 cents
@@ -204,7 +202,6 @@ const orderService = {
           description: req.body.sn
         }).then(charge => {
           // 確認付款結果
-          console.log(`charge: ${charge}`)
           if (charge.paid === true && charge.description === req.body.sn) {
             // 付款成功
             return Order.findOne({
@@ -230,11 +227,11 @@ const orderService = {
 
                 return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
               }).catch(err => {
-                console.log(`Err1: ${err}`)
+                console.log(`Err: ${err}`)
                 return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
               })
             }).catch(err => {
-              console.log(`Err2: ${err}`)
+              console.log(`Err: ${err}`)
               return callback({ status: 'error', message: '查詢訂單失敗，訂單不存在' })
             })
           } else {
@@ -243,7 +240,7 @@ const orderService = {
           }
         }).catch(err => {
           // Stripe charge create 失敗
-          console.log(`Err3: ${err}`)
+          console.log(`Err: ${err}`)
           return callback({ status: 'error', message: 'Stripe charge create 失敗' })
         })
       } else {

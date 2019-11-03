@@ -70,10 +70,8 @@ const orderController = {
   },
 
   postStripePayment: async (req, res) => {
-    console.log(`REQ BODY: ${req.body.sn}`)
     await orderService.postStripePayment(req, res, (data) => {
       try {
-        console.log(`===${data['status']}===`)
         if (data['status'] == 'success') {
           req.flash('success_messages', '付款成功！')
           res.redirect('/orders/payment')
