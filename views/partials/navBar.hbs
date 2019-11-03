@@ -1,173 +1,167 @@
 <div class="main-wrapper">
-    <header class="header-area transparent-bar sticky-bar showdow">
-      <div class="main-header-wrap">
-          <div class="container">
-              <div class="row">
-                  <div class="col-xl-3 col-lg-3">
-                      <div class="logo mt-40">
-                          <a href="/products/main"><img src="/assets/images/logo/logo-1.png" alt="logo"></a>
-                      </div>
+  <header class="header-area transparent-bar sticky-bar showdow">
+    <div class="main-header-wrap">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-3 col-lg-3">
+            <div class="logo mt-40">
+              <a href="/products/main"><img src="/assets/images/logo/logo-1.png" alt="logo"></a>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6">
+            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
+              <nav>
+                <ul>
+                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
+                  <li><a href="/products/shop"><b>SHOP</b> 展示中心</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-3">
+            <div class="header-right-wrap mt-40">
+              {{!--------------- shopping cart (large) ---------------}}
+              <div class="cart-wrap common-style">
+                <button class="cart-active">
+                  <i class="la la-shopping-cart"></i>
+                  <span class="count-style badge badge-info">2</span>
+                </button>
+                {{!--------------- shopping cart menu (large) ---------------}}
+                <div class="shopping-cart-content">
+                  <div class="shopping-cart-top">
+                    <h4>Your Cart 購物車</h4>
+                    <a class="cart-close" href="#"><i class="la la-close"></i></a>
                   </div>
-                  <div class="col-xl-6 col-lg-6">
-                      <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-                          <nav>
-                              <ul>
-                                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                                  <li><a href="/products/shop"><b>SHOP</b> 展示中心</a></li>
-                              </ul>
-                          </nav>
+                  <ul>
+                    {{!--------------- user account ---------------}}
+                    <li class="d-flex justify-content-around">
+                      {{#if user}}
+                      <div class="mt-2">
+                        <h2><i class="la la-user text-warning"></i></h2>
                       </div>
-                  </div>
-                  <div class="col-xl-3 col-lg-3">
-                    <div class="header-right-wrap mt-40">
-                          {{!--------------- shopping cart (large) ---------------}}
-                          <div class="cart-wrap common-style">
-                              <button class="cart-active">
-                                  <i class="la la-shopping-cart"></i>
-                                  <span class="count-style badge badge-info">2</span>
-                              </button>
-                              {{!--------------- shopping cart menu (large) ---------------}}
-                              <div class="shopping-cart-content">
-                                  <div class="shopping-cart-top">
-                                      <h4>Your Cart 購物車</h4>
-                                      <a class="cart-close" href="#"><i class="la la-close"></i></a>
-                                  </div>
-                                  <ul>
-                                    {{!--------------- user account ---------------}}
-                                    <li class="d-flex justify-content-around">
-                                      {{#if user}}
-                                        <div class="mt-2">
-                                          <h2 ><i class="la la-user text-warning"></i></h2>
-                                        </div>
-                                        <div class="mt-3">
-                                          <h4><a href="/accounts/users/{{user.id}}">ACCOUNTS 會員中心</a></h4>
-                                        </div>
-                                        <div class="align-self-center">
-                                          <a href="/accounts/logout" class="btn btn-outline-danger btn-sm">登出</a>
-                                        </div>
-                                      {{else}}
-                                        <div class="mt-2">
-                                          <h2 ><i class="la la-user"></i></h2>
-                                        </div>
-                                        <div class="mt-3">
-                                          <h4><a href="/accounts/signin">SIGN IN 登入</a></h4>
-                                        </div>
-                                        <div></div>
-                                      {{/if}}
-                                    </li>
-                                    {{#ifCond user.role "admin"}}
-                                    <li class="d-flex justify-content-around">
-                                      <div class="mt-2">
-                                        <h2 ><i class="la la-gears"></i></h2>
-                                      </div>
-                                      <div class="mt-3">
-                                        <h4><a href="/admin">ADMIN 管理員</a></h4>
-                                      </div>
-                                      <div></div>
-                                    </li>
-                                    {{/ifCond}}
-                                    {{!--------------- cart items ---------------}}
-                                    <hr/>
-                                    <li class="single-shopping-cart">
-                                      <div class="shopping-cart-img">
-                                          <a href="#"><img alt="" src="/assets/images/cart/cart-1.jpg"></a>
-                                          <div class="item-close">
-                                              <a href="#"><i class="sli sli-close"></i></a>
-                                          </div>
-                                      </div>
-                                      <div class="shopping-cart-title">
-                                          <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                          <span>$99.00</span>
-                                          {{!-- Product Number --}}
-                                          <div class="pro-details-quality">
-                                              <div class="cart-plus-minus form-group">
-                                                  <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="shopping-cart-delete">
-                                          <a href="#"><i class="la la-trash"></i></a>
-                                      </div>
-                                    </li>
-                                      <li class="single-shopping-cart">
-                                          <div class="shopping-cart-img">
-                                              <a href="#"><img alt="" src="/assets/images/cart/cart-1.jpg"></a>
-                                              <div class="item-close">
-                                                  <a href="#"><i class="sli sli-close"></i></a>
-                                              </div>
-                                          </div>
-                                          <div class="shopping-cart-title">
-                                            <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                            <span>$99.00</span>
-                                            {{!-- Product Number --}}
-                                            <div class="form-group d-flex justify-content-end">
-                                              <input class="form-control form-control-sm border-dark" type="number" placeholder="數量" style="width: 80px;">
-                                            </div>
-                                          </div>
-                                          <div class="shopping-cart-delete">
-                                              <a href="#"><i class="la la-trash"></i></a>
-                                          </div>
-                                      </li>
-                                      <li class="single-shopping-cart">
-                                          <div class="shopping-cart-img">
-                                              <a href="#"><img alt="" src="/assets/images/cart/cart-2.jpg"></a>
-                                              <div class="item-close">
-                                                  <a href="#"><i class="sli sli-close"></i></a>
-                                              </div>
-                                          </div>
-                                          <div class="shopping-cart-title">
-                                            <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                            <span>$99.00</span>
-                                            {{!-- Product Number --}}
-                                            <div class="form-group d-flex justify-content-end">
-                                              <input class="form-control form-control-sm border-dark" type="number" placeholder="數量" style="width: 80px;">
-                                            </div>
-                                          </div>
-                                          <div class="shopping-cart-delete">
-                                              <a href="#"><i class="la la-trash"></i></a>
-                                          </div>
-                                      </li>
-                                      <li class="single-shopping-cart">
-                                          <div class="shopping-cart-img">
-                                              <a href="#"><img alt="" src="/assets/images/cart/cart-3.jpg"></a>
-                                              <div class="item-close">
-                                                  <a href="#"><i class="sli sli-close"></i></a>
-                                              </div>
-                                          </div>
-                                          <div class="shopping-cart-title">
-                                            <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                            <span>$99.00</span>
-                                            {{!-- quanntity input --}}
-                                            <div class="product-details-content quickview-content">
-                                              <div class="pro-details-quality">
-                                                  <div class="cart-plus-minus form-group">
-                                                      <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div class="shopping-cart-delete">
-                                              <a href="#"><i class="la la-trash"></i></a>
-                                          </div>
-                                      </li>
-                                  </ul>
-                                  <div class="shopping-cart-bottom">
-                                      <div class="shopping-cart-total">
-                                          <h4>Subtotal <span class="shop-total">$290.00</span></h4>
-                                      </div>
-                                      <div class="shopping-cart-btn btn-hover default-btn text-center">
-                                          <a class="black-color" href="#">Continue to Chackout</a>
-                                      </div>
-                                  </div>
-                              </div>
+                      <div class="mt-3">
+                        <h4><a href="/accounts/users/{{user.id}}">ACCOUNTS 會員中心</a></h4>
+                      </div>
+                      <div class="align-self-center">
+                        <a href="/accounts/logout" class="btn btn-outline-danger btn-sm">登出</a>
+                      </div>
+                      {{else}}
+                      <div class="mt-2">
+                        <h2><i class="la la-user"></i></h2>
+                      </div>
+                      <div class="mt-3">
+                        <h4><a href="/accounts/signin">SIGN IN 登入</a></h4>
+                      </div>
+                      <div></div>
+                      {{/if}}
+                    </li>
+                    {{#ifCond user.role "admin"}}
+                    <li class="d-flex justify-content-around">
+                      <div class="mt-2">
+                        <h2><i class="la la-gears"></i></h2>
+                      </div>
+                      <div class="mt-3">
+                        <h4><a href="/admin/users">ADMIN 管理員</a></h4>
+                      </div>
+                      <div></div>
+                    </li>
+                    {{/ifCond}}
+                    {{!--------------- cart items ---------------}}
+                    <hr />
+                    <li class="single-shopping-cart">
+                      <div class="shopping-cart-img">
+                        <a href="#"><img alt="" src="/assets/images/cart/cart-1.jpg"></a>
+                        <div class="item-close">
+                          <a href="#"><i class="sli sli-close"></i></a>
+                        </div>
+                      </div>
+                      <div class="shopping-cart-title">
+                        <h4><a href="#">Golden Easy Spot Chair.</a></h4>
+                        <span>$99.00</span>
+                        {{!-- Product Number --}}
+                        <div class="pro-details-quality">
+                          <div class="cart-plus-minus form-group">
+                            <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
                           </div>
-                          <div class="search-wrap common-style ml-25">
-                              <button class="search-active">
-                                  <i class="la la-search"></i>
-                              </button>
-                          </div>
+                        </div>
                       </div>
+                      <div class="shopping-cart-delete">
+                        <a href="#"><i class="la la-trash"></i></a>
+                      </div>
+                    </li>
+                    <li class="single-shopping-cart">
+                      <div class="shopping-cart-img">
+                        <a href="#"><img alt="" src="/assets/images/cart/cart-1.jpg"></a>
+                        <div class="item-close">
+                          <a href="#"><i class="sli sli-close"></i></a>
+                        </div>
+                      </div>
+                      <div class="shopping-cart-title">
+                        <h4><a href="#">Golden Easy Spot Chair.</a></h4>
+                        <span>$99.00</span>
+                        {{!-- Product Number --}}
+                        <div class="form-group d-flex justify-content-end">
+                          <input class="form-control form-control-sm border-dark" type="number" placeholder="數量"
+                            style="width: 80px;">
+                        </div>
+                      </div>
+                      <div class="shopping-cart-delete">
+                        <a href="#"><i class="la la-trash"></i></a>
+                      </div>
+                    </li>
+                    <li class="single-shopping-cart">
+                      <div class="shopping-cart-img">
+                        <a href="#"><img alt="" src="/assets/images/cart/cart-2.jpg"></a>
+                        <div class="item-close">
+                          <a href="#"><i class="sli sli-close"></i></a>
+                        </div>
+                      </div>
+                      <div class="shopping-cart-title">
+                        <h4><a href="#">Golden Easy Spot Chair.</a></h4>
+                        <span>$99.00</span>
+                        {{!-- Product Number --}}
+                        <div class="form-group d-flex justify-content-end">
+                          <input class="form-control form-control-sm border-dark" type="number" placeholder="數量"
+                            style="width: 80px;">
+                        </div>
+                      </div>
+                      <div class="shopping-cart-delete">
+                        <a href="#"><i class="la la-trash"></i></a>
+                      </div>
+                    </li>
+                    <li class="single-shopping-cart">
+                      <div class="shopping-cart-img">
+                        <a href="#"><img alt="" src="/assets/images/cart/cart-3.jpg"></a>
+                        <div class="item-close">
+                          <a href="#"><i class="sli sli-close"></i></a>
+                        </div>
+                      </div>
+                      <div class="shopping-cart-title">
+                        <h4><a href="#">Golden Easy Spot Chair.</a></h4>
+                        <span>$99.00</span>
+                        {{!-- quanntity input --}}
+                        <div class="product-details-content quickview-content">
+                          <div class="pro-details-quality">
+                            <div class="cart-plus-minus form-group">
+                              <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="shopping-cart-delete">
+                        <a href="#"><i class="la la-trash"></i></a>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="shopping-cart-bottom">
+                    <div class="shopping-cart-total">
+                      <h4>Subtotal <span class="shop-total">$290.00</span></h4>
+                    </div>
+                    <div class="shopping-cart-btn btn-hover default-btn text-center">
+                      <a class="black-color" href="#">Continue to Chackout</a>
+                    </div>
                   </div>
+                </div>
               </div>
           </div>
           <!-- main-search start -->
@@ -185,118 +179,137 @@
                       </div>
                   </form>
               </div>
+            </div>
           </div>
+        </div>
       </div>
-      {{!----------------- header Logo ----------------------}}
-      <div class="header-small-mobile">
-          <div class="container">
-              <div class="row align-items-center">
-                  <div class="col-6">
-                      <div class="mobile-logo">
-                          <a href="/products/main">
-                           {{!----------------- Logo ----------------------}}
-                              <img alt="AJA" src="/assets/images/logo/logo-1.png">
-                          </a>
-                      </div>
+      <!-- main-search start -->
+      <div class="main-search-active">
+        <div class="sidebar-search-icon  border">
+          <button class="search-close"><span class="la la-close"></span></button>
+        </div>
+        <div class="sidebar-search-input">
+          <form>
+            <div class="form-search">
+              <input id="search" class="input-text" value="" placeholder="Search Now" type="search">
+              <button>
+                <i class="la la-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{!----------------- header Logo ----------------------}}
+    <div class="header-small-mobile">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <div class="mobile-logo">
+              <a href="/products/main">
+                {{!----------------- Logo ----------------------}}
+                <img alt="AJA" src="/assets/images/logo/logo-1.png">
+              </a>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="header-right-wrap">
+              {{!----------------- Shopping cart (small)----------------------}}
+              <div class="cart-wrap common-style ml-30">
+                <button class="cart-active">
+                  <i class="la la-shopping-cart"></i>
+                  <span class="count-style badge badge-info">2</span>
+                </button>
+
+                {{!----------------- cart menu ----------------------}}
+                <div class="shopping-cart-content">
+                  <div class="shopping-cart-top">
+                    <h4>Your Cart 購物車</h4>
+                    <a class="cart-close" href="#"><i class="la la-close"></i></a>
                   </div>
-                  <div class="col-6">
-                      <div class="header-right-wrap">
-                          {{!----------------- Shopping cart (small)----------------------}}
-                          <div class="cart-wrap common-style ml-30">
-                              <button class="cart-active">
-                                  <i class="la la-shopping-cart"></i>
-                                  <span class="count-style badge badge-info">2</span>
-                              </button>
 
-                              {{!----------------- cart menu ----------------------}}
-                              <div class="shopping-cart-content">
-                                <div class="shopping-cart-top">
-                                    <h4>Your Cart 購物車</h4>
-                                    <a class="cart-close" href="#"><i class="la la-close"></i></a>
-                                </div>
-                                
-                                <ul>
-                                  {{!--------------- user account ---------------}}
-                                  <li class="d-flex justify-content-around">
-                                    {{#if user}}
-                                      <div class="mt-2">
-                                        <h2 ><i class="la la-user text-warning"></i></h2>
-                                      </div>
-                                      <div class="mt-3">
-                                        <h4><a href="/accounts/users/{{user.id}}">ACCOUNTS 會員中心</a></h4>
-                                      </div>
-                                      <div class="align-self-center">
-                                        <a href="/accounts/logout" class="btn btn-outline-danger btn-sm">登出</a>
-                                      </div>
-                                    {{else}}
-                                      <div class="mt-2">
-                                        <h2 ><i class="la la-user"></i></h2>
-                                      </div>
-                                      <div class="mt-3">
-                                        <h4><a href="/accounts/signin">SIGN IN 登入</a></h4>
-                                      </div>
-                                      <div></div>
-                                    {{/if}}
-                                  </li>
-                                  {{#ifCond user.role "admin"}}
-                                    <li class="d-flex justify-content-around">
-                                      <div class="mt-2">
-                                        <h2 ><i class="la la-gears"></i></h2>
-                                      </div>
-                                      <div class="mt-3">
-                                        <h4><a href="/admin">ADMIN 管理員</a></h4>
-                                      </div>
-                                      <div></div>
-                                    </li>
-                                  {{/ifCond}}
-                                  {{!----------------- cart item ---------------------}}
-                                  <hr/>
-                                  <li class="single-shopping-cart">
-                                    <div class="shopping-cart-img">
-                                      <a href="#"><img alt="" src="/assets/images/cart/cart-1.jpg"></a>
-                                      <div class="item-close">
-                                        <a href="#"><i class="sli sli-close"></i></a>
-                                      </div>
-                                    </div>
-                                    <div class="shopping-cart-title">
-                                      <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                      <span>$99.00</span>
-                                      {{!-- quanntity input --}}
-                                      <div class="product-details-content quickview-content">
-                                        <div class="pro-details-quality">
-                                            <div class="cart-plus-minus form-group">
-                                                <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
-                                            </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="shopping-cart-delete">
-                                        <a href="#"><i class="la la-trash"></i></a>
-                                    </div>
-                                  </li>
-                                </ul>
-
-                                <div class="shopping-cart-bottom">
-                                  <div class="shopping-cart-total">
-                                    <h4>Subtotal <span class="shop-total">$290.00</span></h4>
-                                  </div>
-                                  <div class="shopping-cart-btn btn-hover default-btn text-center">
-                                    <a class="black-color" href="#">Continue to Chackout</a>
-                                  </div>
-                                </div>
+                  <ul>
+                    {{!--------------- user account ---------------}}
+                    <li class="d-flex justify-content-around">
+                      {{#if user}}
+                      <div class="mt-2">
+                        <h2><i class="la la-user text-warning"></i></h2>
+                      </div>
+                      <div class="mt-3">
+                        <h4><a href="/accounts/users/{{user.id}}">ACCOUNTS 會員中心</a></h4>
+                      </div>
+                      <div class="align-self-center">
+                        <a href="/accounts/logout" class="btn btn-outline-danger btn-sm">登出</a>
+                      </div>
+                      {{else}}
+                      <div class="mt-2">
+                        <h2><i class="la la-user"></i></h2>
+                      </div>
+                      <div class="mt-3">
+                        <h4><a href="/accounts/signin">SIGN IN 登入</a></h4>
+                      </div>
+                      <div></div>
+                      {{/if}}
+                    </li>
+                    {{#ifCond user.role "admin"}}
+                    <li class="d-flex justify-content-around">
+                      <div class="mt-2">
+                        <h2><i class="la la-gears"></i></h2>
+                      </div>
+                      <div class="mt-3">
+                        <h4><a href="/admin/users">ADMIN 管理員</a></h4>
+                      </div>
+                      <div></div>
+                    </li>
+                    {{/ifCond}}
+                    {{!----------------- cart item ---------------------}}
+                    <hr />
+                    <li class="single-shopping-cart">
+                      <div class="shopping-cart-img">
+                        <a href="#"><img alt="" src="/assets/images/cart/cart-1.jpg"></a>
+                        <div class="item-close">
+                          <a href="#"><i class="sli sli-close"></i></a>
+                        </div>
+                      </div>
+                      <div class="shopping-cart-title">
+                        <h4><a href="#">Golden Easy Spot Chair.</a></h4>
+                        <span>$99.00</span>
+                        {{!-- quanntity input --}}
+                        <div class="product-details-content quickview-content">
+                          <div class="pro-details-quality">
+                            <div class="cart-plus-minus form-group">
+                              <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
                             </div>
                           </div>
-                          <div class="mobile-off-canvas">
-                              <a class="mobile-aside-button" href="#"><i class="la la-navicon la-2x"></i></a>
-                          </div>
+                        </div>
                       </div>
+                      <div class="shopping-cart-delete">
+                        <a href="#"><i class="la la-trash"></i></a>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <div class="shopping-cart-bottom">
+                    <div class="shopping-cart-total">
+                      <h4>Subtotal <span class="shop-total">$290.00</span></h4>
+                    </div>
+                    <div class="shopping-cart-btn btn-hover default-btn text-center">
+                      <a class="black-color" href="#">Continue to Chackout</a>
+                    </div>
                   </div>
+                </div>
               </div>
+              <div class="mobile-off-canvas">
+                <a class="mobile-aside-button" href="#"><i class="la la-navicon la-2x"></i></a>
+              </div>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
   </header>
 
-   <!-- mobile menu -->
+  <!-- mobile menu -->
   <div class="mobile-off-canvas-active">
       <a class="mobile-aside-close"><i class="la la-close"></i></a>
       <div class="header-mobile-aside-wrap">
@@ -339,5 +352,14 @@
               <a class="instagram" href="#"><i class="ti-instagram"></i></a>
               <a class="google" href="#"><i class="ti-google"></i></a>
           </div>
+        </div>
       </div>
-  </div> 
+      <div class="mobile-social-wrap">
+        <a class="facebook" href="#"><i class="ti-facebook"></i></a>
+        <a class="twitter" href="#"><i class="ti-twitter-alt"></i></a>
+        <a class="pinterest" href="#"><i class="ti-pinterest"></i></a>
+        <a class="instagram" href="#"><i class="ti-instagram"></i></a>
+        <a class="google" href="#"><i class="ti-google"></i></a>
+      </div>
+    </div>
+  </div>
