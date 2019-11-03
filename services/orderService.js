@@ -185,15 +185,17 @@ const orderService = {
   postStripePayment: async (req, res, callback) => {
     try {
       // 驗證表單輸入金額是否和訂單資料庫一致
+      console.log(`=== REQ BODY: ${req.body.sn} ====`)
       let isAmountCorrect = false
       let order = await Order.findOne({ where: { sn: req.body.sn } }).then(order => { return order })
+      console.log(`=== ORDER: ${order.id} ====`)
 
       if (parseFloat(order.totalAmount) === parseFloat(req.body.amount)) {
         isAmountCorrect = true
       } else {
         isAmountCorrect = false
       }
-
+      console.log(`==== isAmountCorrect: ${isAmountCorrect} ====`)
       if (isAmountCorrect) {
         return stripe.charges.create({
           amount: parseInt((req.body.amount / 22) * 100),   // 台幣轉換成新幣，乘以 100 變成 cents
@@ -202,6 +204,7 @@ const orderService = {
           description: req.body.sn
         }).then(charge => {
           // 確認付款結果
+          console.log(`charge: ${charge}`)
           if (charge.paid === true && charge.description === req.body.sn) {
             // 付款成功
             return Order.findOne({
@@ -213,10 +216,13 @@ const orderService = {
             }).then(order => {
               return order.update({
                 paymentStatus: 1,     // 待付款 0, 已付款 1, 取消付款 2
-              }).then(order => {
+              }).then(async (order) => {
+
+                // Find user 
+                let user = await User.findByPk(order.UserId)
 
                 // 發送訂單付款成功通知信件
-                let email = req.user.email
+                let email = user.email
                 let subject = `AJA Online Store: 訂單付款成功（編號: ${order.sn}）`
                 let type = 'text'
                 let info = `您的訂單已成功付款（編號: ${order.sn}）`
@@ -224,9 +230,11 @@ const orderService = {
 
                 return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
               }).catch(err => {
+                console.log(`Err1: ${err}`)
                 return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
               })
             }).catch(err => {
+              console.log(`Err2: ${err}`)
               return callback({ status: 'error', message: '查詢訂單失敗，訂單不存在' })
             })
           } else {
@@ -235,12 +243,14 @@ const orderService = {
           }
         }).catch(err => {
           // Stripe charge create 失敗
+          console.log(`Err3: ${err}`)
           return callback({ status: 'error', message: 'Stripe charge create 失敗' })
         })
       } else {
         return callback({ status: 'error', message: '付款金額不一致' })
       }
     } catch (err) {
+      console.log(`Err4: ${err}`)
       return callback({ status: 'error', message: 'postStripePayment 失敗' })
     }
   }

@@ -1,0 +1,53 @@
+{{> messages}}
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h4>訂單資訊（透過 Stripe 付款）</h4>
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th>姓名</th>
+            <td>{{order.name}}</td>
+          </tr>
+          <tr>
+            <th>電話</th>
+            <td>{{order.phone}}</td>
+          </tr>
+          <tr>
+            <th>地址</th>
+            <td>{{order.address}}</td>
+          </tr>
+          <tr>
+            <th>金額 (NTD)</th>
+            <td>{{order.totalAmount}}</td>
+          </tr>
+          <tr>
+            <th>金額 (SGD)</th>
+            <td>{{ NTDtoSGD order.totalAmount}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <form name='stripe' action='/orders/postStripePayment' method="POST" id="payment-form">
+        <div class="form-row">
+          <div class="input-group mb-3">
+            {{!-- <input type="hidden" name="name" value="{{order.name}}">
+            <input type="hidden" name="email" value="{{order.email}}"> --}}
+            <input type="hidden" name="amount" value="{{order.totalAmount}}"><br>
+            <input type="hidden" name="sn" value="{{order.sn}}"><br>
+            <p>請在下方輸入信用卡資訊</p>
+            <div id="card-element" style="width:1000px">
+              <!-- A Stripe Element will be inserted here. -->
+            </div>
+          </div>
+          <!-- Used to display form errors. -->
+          <div id="card-errors" role="alert"></div>
+        </div>
+        <button type=" submit" class="btn btn-primary btn-block">立即付款 (in SGD)</button>
+      </form>
+      <br>
+      <a href="javascript:history.back()">
+        <h5 class="text-primary text-center">回到上一頁</h5>
+      </a>
+    </div>
+  </div>
+</div>
