@@ -8,10 +8,10 @@ const categoryService = {
       if (req.params.category_id) {
         Category.findByPk(req.params.category_id)
           .then((category) => {
-            callback({ status: 'success', message: '取得特定分類成功', content: category })
+            callback({ status: 'success', message: '取得特定分類成功', content: category, key: 'category' })
           })
       } else {
-        callback({ status: 'success', message: '取得所有分類成功', content: categories })
+        callback({ status: 'success', message: '取得所有分類成功', content: categories, key: 'categories' })
       }
     })
   },
