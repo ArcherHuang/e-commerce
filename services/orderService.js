@@ -1,12 +1,12 @@
 const db = require('../models')
-const { Order, Cart, OrderItem, CartItem, Product } = db
+const { Order, Cart, OrderItem, CartItem, Product, User } = db
 const moment = require('moment')
 const crypto = require('crypto')
 const stripe = require('stripe')('sk_test_9nhZ1DE1Nc4xqBeW8XelurKX00Ib8HqOm2')
 const sendEmailService = require('./sendEmailService')
 
 // Payment variables
-const URL = process.env.LOCAL_NGROK_URL
+const URL = process.env.DEPLOY_VIEW_SERVER || process.env.LOCAL_NGROK_URL
 const MerchantID = process.env.MERCHANT_ID
 const HashKey = process.env.HASH_KEY
 const HashIV = process.env.HASH_IV
@@ -133,7 +133,7 @@ const orderService = {
         }
       }).then(order => {
         const tradeInfo = getTradeInfo(order, req.user)
-        return callback({ status: 'success', message: '建立交易參數成功', content: tradeInfo })
+        return callback({ status: 'success', message: '建立交易參數成功', content: tradeInfo, order: order })
       }).catch(err => {
         return callback({ status: 'error', message: '建立交易參數失敗' })
       })
@@ -154,10 +154,13 @@ const orderService = {
       }).then(order => {
         order.update({
           paymentStatus: 1,  // 待付款 0, 已付款 1, 取消付款 2
-        }).then(order => {
+        }).then(async (order) => {
+
+          // Find user email
+          let user = await User.findByPk(order.UserId)
 
           // 發送訂單付款成功通知信件
-          let email = req.user.email
+          let email = user.email
           let subject = `AJA Online Store: 訂單付款成功（編號: ${order.sn}）`
           let type = 'text'
           let info = `您的訂單已成功付款（編號: ${order.sn}）`
@@ -165,13 +168,16 @@ const orderService = {
 
           return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
         }).catch(err => {
+          console.log(`Err: ${err}`)
           return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
         })
       }).catch(err => {
+        console.log(`Err: ${err}`)
         return callback({ status: 'error', message: '欲更新之訂單不存在' })
       })
     }
     catch (err) {
+      console.log(`Err: ${err}`)
       return callback({ status: 'error', message: '取得藍新金流 callback 資料失敗' })
     }
   },
@@ -207,10 +213,13 @@ const orderService = {
             }).then(order => {
               return order.update({
                 paymentStatus: 1,     // 待付款 0, 已付款 1, 取消付款 2
-              }).then(order => {
+              }).then(async (order) => {
+
+                // Find user 
+                let user = await User.findByPk(order.UserId)
 
                 // 發送訂單付款成功通知信件
-                let email = req.user.email
+                let email = user.email
                 let subject = `AJA Online Store: 訂單付款成功（編號: ${order.sn}）`
                 let type = 'text'
                 let info = `您的訂單已成功付款（編號: ${order.sn}）`
@@ -218,9 +227,11 @@ const orderService = {
 
                 return callback({ status: 'success', message: '更新訂單付款資訊成功', content: order })
               }).catch(err => {
+                console.log(`Err: ${err}`)
                 return callback({ status: 'error', message: '更新訂單付款資訊失敗' })
               })
             }).catch(err => {
+              console.log(`Err: ${err}`)
               return callback({ status: 'error', message: '查詢訂單失敗，訂單不存在' })
             })
           } else {
@@ -229,12 +240,14 @@ const orderService = {
           }
         }).catch(err => {
           // Stripe charge create 失敗
+          console.log(`Err: ${err}`)
           return callback({ status: 'error', message: 'Stripe charge create 失敗' })
         })
       } else {
         return callback({ status: 'error', message: '付款金額不一致' })
       }
     } catch (err) {
+      console.log(`Err4: ${err}`)
       return callback({ status: 'error', message: 'postStripePayment 失敗' })
     }
   }

@@ -1,0 +1,39 @@
+{{> messages}}
+
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h4>訂單資訊（透過藍新金流付款）</h4>
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th>姓名</th>
+            <td>{{order.name}}</td>
+          </tr>
+          <tr>
+            <th>電話</th>
+            <td>{{order.phone}}</td>
+          </tr>
+          <tr>
+            <th>地址</th>
+            <td>{{order.address}}</td>
+          </tr>
+          <tr>
+            <th>金額</th>
+            <td>{{order.totalAmount}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <form name='Spgateway' action='https://ccore.spgateway.com/MPG/mpg_gateway' method="POST" style="height: 50px;">
+        <button type="submit" class="btn btn-primary btn-block">立即付款</button>
+        <input type="hidden" name="MerchantID" value="{{paymentInfo.id}}"><br>
+        <input type="hidden" name="TradeInfo" value="{{paymentInfo.info}}"><br>
+        <input type="hidden" name="TradeSha" value="{{paymentInfo.sha}}"><br>
+        <input type="hidden" name="Version" value="{{paymentInfo.version}}"><br>
+      </form>
+      <a href="javascript:history.back()">
+        <h5 class="text-primary text-center">回到上一頁</h5>
+      </a>
+    </div>
+  </div>
+</div>

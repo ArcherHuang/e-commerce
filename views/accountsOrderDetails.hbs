@@ -30,6 +30,12 @@
     </a>
     <br>
     <table class="table table-borderless">
+      <thead>
+        <th style="width:20%"></th>
+        <th style="width:20%"></th>
+        <th style="width:10%"></th>
+        <th></th>
+      </thead>
       <tbody>
         <tr>
           <th scope="row">訂單狀態</th>
@@ -61,7 +67,10 @@
           {{/ifCond}}
           {{#ifCond order.paymentStatus '0'}}
           <td>
-            <a href="/orders/{{order.id}}/payment" class="btn btn-success btn-sm">立即付款</a>
+            <a href="/orders/{{order.id}}/newebPayment" class="btn btn-primary btn-sm">立即付款 (藍新金流)</a>
+          </td>
+          <td>
+            <a href="/orders/{{order.id}}/stripePayment" class="btn btn-primary btn-sm">立即付款 (Stripe)</a>
           </td>
           {{/ifCond}}
         </tr>
