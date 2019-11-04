@@ -1,11 +1,11 @@
 <div class="sidebar-widget">
-                                <h4 class="sidebar-title">Search 搜尋</h4>
-                                <div class="sidebar-search mb-40 mt-20">
-                                    <form class="sidebar-search-form" action="#">
-                                        <input type="text" placeholder="搜尋...">
-                                        <button>
-                                            <i class="la la-search"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+    <h4 class="sidebar-title">Search 搜尋</h4>
+    <div class="sidebar-search mb-40 mt-20">
+        <form class="sidebar-search-form" action="/products/shop">
+            <input type="text" name="keyword" value="{{keyword}}" placeholder="搜尋...">
+            <button  type="submit">
+                <i class="la la-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
