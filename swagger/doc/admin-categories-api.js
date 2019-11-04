@@ -68,6 +68,11 @@
  *         in: formData
  *         required: true
  *         type: string
+ *       - name: description
+ *         description: 分類的 description
+ *         in: formData
+ *         required: true
+ *         type: string
  *     responses:
  *       200:
  *         description: 登入成功
@@ -97,6 +102,11 @@
  *         description: category_id
  *       - name: name
  *         description: 分類的 name
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: description
+ *         description: 分類的 description
  *         in: formData
  *         required: true
  *         type: string
