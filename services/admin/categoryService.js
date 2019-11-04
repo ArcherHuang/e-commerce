@@ -8,16 +8,17 @@ const categoryService = {
       if (req.params.category_id) {
         Category.findByPk(req.params.category_id)
           .then((category) => {
-            callback({ status: 'success', message: '取得特定分類成功', content: category })
+            callback({ status: 'success', message: '取得特定分類成功', content: category, key: 'category' })
           })
       } else {
-        callback({ status: 'success', message: '取得所有分類成功', content: categories })
+        callback({ status: 'success', message: '取得所有分類成功', content: categories, key: 'categories' })
       }
     })
   },
 
   postCategory: (req, res, callback) => {
     const name = req.body.name === undefined ? '' : req.body.name.trim()
+    const description = req.body.description === undefined ? '' : req.body.description.trim()
     if (name.length == 0) {
       return callback({ status: 'error', message: '請輸入分類名稱 !' })
     } else {
@@ -30,7 +31,8 @@ const categoryService = {
           return callback({ status: 'error', message: '分類重複！' })
         } else {
           Category.create({
-            name
+            name,
+            description
           }).then((category) => {
             return callback({ status: 'success', message: '分類已建立成功' })
           })

@@ -42,9 +42,9 @@ const adminCouponService = {
 
     const name = data.name === undefined ? '' : data.name.trim()
     const number_of_limitation = data.number_of_limitation === undefined ? '' : data.number_of_limitation.trim()
-    const discount = data.discount === undefined ? '' : data.discount.trim()
+    const discount = data.discount === undefined ? '' : data.discount.trim() === '0' ? '' : data.discount.trim()
     const expire_date = data.expire_date === undefined ? '' : data.expire_date.trim()
-    const amount = data.amount === undefined ? '' : data.amount.trim()
+    const amount = data.amount === undefined ? '' : data.amount.trim() === '0' ? '' : data.amount.trim()
 
     if (discount.length !== 0 && amount.length !== 0) {
       return ({ status: 'error', message: 'discount 與 amount 請擇一輸入' })
@@ -89,9 +89,9 @@ const adminCouponService = {
         name: req.body.name.trim(),
         sn: await adminCouponService.generateSn(),
         numberOfLimitation: req.body.number_of_limitation.trim(),
-        discount: req.body.discount === undefined ? 0 : req.body.discount.trim(),
-        amount: req.body.amount === undefined ? 0 : req.body.amount.trim(),
-        expire_date: req.body.expire_date.trim()
+        discount: req.body.discount === undefined ? 0 : req.body.discount.trim() === '' ? 0 : req.body.discount.trim(),
+        amount: req.body.amount === undefined ? 0 : req.body.amount.trim() === '' ? 0 : req.body.amount.trim(),
+        expireDate: req.body.expire_date.trim()
       }).then((coupon) => {
         return callback({ status: 'success', message: 'Coupon 建立成功' })
       })
@@ -111,10 +111,10 @@ const adminCouponService = {
         if (coupon) {
           coupon.update({
             name: req.body.name.trim(),
-            number_of_limitation: req.body.number_of_limitation.trim(),
-            discount: req.body.discount === undefined ? 0 : req.body.discount.trim(),
-            amount: req.body.amount === undefined ? 0 : req.body.amount.trim(),
-            expire_date: req.body.expire_date.trim()
+            numberOfLimitation: req.body.number_of_limitation.trim(),
+            discount: req.body.discount === undefined ? 0 : req.body.discount.trim() === '' ? 0 : req.body.discount.trim(),
+            amount: req.body.amount === undefined ? 0 : req.body.amount.trim() === '' ? 0 : req.body.amount.trim(),
+            expireDate: req.body.expire_date.trim()
           }).then((coupon) => {
             return callback({ status: 'success', message: 'Coupon 更新成功' })
           })
@@ -152,10 +152,10 @@ const adminCouponService = {
       if (req.params.coupon_id) {
         Coupon.findByPk(req.params.coupon_id)
           .then((coupon) => {
-            return callback({ status: 'success', message: '取得特定 Coupon 資料', content: coupon })
+            return callback({ status: 'success', message: '取得特定 Coupon 資料', content: coupon, key: 'coupon' })
           })
       } else {
-        return callback({ status: 'success', message: '取得 Coupon 所有清單', content: coupons })
+        return callback({ status: 'success', message: '取得 Coupon 所有清單', content: coupons, key: 'coupons' })
       }
 
     })
