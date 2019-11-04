@@ -11,13 +11,13 @@ const orderService = {
           Order.findByPk(req.params.order_id)
             .then((order) => {
               if (order) {
-                return callback({ status: 'success', message: '取得特定 Order 資料', content: order })
+                return callback({ status: 'success', message: '取得特定 Order 資料', content: order, key: 'order' })
               } else {
                 callback({ status: 'fail', message: '查無此 Order 存在' })
               }
             })
         } else {
-          return callback({ status: 'success', message: '取得 Order 所有清單', content: orders })
+          return callback({ status: 'success', message: '取得 Order 所有清單', content: orders, key: 'orders' })
         }
       })
     } catch (error) {
