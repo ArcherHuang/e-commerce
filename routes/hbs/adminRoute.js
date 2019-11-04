@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
 
 const userController = require('../../controllers/hbs/admin/userController')
 const orderController = require('../../controllers/hbs/admin/orderController')
 const categoryController = require('../../controllers/hbs/admin/categoryController')
 const couponController = require('../../controllers/hbs/admin/couponController')
+const productController = require('../../controllers/hbs/admin/productController')
 
 // User
 router.get('/users', userController.editUsers)
@@ -30,5 +33,12 @@ router.post('/coupons', couponController.postCoupon)
 router.get('/coupons/:coupon_id', couponController.getCoupons)
 router.put('/coupons/:coupon_id', couponController.putCoupon)
 router.delete('/coupons/:coupon_id', couponController.deleteCoupon)
+
+// Product
+router.get('/products', productController.getProducts)
+router.get('/products/:product_id', productController.getProduct)
+router.post('/products', upload.single('image'), productController.postProduct)
+router.put('/products/:product_id', upload.single('image'), productController.putProduct)
+router.delete('/products/:product_id', productController.deleteProduct)
 
 module.exports = router
