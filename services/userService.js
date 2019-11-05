@@ -464,7 +464,29 @@ const userService = {
     catch (err) {
       return callback({ status: 'success', message: '取得使用者商品瀏覽紀錄失敗', content: err })
     }
-  }
+  },
+
+  getUserReviews: (req, res, callback) => {
+    try {
+      Review.findAll({
+        where: {
+          UserId: req.user.id,
+          dataStatus: 1,
+        },
+        order: [['updatedAt', 'DESC']],
+        include: [Product]
+      }).then(reviews => {
+        return callback({ status: 'success', message: '取得使用者評論成功', content: reviews })
+      }).catch(err => {
+        console.log(`Err: ${err}`)
+        return callback({ status: 'success', message: '取得使用者評論失敗', content: err })
+      })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '取得使用者評論失敗' })
+    }
+  },
 }
 
 module.exports = userService  

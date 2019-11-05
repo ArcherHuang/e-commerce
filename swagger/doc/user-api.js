@@ -657,3 +657,24 @@
  *       200:
  *         description: 使用者使用 Facebook 登入成功
  */
+
+/********************************************************************
+* Accounts - 取得該使用者的評論
+* GET http://localhost:3000/api/accounts/reviews
+********************************************************************/
+
+/**
+ * @swagger
+ * /api/accounts/reviews:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Account - 取得該使用者的評論
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 取得該使用者的評論成功
+ */

@@ -89,6 +89,12 @@ const userController = {
       return res.json(data)
     })
   },
+
+  getUserReviews: (req, res) => {
+    userService.getUserReviews(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 }
 
 module.exports = userController

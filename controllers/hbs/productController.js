@@ -1,4 +1,5 @@
 const productService = require('../../services/productService.js')
+const userService = require('../../services/userService.js')
 
 const productController = {
 
@@ -92,6 +93,62 @@ const productController = {
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "無法將商品移出 wishlist")
+        res.redirect('back')
+      }
+    })
+  },
+
+  deleteReview: async (req, res) => {
+    await productService.deleteReview(req, res, (data) => {
+      try {
+        if (data['status'] === 'success') {
+          req.flash('success_messages', "成功刪除評論")
+          res.redirect('back')
+        } else {
+          req.flash('error_messages', "刪除評論失敗")
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        req.flash('error_messages', "刪除評論失敗")
+        res.redirect('back')
+      }
+    })
+  },
+
+  getReviewEditPage: async (req, res) => {
+    await userService.getUserReviews(req, res, (data) => {
+      try {
+        if (data['status'] === 'success') {
+          let reviews = data.content
+          let targetId = req.params.review_id || null
+          res.render('accountsReviews', { reviews: reviews, targetId: targetId })
+        } else {
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        res.redirect('back')
+      }
+    })
+  },
+
+  putReview: async (req, res) => {
+    await productService.putReview(req, res, (data) => {
+      try {
+        if (data['status'] === 'success') {
+          req.flash('success_messages', "成功更新評論")
+          res.redirect('/accounts/reviews')
+        } else {
+          req.flash('error_messages', "更新評論失敗")
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        req.flash('error_messages', "更新評論失敗")
         res.redirect('back')
       }
     })

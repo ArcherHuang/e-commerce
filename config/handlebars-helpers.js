@@ -9,6 +9,13 @@ module.exports = {
     return options.inverse(this)
   },
 
+  ifCondNum: function (a, b, options) {
+    if (Number(a) === Number(b)) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  },
+
   moment: function (a) {
     return moment(a).fromNow()
   },
@@ -16,7 +23,7 @@ module.exports = {
   momentFormat: function (a) {
     return moment(a).format('YYYY-MM-DD')
   },
-  
+
   momentYYYYMMDD: function (a) {
     return moment(a).format('YYYY-MM-DD')
   },
