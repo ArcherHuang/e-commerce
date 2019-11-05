@@ -1,0 +1,59 @@
+{{> messages}}
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    <h3>會員專區</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/coupons">Coupons</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/wishlist">Wish List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/accounts/reviews">Your Reviews</a>
+      </li>
+    </ul>
+    <br>
+    <h4>Your Reviews</h4>
+    <br>
+    <table class="table table-hover" id="dataTable">
+      <thead>
+        <tr>
+          <th scope="col">商品名稱</th>
+          <th scope="col" style="width: 50%">你的回饋</th>
+          <th scope="col" style="width:10%"></th>
+          <th scope="col" style="width:10%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each reviews}}
+        <tr>
+          <td>
+            <a href="/products/{{this.ProductId}}">
+              <p class="text-primary">{{this.Product.dataValues.name}}</p>
+            </a>
+          </td>
+          <td>{{this.review}}</td>
+          <td>
+            <a href="/products/{{this.ProductId}}/reviews/{{this.id}}" class="btn btn-outline-info btn-sm">編輯</a>
+          </td>
+          <td>
+            <form action="/products/{{this.ProductId}}/reviews/{{this.id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-outline-danger btn-round btn-sm">刪除</button>
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
