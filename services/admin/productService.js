@@ -85,7 +85,7 @@ const productService = {
           return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
         } else {
           return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
+            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
           })
         }
       })
@@ -108,13 +108,13 @@ const productService = {
           return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
         } else {
           return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
+            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
           })
         }
       })
     } else {
       return Product.findAll({ include: [Category] }).then(products => {
-        return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
+        return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
       })
     }
   },
@@ -122,9 +122,10 @@ const productService = {
   getProduct: (req, res, callback) => {
 
     return Product.findByPk(req.params.product_id, { include: [Category] }).then(product => {
-      return callback({ status: 'success', message: '取得特定產品成功', content: product })
+      Category.findAll().then(categories => {
+        return callback({ status: 'success', message: '取得特定產品成功', content: product, categories, key: 'product' })
+      })
     })
-
   },
 
   postProduct: (req, res, callback) => {
