@@ -176,6 +176,33 @@
  */
 
 /********************************************************************
+* Admin - 取得特定 Discount
+* GET http://localhost:3000/api/admin/orders/discounts/:discount_id
+********************************************************************/
+
+/**
+ * @swagger
+ * /api/admin/orders/discounts/{discount_id}:
+ *   get:
+ *     tags:
+ *      - Admin
+ *     description: Admin - 取得特定 Discount
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: discount_id
+ *         type: integer
+ *         required: true
+ *         description: discount_id
+ *     responses:
+ *       200:
+ *         description: 取得特定 Discount 成功
+ */
+
+/********************************************************************
 * Admin - 建立 Discount
 * POST http://localhost:3000/api/admin/orders/discounts
 ********************************************************************/
