@@ -29,13 +29,34 @@
       <thead>
         <tr>
           <th scope="col">商品名稱</th>
-          <th scope="col" style="width: 50%">你的回饋</th>
+          <th scope="col" style="width:60%">你的評論</th>
           <th scope="col" style="width:10%"></th>
           <th scope="col" style="width:10%"></th>
         </tr>
       </thead>
       <tbody>
         {{#each reviews}}
+        {{#ifCondNum this.id ../targetId}}
+        <tr>
+          <td>
+            <a href="/products/{{this.ProductId}}">
+              <p class="text-primary">{{this.Product.dataValues.name}}</p>
+            </a>
+          </td>
+          <form action="/products/{{this.ProductId}}/reviews/{{this.id}}?_method=PUT" method="POST">
+            <td>
+              <textarea rows="" cols="" type="text" class="form-control" name="review" id="review"
+                placeholder="Your review" style="height:100px; vertical-align: top" required>{{this.review}}</textarea>
+            </td>
+            <td>
+              <button type="submit" class="btn btn-outline-success btn-round btn-sm">送出</button>
+            </td>
+          </form>
+          <td>
+            <a href="/accounts/reviews" class="btn btn-outline-danger btn-sm">取消</a>
+          </td>
+        </tr>
+        {{else}}
         <tr>
           <td>
             <a href="/products/{{this.ProductId}}">
@@ -44,7 +65,7 @@
           </td>
           <td>{{this.review}}</td>
           <td>
-            <a href="/products/{{this.ProductId}}/reviews/{{this.id}}" class="btn btn-outline-info btn-sm">編輯</a>
+            <a href="/products/{{this.ProductId}}/reviews/{{this.id}}/edit" class="btn btn-outline-info btn-sm">編輯</a>
           </td>
           <td>
             <form action="/products/{{this.ProductId}}/reviews/{{this.id}}?_method=DELETE" method="POST">
@@ -52,6 +73,7 @@
             </form>
           </td>
         </tr>
+        {{/ifCondNum}}
         {{/each}}
       </tbody>
     </table>
