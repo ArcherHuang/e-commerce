@@ -33,5 +33,6 @@ router.get('/orders/:order_id', accountController.getOrder)
 router.put('/orders/:order_id/cancel', accountController.cancelOrder)
 router.get('/coupons', accountController.getCoupons)
 router.get('/wishlist', accountController.getWishList)
+router.get('/reviews', accountController.getUserReviews)
 
 module.exports = router

@@ -260,6 +260,23 @@ const userController = {
     })
   },
 
+  getUserReviews: async (req, res) => {
+    await userService.getUserReviews(req, res, (data) => {
+      try {
+        if (data['status'] === 'success') {
+          let reviews = data.content
+          res.render('accountsReviews', { reviews: reviews })
+        } else {
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        res.redirect('back')
+      }
+    })
+  },
+
   // 將 dataStatus 轉為文字
   transformDataStatus: (d) => {
     if (d == 0) {
