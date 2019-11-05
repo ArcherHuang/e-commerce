@@ -1,0 +1,136 @@
+{{> messages}}
+
+<div class="main-wrapper">
+  <header class="header-area transparent-bar sticky-bar showdow">
+    <div class="main-header-wrap">
+      <div class="container">
+        <div class="row mt-40">
+          <div class="col-xl-2 col-lg-2">
+            <div class="logo mt-40">
+              <h3>aja 後台</h3>
+            </div>
+          </div>
+          <div class="col-xl-10 col-lg-10">
+            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
+              <nav>
+                <ul>
+                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
+                  <li><a href="/admin/users"><b>Admin</b> Users</a></li>
+                  <li><a href="/admin/categories"><b>Admin</b> Categories</a></li>
+                  <li><a href="/admin/coupons"><b>Admin</b> Coupon</a></li>
+                  <li><a href="/admin/products"><b>Admin</b> Product</a></li>
+                  <li><a href="/admin/orders"><b>Admin</b> Order</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h6 class="text-secondary"><small>(<i class="fas fa-star-of-life text-danger"></i>)</small> 代表必填欄位</h6>
+      {{#if category}}
+      <form action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
+        <div class="form-label-group">
+          <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
+          <input type="text" placeholder="name" name="name" value="{{category.name}}">
+        </div>
+        <div class="form-label-group">
+          <label for="description">description</label>
+          <input type="text" placeholder="description" name="description" value="{{category.description}}">
+        </div>
+        <br />
+        <button class="btn btn-outline-primary btn-block" type="submit">Update</button>
+        <a href="/admin/categories">or Create New</a>
+      </form>
+      {{else}}
+      <form action="/admin/categories" method="POST">
+        <div class="form-label-group">
+          <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
+          <input type="text" placeholder="name" name="name">
+        </div>
+        <div class="form-label-group">
+          <label for="description">description</label>
+          <input type="text" placeholder="description" name="description">
+        </div>
+        <br />
+        <button class="btn btn-outline-primary btn-block" type="submit">Submit</button>
+      </form>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+
+<table class="table" id="myTable">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Category Name
+        <i class="fas fa-sort"></i>
+      </th>
+      <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Category
+        Description
+        <i class="fas fa-sort"></i>
+      </th>
+      <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">dataStatus
+        <i class="fas fa-sort"></i>
+      </th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each categories}}
+    <tr class="item">
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.description}}</td>
+      <td>{{#ifCond this.dataStatus 1}} 可使用 {{else}} 已刪除 {{/ifCond}}</td>
+      <td>
+
+        {{#ifCond this.dataStatus 1}}
+        <a href="/admin/categories/{{this.id}}" class="btn btn-outline-primary">
+          編輯
+        </a>
+
+        <a class="btn btn-outline-danger" data-toggle="modal" data-target="#trigger-deleteItem-{{this.id}}" href="#">刪除
+        </a>
+        {{/ifCond}}
+
+        {{!--  刪除分類動作 --}}
+        <div class="modal fade" id="trigger-deleteItem-{{this.id}}" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <big class="font-weight-bold">確定要刪除【 {{this.name}} 】的分類紀錄嗎?</big>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-link">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<br />
+<br />

@@ -6,11 +6,13 @@ const { ensureAuthenticated, isAuthAdmin, getUser, authenticatedAdmin } = requir
 
 const accountRoute = require('./hbs/accountRoute')
 const cartRoute = require('./hbs/cartRoute')
+const orderRoute = require('./hbs/orderRoute')
 const productRoute = require('./hbs/productRoute')
 const adminRoute = require('./hbs/adminRoute')
 
 router.use('/accounts', accountRoute)
 router.use('/carts', cartRoute)
+router.use('/orders', orderRoute)
 router.use('/products', productRoute)
 router.use('/admin', authenticatedAdmin, adminRoute)
 
