@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt-nodejs')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const moment = require('moment')
+const userService = require('../services/userService.js')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
@@ -109,9 +110,16 @@ const productService = {
     }
   },
 
-  getProduct: (req, res, callback) => {
+  getProduct: async (req, res, callback) => {
     try {
-      return Product.findByPk(req.params.product_id, { include: [Category, Review, PageView] }).then(product => {
+
+      let currentUser
+      await userService.getCurrentUser(req, res, (data) => {
+        currentUser = data
+        return currentUser
+      })
+
+      await Product.findByPk(req.params.product_id, { include: [Category, Review, PageView] }).then(product => {
         if (req.session.user) {
           return PageView.findOrCreate({
             where: {
@@ -127,7 +135,7 @@ const productService = {
             return pageView.update({
               viewCount: (pageView.viewCount || 1) + 1
             }).then(pageView => {
-              return callback({ status: 'success', message: '取得特定產品成功', content: product })
+              return callback({ status: 'success', message: '取得特定產品成功', content: product, currentUser: currentUser })
             }).catch(err => {
               return callback({ status: 'error', message: '增加商品瀏覽紀錄失敗', content: err })
             })
@@ -149,7 +157,7 @@ const productService = {
             return pageView.update({
               viewCount: (pageView.viewCount || 1) + 1
             }).then(pageView => {
-              return callback({ status: 'success', message: '取得特定產品成功', content: product })
+              return callback({ status: 'success', message: '取得特定產品成功', content: product, currentUser: currentUser })
             }).catch(err => {
               return callback({ status: 'error', message: '增加商品瀏覽紀錄失敗', content: err })
             })

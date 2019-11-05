@@ -354,12 +354,12 @@ const userService = {
   getCurrentUser: (req, res, callback) => {
 
     try {
-      if (req.user) {
+      if (req.user || req.session.user) {
 
         // 取得使用者資訊，以及與商品互動的資訊
         return User.findAll({
           where: {
-            id: req.user.id
+            id: (req.user) ? req.user.id : req.session.user.id
           },
           include: [
             Review,
@@ -375,7 +375,7 @@ const userService = {
           // 取得過去成功付款的訂單資訊
           let orders = await Order.findAll({
             where: {
-              UserId: req.user.id,
+              UserId: (req.user) ? req.user.id : req.session.user.id,
               paymentStatus: 1
             },
             include: [
@@ -397,10 +397,11 @@ const userService = {
           return callback({ status: 'success', message: '取得當前使用者資料成功', content: user, orders: orders, purchasedProducts: purchased })
         })
       } else {
-        return callback({ status: 'success', message: '使用者尚未登入' })
+        return callback({ status: 'error', message: '使用者尚未登入' })
       }
     }
     catch (err) {
+      console.log(`Err: ${err}`)
       return callback({ status: 'error', message: '取得當前使用者資料失敗' })
     }
   },
