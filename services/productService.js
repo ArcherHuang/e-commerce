@@ -23,8 +23,19 @@ const productService = {
       // 取出 categories
       categories = await Category.findAll({ where: { dataStatus: 1 } })
       // 取出 current user  
-      if (req.session.user) {
-        currentUser = await User.findByPk(req.session.user.id)
+      if (req.user) {
+        // currentUser = await User.findByPk(req.session.user.id)
+        currentUser = await User.findAll({
+          where: {
+            id: req.user.id
+          },
+          include: [
+            Review,
+            { model: Product, as: "productLiked" },
+            { model: Product, as: "productViewed" },
+            { model: Product, as: "productReviewed" },
+          ]
+        })
       } else {
         currentUser = []
       }
