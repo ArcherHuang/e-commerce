@@ -95,7 +95,26 @@ const productController = {
         res.redirect('back')
       }
     })
-  }
+  },
+
+  deleteReview: async (req, res) => {
+    await productService.deleteReview(req, res, (data) => {
+      try {
+        if (data['status'] === 'success') {
+          req.flash('success_messages', "成功刪除評論")
+          res.redirect('back')
+        } else {
+          req.flash('error_messages', "刪除評論失敗")
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        req.flash('error_messages', "刪除評論失敗")
+        res.redirect('back')
+      }
+    })
+  },
 }
 
 module.exports = productController
