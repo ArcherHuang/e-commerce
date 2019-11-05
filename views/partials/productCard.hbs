@@ -1,16 +1,23 @@
 {{!---------------------- All Products --------------------------}}
 
             {{!---------------------- Product Card--------------------------}}
-            {{#each items}}
+            {{#each products}}
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                 <div class="product-wrap mb-35">
                     <div class="product-img mb-15">
                         <a href="/products/{{this.id}}"><img src="{{this.image}}" alt="product"></a>
                         <div class="product-action">
-                             <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                             <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
-                             <a title="Wishlist" href="/products/{{this.id}}/unlike"><i class="la la-heart"></i></a>
-                             <a title="Compare" href="#"><i class="la la-retweet"></i></a>
+                            {{!-- <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
+                            {{#if this.isLiked}}
+                                <form action="/products/{{this.id}}/unlike?_method=DELETE" method="POST">
+                                    <button title="Wishlist" type="submit" class="btn btn-danger"><i class="la la-heart-o"></i></button>
+                                </form>
+                            {{else}}
+                                <form action="/products/{{this.id}}/like?_method=DELETE" method="POST">
+                                    <button title="Wishlist" type="submit" class="btn btn-danger"><i class="la la-heart-o"></i></button>
+                                </form>
+                            {{/if}}
+                             <a title="Compare" href="#"><i class="la la-retweet"></i></a> --}}
                         </div>
                     </div>
 
@@ -21,6 +28,9 @@
                             <div class="product-price">
                                 <span>$ {{this.price}}</span>
                             </div>
+                            
+                             
+                           
                             <form>
                                 <div class="product-addtocart">
                                     <button type="submit">+ 新增至購物車</button>
