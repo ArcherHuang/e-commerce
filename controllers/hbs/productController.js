@@ -1,34 +1,27 @@
 const productService = require('../../services/productService.js')
+const userService = require('../../services/userService.js')
+// const db = require('../../models')
+// const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageView } = db
 
 const productController = {
 
   getProducts: (req, res) => {
     productService.getProducts(req, res, (data) => {
-      try {
         if (data['status'] === 'success') {
           req.flash('success_messages', data['message'])
-          const num = 12
-          const range = data.content.length - num
-          const startNum = Math.floor(Math.random() * range)
-          const randomProducts = data.content.slice(startNum, startNum + num)
           const keyword = req.query.keyword || ''
 
           return res.render('index', {
             products: data.content,
-            randomProducts: randomProducts,
             carousels: data.carousels,
             categories: data.categories,
             keyword: keyword
           })
         } else {
-          return req.flash('error_messages', data['message'])
+          req.flash('error_messages', data['message'])
+          return  res.redirect('back')
         }
-      }
-      catch (err) {
-        console.log(`Err: ${err}`)
-        res.redirect('back')
-      }
-    })
+      })
   },
 
   getShop: (req, res) => {
@@ -41,6 +34,58 @@ const productController = {
           const category_id = Number(req.query.category_id) || ''
           const keyword = req.query.keyword || ''
 
+          // if (data.currentUser[0]) {
+          //   const temp = data.currentUser[0].dataValues
+          //   const setUser = {
+          //     id: temp.id,
+          //     name: temp.name,
+          //     role: temp.role,
+          //     isValid: temp.isValid,
+          //     Reviews: temp.Reviews,
+          //     productLiked: temp.productLiked
+          //   }
+          //   const productLiked = temp.productLiked.map(r => ({
+          //     id: r.dataValues.id
+          //   })) || []
+
+          //   //console.log('----------', data.content)
+          //   const productsData = data.content.map(r => ({
+          //     ...r.dataValues
+          //   }))
+          //   //console.log('----------', productsData)
+
+          //   let filterProducts = []
+
+          //   productsData.forEach(p => {
+          //     productLiked.forEach(liked => {
+          //       if (p.id === liked.id) {
+          //         p = {
+          //           ...p,
+          //           isliked: true
+          //         } 
+          //       } else {
+          //         p = {
+          //           ...p,
+          //           isliked: false
+          //         }
+          //       }
+          //     })
+          //     filterProducts.push(p)
+          //   })
+
+          //   return res.render('shop', {
+          //     products: filterProducts,
+          //     setUser: setUser,
+          //     categories: data.categories,
+          //     category_id: category_id,
+          //     page: page,
+          //     totalPages: data.totalPages,
+          //     prev: data.prev,
+          //     next: data.next,
+          //     keyword: keyword
+          //   })
+          // }
+    
           return res.render('shop', {
             products: data.content,
             categories: data.categories,
@@ -62,7 +107,7 @@ const productController = {
     })
   },
 
-  getProduct: (req, res) => {
+  getProduct: (req, res, next) => {
     productService.getProduct(req, res, (data) => {
       try {
         if (data['status'] === 'success') {
