@@ -3,7 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const CouponDistribution = sequelize.define('CouponDistribution', {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
     },
     CouponId: DataTypes.INTEGER,
     UserId: DataTypes.INTEGER,
