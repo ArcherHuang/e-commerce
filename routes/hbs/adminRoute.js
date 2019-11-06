@@ -20,6 +20,13 @@ router.put('/orders/:order_id/resume', orderController.resumeOrder)
 router.put('/orders/:order_id/shipped', orderController.shippedOrder)
 router.put('/orders/:order_id/unshipped', orderController.unshippedOrder)
 
+// Discount
+router.get('/orders/discounts', orderController.getDiscounts)
+router.get('/orders/discounts/:discount_id', orderController.getDiscounts)
+router.post('/orders/discounts', orderController.createDiscount)
+router.put('/orders/discounts/:discount_id/edit', orderController.editDiscount)
+router.put('/orders/discounts/:discount_id/cancel', orderController.cancelDiscount)
+
 // Category
 router.get('/categories', categoryController.getCategories)
 router.post('/categories', categoryController.postCategory)

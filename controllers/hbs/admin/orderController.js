@@ -51,6 +51,32 @@ const orderController = {
     })
   },
 
+  getDiscounts: (req, res) => {
+    orderService.getDiscounts(req, res, (data) => {
+      return res.render('admin/discounts', {
+        [data['key']]: data['content']
+      })
+    })
+  },
+
+  createDiscount: (req, res) => {
+    orderService.createDiscount(req, res, (data) => {
+      orderController.responseMessageAction(req, res, data, '/admin/orders/discounts', 'back')
+    })
+  },
+
+  editDiscount: (req, res) => {
+    orderService.editDiscount(req, res, (data) => {
+      orderController.responseMessageAction(req, res, data, '/admin/orders/discounts', 'back')
+    })
+  },
+
+  cancelDiscount: (req, res) => {
+    orderService.cancelDiscount(req, res, (data) => {
+      orderController.responseMessageAction(req, res, data, '/admin/orders/discounts', '/admin/orders/discounts')
+    })
+  },
+
 }
 
 module.exports = orderController

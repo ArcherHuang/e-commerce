@@ -42,6 +42,7 @@ router.delete('/products/:product_id', adminProductController.deleteProduct)
 // Order
 router.get('/orders', adminOrderController.getOrders)
 router.get('/orders/discounts', adminOrderController.getDiscounts)
+router.get('/orders/discounts/:discount_id', adminOrderController.getDiscounts)
 router.post('/orders/discounts', adminOrderController.createDiscount)
 router.put('/orders/discounts/:discount_id/edit', adminOrderController.editDiscount)
 router.put('/orders/discounts/:discount_id/cancel', adminOrderController.cancelDiscount)

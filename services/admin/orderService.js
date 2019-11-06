@@ -158,12 +158,21 @@ const orderService = {
     }
   },
 
-  // 待出貨 shippingStatus = 0
-
   getDiscounts: async (req, res, callback) => {
     try {
       await Discount.findAll().then(discounts => {
-        return callback({ status: 'success', message: '取得 discount 資訊成功', content: discounts })
+        if (req.params.discount_id) {
+          Discount.findByPk(req.params.discount_id)
+            .then((discount) => {
+              if (discount) {
+                return callback({ status: 'success', message: '取得特定 Discount 資料', content: discount, key: 'discount' })
+              } else {
+                callback({ status: 'fail', message: '查無此 Discount 存在' })
+              }
+            })
+        } else {
+          return callback({ status: 'success', message: '取得 Discount 所有清單', content: discounts, key: 'discounts' })
+        }
       })
     }
     catch (err) {
