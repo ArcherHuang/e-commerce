@@ -1,6 +1,6 @@
 {{!-- Main page --}}
-{{> navBar this}}
-{{> index/slider this}}
+{{> navBar}}
+{{> index/slider}}
 {{> index/banner}}
 {{!-- {{> index/bestSellProducts}} --}}
 {{> index/discountArea}}
@@ -14,7 +14,7 @@
         <div class="row">
           {{!-- 傳輸所有資料至partial -> this --}}
           {{!-- 傳輸products資料至partial -> products=products --}}
-          {{> productCard items=randomProducts}}
+          {{> productCard}}
         </div>
     </div>
 </div>

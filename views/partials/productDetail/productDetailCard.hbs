@@ -11,16 +11,16 @@
                     <span>{{product.Category.name}}</span>
                     <h2>{{product.name}}</h2>
                     <div class="product-ratting-review">
-                        <div class="product-ratting">
+                        {{!-- <div class="product-ratting">
                             <i class="la la-star"></i>
                             <i class="la la-star"></i>
                             <i class="la la-star"></i>
                             <i class="la la-star"></i>
                             <i class="la la-star-half-o"></i>
-                        </div>
-                        <div class="product-review">
+                        </div> --}}
+                        {{!-- <div class="product-review">
                             <span>40+ Reviews</span>
-                        </div>
+                        </div> --}}
                     </div>
                     
                     <div class="pro-details-price-wrap">
@@ -28,7 +28,7 @@
                             <span>$210.00</span>
                             <span class="old">$230.00</span>
                         </div>
-                        <div class="dec-rang"><span>- 30%</span></div>
+                        {{!-- <div class="dec-rang"><span>- 30%</span></div> --}}
                     </div>
                     <div class="pro-details-quality">
                         <div class="cart-plus-minus">
@@ -37,14 +37,14 @@
                     </div>
                     <div class="pro-details-compare-wishlist">
                         <div class="pro-details-compare">
-                            <a title="Add To Compare" href="#"><i class="la la-retweet"></i> Compare</a>
+                            <a title="Add To Compare" href="#"><i class="la la-retweet"></i> 分享</a>
                         </div>
                         <div class="pro-details-wishlist">
-                            <a title="Add To Wishlist" href="#"><i class="la la-heart-o"></i> Add to wish list</a>
+                            <a title="Add To Wishlist" href="#"><i class="la la-heart-o"> 收藏</i> </a>
                         </div>
                     </div>
                     <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                        <button type="submit">Add To Cart</button>
+                        <button type="submit">新增至購物車</button>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <div class="dec-review-topbar nav mb-40">
                     <a data-toggle="tab" href="#des-details1">產品描述</a>
                     <a class="active" data-toggle="tab" href="#des-details2">產品規格</a>
-                    <a data-toggle="tab" href="#des-details3">收藏者</a>
+                    <a data-toggle="tab" href="#des-details3">使用評價</a>
                 </div>
                 <div class="tab-content dec-review-bottom">
                     <div id="des-details1" class="tab-pane">
