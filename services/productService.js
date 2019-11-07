@@ -130,7 +130,13 @@ const productService = {
         return currentUser
       })
 
-      await Product.findByPk(req.params.product_id, { include: [Category, Review, PageView] }).then(product => {
+      await Product.findByPk(req.params.product_id, {
+        include: [
+          Category,
+          { model: Review, include: User },
+          PageView
+        ]
+      }).then(product => {
         if (req.session.user) {
           return PageView.findOrCreate({
             where: {

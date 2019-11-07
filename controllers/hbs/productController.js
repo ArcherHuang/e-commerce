@@ -58,8 +58,20 @@ const productController = {
       try {
         if (data['status'] === 'success') {
           req.flash('success_messages', data['message'])
+
+          let reviews
+          // 取出 reviewer 的 user name
+          reviews = data.content.Reviews.map(r => ({
+            id: r.id,
+            review: r.review,
+            createdAt: r.createdAt,
+            UserId: r.UserId,
+            userName: r.User.name
+          }))
+
           return res.render('productDetail', {
-            product: data.content
+            product: data.content,
+            reviews: reviews
           })
         } else {
           return req.flash('error_messages', data['message'])
@@ -140,6 +152,24 @@ const productController = {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "更新評論失敗")
         res.redirect('back')
+      }
+    })
+  },
+
+  postReview: async (req, res) => {
+    await productService.postReview(req, res, (data) => {
+      try {
+        if (data['status'] == 'success') {
+          req.flash('success_messages', data['message'])
+          res.redirect(`/products/${req.params.product_id}/#des-details3`)
+        } else {
+          req.flash('error_messages', data['message'])
+          res.redirect(`/products/${req.params.product_id}/#des-details3`)
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        res.redirect(`/products/${req.params.product_id}/#des-details3`)
       }
     })
   }
