@@ -1,10 +1,5 @@
 const productService = require('../../services/productService.js')
 const userService = require('../../services/userService.js')
-//<<<<<<< feature/HBS/like
-// const db = require('../../models')
-// const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageView } = db
-//=======
-//>>>>>>> master
 
 const productController = {
 
@@ -14,9 +9,42 @@ const productController = {
           req.flash('success_messages', data['message'])
           const keyword = req.query.keyword || ''
 
+          if (data.currentUser[0]) {
+            const temp = data.currentUser[0].dataValues
+            const setUser = {
+              id: temp.id,
+              name: temp.name,
+              role: temp.role,
+              isValid: temp.isValid,
+              Reviews: temp.Reviews,
+              productLiked: temp.productLiked
+            }
+            const productLiked = temp.productLiked.map(r => ({
+              id: r.dataValues.id
+            })) || []
+
+            //console.log('----------', data.content)
+            const productsData = data.content.map(r => ({
+              ...r.dataValues
+            }))
+            //console.log('----------', productsData)
+
+            const filterProducts =  productsData.map(p => ({
+              ...p,
+              isLiked: productLiked.map(r => r.id === p.id )
+               
+            }))
+
+            return res.render('shop', {
+              products: filterProducts,
+              setUser: setUser,
+              categories: data.categories,
+              keyword: keyword
+            })
+          }
+
           return res.render('index', {
             products: data.content,
-            carousels: data.carousels,
             categories: data.categories,
             keyword: keyword
           })
@@ -37,57 +65,57 @@ const productController = {
           const category_id = Number(req.query.category_id) || ''
           const keyword = req.query.keyword || ''
 
-          // if (data.currentUser[0]) {
-          //   const temp = data.currentUser[0].dataValues
-          //   const setUser = {
-          //     id: temp.id,
-          //     name: temp.name,
-          //     role: temp.role,
-          //     isValid: temp.isValid,
-          //     Reviews: temp.Reviews,
-          //     productLiked: temp.productLiked
-          //   }
-          //   const productLiked = temp.productLiked.map(r => ({
-          //     id: r.dataValues.id
-          //   })) || []
+          if (data.currentUser[0]) {
+            const temp = data.currentUser[0].dataValues
+            const setUser = {
+              id: temp.id,
+              name: temp.name,
+              role: temp.role,
+              isValid: temp.isValid,
+              Reviews: temp.Reviews,
+              productLiked: temp.productLiked
+            }
+            const productLiked = temp.productLiked.map(r => ({
+              id: r.dataValues.id
+            })) || []
 
-          //   //console.log('----------', data.content)
-          //   const productsData = data.content.map(r => ({
-          //     ...r.dataValues
-          //   }))
-          //   //console.log('----------', productsData)
+            //console.log('----------', data.content)
+            const productsData = data.content.map(r => ({
+              ...r.dataValues
+            }))
+            //console.log('----------', productsData)
 
-          //   let filterProducts = []
+            let filterProducts = []
 
-          //   productsData.forEach(p => {
-          //     productLiked.forEach(liked => {
-          //       if (p.id === liked.id) {
-          //         p = {
-          //           ...p,
-          //           isliked: true
-          //         } 
-          //       } else {
-          //         p = {
-          //           ...p,
-          //           isliked: false
-          //         }
-          //       }
-          //     })
-          //     filterProducts.push(p)
-          //   })
-
-          //   return res.render('shop', {
-          //     products: filterProducts,
-          //     setUser: setUser,
-          //     categories: data.categories,
-          //     category_id: category_id,
-          //     page: page,
-          //     totalPages: data.totalPages,
-          //     prev: data.prev,
-          //     next: data.next,
-          //     keyword: keyword
-          //   })
-          // }
+            productsData.forEach(p => {
+              productLiked.forEach(liked => {
+                if (p.id === liked.id) {
+                  p = {
+                    ...p,
+                    isLiked: true
+                  } 
+                } else {
+                  p = {
+                    ...p,
+                    isLiked: false
+                  }
+                }
+              })
+              filterProducts.push(p)
+            })
+            // console.log('--------------','page:', page, 'totalPages:', data.totalPages,'keyword:', keyword)
+            return res.render('shop', {
+              products: filterProducts,
+              setUser: setUser,
+              categories: data.categories,
+              category_id: category_id,
+              page: page,
+              totalPages: data.totalPages,
+              prev: data.prev,
+              next: data.next,
+              keyword: keyword
+            })
+          }
     
           return res.render('shop', {
             products: data.content,
@@ -128,6 +156,24 @@ const productController = {
       }
     })
   },
+
+
+  likeProduct: async (req, res) => {
+    await productService.likeProduct(req, res, (data) => {
+      try {
+        if (data['status'] == 'success') {
+          req.flash('success_messages', "成功收藏商品")
+          res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        req.flash('error_messages', "收藏商品失敗")
+        res.redirect('back')
+      }
+    })
+  },
+
 
   unlikeProduct: async (req, res) => {
     await productService.unlikeProduct(req, res, (data) => {
