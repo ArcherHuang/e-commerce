@@ -1,50 +1,42 @@
 {{!---------------------- All Products --------------------------}}
 
-            {{!---------------------- Product Card--------------------------}}
-            {{#each products}}
-            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                <div class="product-wrap mb-35">
-                    <div class="product-img mb-15">
-                        <a href="/products/{{this.id}}"><img src="{{this.image}}" alt="product"></a>
-                        <div class="product-action">
-                            {{!-- <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                            {{#if this.isLiked}}
-                                <form action="/products/{{this.id}}/unlike?_method=DELETE" method="POST">
-                                    <button title="Wishlist" type="submit" class="btn btn-danger"><i class="la la-heart-o"></i></button>
-                                </form>
-                            {{else}}
-                                <form action="/products/{{this.id}}/like?_method=DELETE" method="POST">
-                                    <button title="Wishlist" type="submit" class="btn btn-danger"><i class="la la-heart-o"></i></button>
-                                </form>
-                            {{/if}}
-                             <a title="Compare" href="#"><i class="la la-retweet"></i></a> --}}
-                        </div>
-                    </div>
-
-                    <div class="product-content">
-                        <span>{{this.Category.name}}</span>
-                        <h4><a href="/products/{{this.id}}">{{this.name}}</a></h4>
-                        <div class="price-addtocart">
-                            <div class="product-price">
-                                <span>$ {{this.price}}</span>
-                            </div>
-                            
-                             
-                           
-                            <form>
-                                <div class="product-addtocart">
-                                    <button type="submit">+ 新增至購物車</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+{{!---------------------- Product Card--------------------------}}
+{{#each products}}
+<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+    <div class="product-wrap mb-35">
+        <div class="product-img mb-15">
+            <a href="/products/{{this.id}}"><img src="{{this.image}}" alt="product"></a>
+            <div class="product-action">
+                    <a data-toggle="modal" data-target="#{{this.name}}" title="Quick View" href="#"><i class="la la-plus"></i></a>
+                    {{!-- <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
+                    <a title="Wishlist" href="/products/{{this.id}}/unlike"><i class="la la-heart"></i></a> --}}
+                    <a title="Compare" href="#"><i class="la la-retweet"></i></a>
             </div>
+        </div>
+
+        <div class="product-content">
+            <span>{{this.Category.name}}</span>
+            <h4><a href="/products/{{this.id}}">{{this.name}}</a></h4>
+            <div class="price-addtocart">
+                <div class="product-price">
+                    <span>$ {{this.price}}</span>
+                </div>
+                {{!------------- 新增至購物車 -----------------}}
+                <form action="/carts" method="POST">
+                    <input type="hidden" name="productId" value="{{this.id}}" />
+                    <div class="product-addtocart">
+                        <button type="submit">+ 新增至購物車</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
            
       
 
 {{!---------------- Modal ------------------------}}
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="{{this.name}}" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,49 +54,57 @@
                     <div class="col-md-7 col-sm-12 col-xs-12">
                         <div class="product-details-content quickview-content">
                             <span>{{this.Category.name}}</span>
-                            <h2>{{this.name}}</h2>
+                            <h2>{{this.id}}&{{this.name}}</h2>
                             <div class="product-ratting-review">
                                 <div class="product-review">
                                     <span>40+ Reviews</span>
                                 </div>
                             </div>
                             <div class="pro-details-size">
-                                <span>Weight: {{this.weight}} kg</span>
+                                <span>重量: {{this.weight}} kg</span>
                             </div>
                             <div class="pro-details-size">
-                                <span>Size: {{this.length}} cm x {{this.width}} cm x {{this.height}} cm</span>
+                                <span>尺寸: {{this.length}} cm x {{this.width}} cm x {{this.height}} cm</span>
                             </div>
                             <div class="pro-details-price-wrap">
                                 <div class="product-price">
                                     <span>$ {{this.price}}</span>
                                     <span class="old">$ {{this.recommendedPrice}}</span>
                                 </div>
-                                <div class="dec-rang"><span>- 30%</span></div>
+                                <div class="dec-rang"></div>
                             </div>
                             {{!-- Send to Cart --}}
-                           
+                            <form action="/carts" method="POST" id="add-cart-item">
+                                <input type="hidden" name="productId" value="{{this.id}}" />
                                 <div class="pro-details-quality">
                                     <div class="cart-plus-minus form-group">
                                         <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
                                     </div>
-                                </div>
-                                <div class="pro-details-compare-wishlist">
-                                    <div class="pro-details-compare">
-                                        <a title="Add To Compare" href="#"><i class="la la-retweet"></i> Compare</a>
-                                    </div>
-                                    {{!-- like --}}
-                                    <div class="pro-details-wishlist">
-                                        <a title="Add To Wishlist" href="/products/{{this.id}}/unlike"><i class="la la-heart"></i> Delete from wish list</a>
-                                    </div>
-                                    <div class="pro-details-wishlist">
-                                        <a title="Add To Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i> Add to wish list</a>
-                                    </div>
-                                </div>
-                             <form  action="/carts" method="POST"></form>
-                                <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                                    <button type="submit">Add To Cart</button>
-                                </div>
+                                </div>ｃ
                             </form>
+                            <div class="pro-details-compare-wishlist">
+                                <div class="pro-details-compare">
+                                    <a title="Add To Compare" href="#"><i class="la la-retweet"></i> 分享</a>
+                                </div>
+                                {{!-- like --}}
+                                {{#if this.isLiked}}
+                                    <form action="/products/{{this.id}}/unlike" method="POST">
+                                        <div class="pro-details-wishlist">
+                                            <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
+                                        </div>
+                                    </form>
+                                {{else}}
+                                    <form action="/products/{{this.id}}/like" method="POST">
+                                        <div class="pro-details-wishlist">
+                                            <button type="submit"><i class="la la-heart-o"></i> 收藏</button>
+                                        </div>
+                                    </form>
+                                {{/if}}
+                            </div>
+                            
+                            <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                <button type="submit" form="add-cart-item">新增至購物車</button>
+                            </div>
                         </div>
                     </div>
                 </div>
