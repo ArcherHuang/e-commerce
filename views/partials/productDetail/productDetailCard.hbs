@@ -137,14 +137,12 @@
                                         <br>
                                         <div class="d-flex flex-row bd-highlight mb-3">
                                             <a href="/products/{{this.ProductId}}/reviews/{{this.id}}/edit"
-                                                class="btn btn-outline-primary btn-round btn-sm mr-1">Edit this review
-                                            </a>
+                                                class="btn btn-outline-info btn-sm mr-2">編輯</a>
                                             <form
                                                 action="/products/{{this.ProductId}}/reviews/{{this.id}}?_method=DELETE"
                                                 method="POST">
                                                 <button type="submit"
-                                                    class="btn btn-outline-danger btn-round btn-sm">Delete
-                                                    this review</button>
+                                                    class="btn btn-outline-danger btn-round btn-sm">刪除</button>
                                             </form>
                                         </div>
                                         {{/ifCond}}
