@@ -133,7 +133,11 @@ const productService = {
       await Product.findByPk(req.params.product_id, {
         include: [
           Category,
-          { model: Review, include: User },
+          {
+            model: Review,
+            include: User,
+            order: [['updatedAt', 'DESC']]
+          },
           PageView
         ]
       }).then(product => {

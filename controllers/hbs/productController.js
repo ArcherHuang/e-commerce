@@ -66,6 +66,8 @@ const productController = {
             review: r.review,
             createdAt: r.createdAt,
             UserId: r.UserId,
+            ProductId: r.ProductId,
+            dataStatus: r.dataStatus,
             userName: r.User.name
           }))
 

@@ -113,6 +113,7 @@
                             </form>
                         </div>
                         {{#each reviews}}
+                        {{#ifCond this.dataStatus 1}}
                         <div class="dec-review-wrap mb-50">
                             <div class="row">
                                 <div class="col-xl-3 col-lg-4 col-md-5">
@@ -131,10 +132,27 @@
                                                 <span>{{momentYYYYMMDD this.createdAt}}</span>
                                             </div>
                                         </div>
+
+                                        {{#ifCond this.UserId ../user.id}}
+                                        <br>
+                                        <div class="d-flex flex-row bd-highlight mb-3">
+                                            <a href="/products/{{this.ProductId}}/reviews/{{this.id}}/edit"
+                                                class="btn btn-outline-primary btn-round btn-sm mr-1">Edit this review
+                                            </a>
+                                            <form
+                                                action="/products/{{this.ProductId}}/reviews/{{this.id}}?_method=DELETE"
+                                                method="POST">
+                                                <button type="submit"
+                                                    class="btn btn-outline-danger btn-round btn-sm">Delete
+                                                    this review</button>
+                                            </form>
+                                        </div>
+                                        {{/ifCond}}
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {{/ifCond}}
                         {{/each}}
                         {{!-- Original design --}}
                         {{!-- <div class="dec-review-wrap mb-50">
