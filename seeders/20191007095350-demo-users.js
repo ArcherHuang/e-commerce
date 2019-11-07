@@ -397,7 +397,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'Reviews',
-      Array.from({ length: (products.length * 5) }).map((d) => ({
+      Array.from({ length: (products.length / 2) }).map((d) => ({
         review: faker.lorem.paragraphs(1, false),
         UserId: faker.random.number({
           min: users[0],
