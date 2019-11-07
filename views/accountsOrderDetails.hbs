@@ -66,12 +66,14 @@
           </td>
           {{/ifCond}}
           {{#ifCond order.paymentStatus '0'}}
+          {{#ifCond order.dataStatus 1}}
           <td>
             <a href="/orders/{{order.id}}/newebPayment" class="btn btn-primary btn-sm">立即付款 (藍新金流)</a>
           </td>
           <td>
             <a href="/orders/{{order.id}}/stripePayment" class="btn btn-primary btn-sm">立即付款 (Stripe)</a>
           </td>
+          {{/ifCond}}
           {{/ifCond}}
         </tr>
         <tr>
