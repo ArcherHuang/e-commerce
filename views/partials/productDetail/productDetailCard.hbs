@@ -3,15 +3,17 @@
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-img-left">
-                    <img class="zoompro" src={{product.image}} data-zoom-image="/assets/images/product-details/product-detalis-bl1.jpg" alt="product-details-img">
+                    <img class="zoompro" src={{product.image}}
+                        data-zoom-image="/assets/images/product-details/product-detalis-bl1.jpg"
+                        alt="product-details-img">
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-content pro-details-content-modify">
                     <span>{{product.Category.name}}</span>
                     <h2>{{product.name}}</h2>
+
                     <div class="product-ratting-review"></div>
-                    
                     <div class="pro-details-price-wrap">
                         <div class="product-price">
                             <span>$ {{product.price}}</span>
@@ -25,37 +27,37 @@
                             </div>
                         </div>
                     </form>
-                        <div class="pro-details-compare-wishlist">
-                            <div class="pro-details-compare">
-                                <a title="Add To Compare" href="#">
-                                    <i class="la la-retweet"></i>
-                                    分享
-                                </a>
+                    <div class="pro-details-compare-wishlist">
+                        <div class="pro-details-compare">
+                            <a title="Add To Compare" href="#">
+                                <i class="la la-retweet"></i>
+                                分享
+                            </a>
+                        </div>
+                        {{#if this.isLiked}}
+                        <form action="/products/{{this.id}}/unlike" method="POST">
+                            <div class="pro-details-wishlist">
+                                <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
                             </div>
-                            {{#if this.isLiked}}
-                                <form action="/products/{{this.id}}/unlike" method="POST">
-                                    <div class="pro-details-wishlist">
-                                        <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
-                                    </div>
-                                </form>
-                            {{else}}
-                                <form action="/products/{{this.id}}/like" method="POST">
-                                    <div class="pro-details-wishlist">
-                                        <button type="submit"><i class="la la-heart-o"></i> 收藏</button>
-                                    </div>
-                                </form>
-                            {{/if}}
-                        </div>
-                        <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                            <button type="submit" form="add-cart-item">新增至購物車</button>
-                        </div>
-                    
+                        </form>
+                        {{else}}
+                        <form action="/products/{{this.id}}/like" method="POST">
+                            <div class="pro-details-wishlist">
+                                <button type="submit"><i class="la la-heart-o"></i> 收藏</button>
+                            </div>
+                        </form>
+                        {{/if}}
+                    </div>
+                    <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                        <button type="submit" form="add-cart-item">新增至購物車</button>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-  </div>
-  <div class="description-review-wrapper pb-90">
+</div>
+<div class="description-review-wrapper pb-90">
     <div class="container">
         <div class="row">
             <div class="ml-auto mr-auto col-lg-10">
@@ -94,110 +96,66 @@
                             </table>
                         </div>
                     </div>
-                    {{!---------- 收藏者 ------------}}
+                    {{!---------- 評論者 ------------}}
                     <div id="des-details3" class="tab-pane">
+                        {{!-- 新增評論 --}}
+                        <div class="dec-review-wrap mb-50">
+                            <form action="/products/{{product.id}}/reviews" method="POST" style="width:100%">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <textarea rows="" cols="" type="text" class="form-control" name="review"
+                                            id="review" placeholder="Your review"
+                                            style="height:100px; vertical-align: top" required></textarea>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="mt-5">
+                                            <button type="submit"
+                                                class="btn btn-outline-success btn-round btn-sm">送出</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        {{#each reviews}}
+                        {{#ifCond this.dataStatus 1}}
                         <div class="dec-review-wrap mb-50">
                             <div class="row">
                                 <div class="col-xl-3 col-lg-4 col-md-5">
                                     <div class="dec-review-img-wrap">
-                                        <div class="dec-review-img">
-                                            <img src="/assets/images/product-details/review-1.png" alt="review">
-                                        </div>
                                         <div class="dec-client-name">
-                                            <h4>Jonathon Doe</h4>
-                                            <div class="dec-client-rating">
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star-half-o"></i>
-                                            </div>
+                                            <h4>{{this.userName}}</h4>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-9 col-lg-8 col-md-7">
                                     <div class="dec-review-content">
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
+                                        <p>{{this.review}}
+                                        </p>
                                         <div class="review-content-bottom">
-                                            <div class="review-like">
-                                                <span><i class="la la-heart-o"></i> 24 Likes</span>
-                                            </div>
                                             <div class="review-date">
-                                                <span>25 Jun 2019</span>
+                                                <span>{{momentYYYYMMDD this.createdAt}}</span>
                                             </div>
                                         </div>
+
+                                        {{#ifCond this.UserId ../user.id}}
+                                        <br>
+                                        <div class="d-flex flex-row bd-highlight mb-3">
+                                            <a href="/products/{{this.ProductId}}/reviews/{{this.id}}/edit"
+                                                class="btn btn-outline-info btn-sm mr-2">編輯</a>
+                                            <form
+                                                action="/products/{{this.ProductId}}/reviews/{{this.id}}?_method=DELETE"
+                                                method="POST">
+                                                <button type="submit"
+                                                    class="btn btn-outline-danger btn-round btn-sm">刪除</button>
+                                            </form>
+                                        </div>
+                                        {{/ifCond}}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="dec-review-wrap mb-50">
-                            <div class="row">
-                                <div class="col-xl-3 col-lg-4 col-md-5">
-                                    <div class="dec-review-img-wrap">
-                                        <div class="dec-review-img">
-                                            <img src="/assets/images/product-details/review-2.png" alt="review">
-                                        </div>
-                                        <div class="dec-client-name">
-                                            <h4>Jonathon Doe</h4>
-                                            <div class="dec-client-rating">
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star-half-o"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-9 col-lg-8 col-md-7">
-                                    <div class="dec-review-content">
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
-                                        <div class="review-content-bottom">
-                                            <div class="review-like">
-                                                <span><i class="la la-heart-o"></i> 24 Likes</span>
-                                            </div>
-                                            <div class="review-date">
-                                                <span>25 Jun 2019</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dec-review-wrap">
-                            <div class="row">
-                                <div class="col-xl-3 col-lg-4 col-md-5">
-                                    <div class="dec-review-img-wrap">
-                                        <div class="dec-review-img">
-                                            <img src="/assets/images/product-details/review-3.png" alt="review">
-                                        </div>
-                                        <div class="dec-client-name">
-                                            <h4>Jonathon Doe</h4>
-                                            <div class="dec-client-rating">
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star"></i>
-                                                <i class="la la-star-half-o"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-9 col-lg-8 col-md-7">
-                                    <div class="dec-review-content">
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
-                                        <div class="review-content-bottom">
-                                            <div class="review-like">
-                                                <span><i class="la la-heart-o"></i> 24 Likes</span>
-                                            </div>
-                                            <div class="review-date">
-                                                <span>25 Jun 2019</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {{/ifCond}}
+                        {{/each}}
                     </div>
                 </div>
             </div>

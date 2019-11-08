@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt-nodejs')
 const faker = require('faker')
 const db = require('../models')
-const { User, Product, Order, Coupon, CouponDistribution, Category } = db
+const { User, Product, Order, Coupon, CouponDistribution, Category, Review } = db
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -394,6 +394,25 @@ module.exports = {
       })),
       {}
     )
+
+    await queryInterface.bulkInsert(
+      'Reviews',
+      Array.from({ length: (products.length / 2) }).map((d) => ({
+        review: faker.lorem.paragraphs(1, false),
+        UserId: faker.random.number({
+          min: users[0],
+          max: users[users.length - 1]
+        }),
+        ProductId: faker.random.number({
+          min: products[0],
+          max: products[products.length - 1]
+        }),
+        dataStatus: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })),
+      {}
+    )
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -406,5 +425,6 @@ module.exports = {
     await queryInterface.bulkDelete('PageViews', null, {})
     await queryInterface.bulkDelete('Orders', null, {})
     await queryInterface.bulkDelete('OrderItems', null, {})
+    await queryInterface.bulkDelete('Reviews', null, {})
   }
 }
