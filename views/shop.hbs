@@ -1,35 +1,35 @@
- <div class="main-wrapper">
 
-        {{> navBar}}
-        {{> shop/breadcrumb}}
 
-        <div class="shop-area pt-90 pb-90">
-            <div class="container">
-                <div class="row flex-row-reverse">
-                    <div class="col-lg-9">
-                       
-                        <div class="shop-bottom-area">
-                            <div class="tab-content jump">
-                                <div id="shop-1" class="tab-pane active">
-                                    <div class="row">
-                                       {{> productCard}}
-                                    </div>
-                                </div>
-                                {{> shop/pagination}}
+{{> navBar}}
+{{> shop/breadcrumb}}
+
+<div class="shop-area pt-90 pb-90">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-9">
+                
+                <div class="shop-bottom-area">
+                    <div class="tab-content jump">
+                        <div id="shop-1" class="tab-pane active">
+                            <div class="row">
+                                {{> productCard}}
                             </div>
                         </div>
-                    </div>
-                    {{!-- sidebar --}}
-                    <div class="col-lg-3">
-                        <div class="sidebar-wrapper">
-
-                            {{> shop/searchWidget}}
-                            {{> shop/categoryFilterWidget}}
-                        
-                        </div>
+                        {{> shop/pagination}}
                     </div>
                 </div>
             </div>
+            {{!-- sidebar --}}
+            <div class="col-lg-3">
+                <div class="sidebar-wrapper">
+
+                    {{> shop/searchWidget}}
+                    {{> shop/categoryFilterWidget}}
+                
+                </div>
+            </div>
         </div>
-        {{> footer}}
     </div>
+</div>
+
+{{> footer}}
