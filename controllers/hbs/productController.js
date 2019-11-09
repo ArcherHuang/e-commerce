@@ -21,7 +21,7 @@ const productController = {
             }
             const productLiked = temp.productLiked.map(r => ({
               id: r.dataValues.id
-            })) || []
+            }))
 
             //console.log('----------', data.content)
             const productsData = data.content.map(r => ({
@@ -31,11 +31,10 @@ const productController = {
 
             const filterProducts =  productsData.map(p => ({
               ...p,
-              isLiked: productLiked.map(r => r.id === p.id )
-               
+              isLiked: productLiked.map(r => r.id).includes(p.id )
             }))
 
-            return res.render('shop', {
+            return res.render('index', {
               products: filterProducts,
               setUser: setUser,
               categories: data.categories,
@@ -67,14 +66,14 @@ const productController = {
 
           if (data.currentUser[0]) {
             const temp = data.currentUser[0].dataValues
-            const setUser = {
-              id: temp.id,
-              name: temp.name,
-              role: temp.role,
-              isValid: temp.isValid,
-              Reviews: temp.Reviews,
-              productLiked: temp.productLiked
-            }
+            // const setUser = {
+            //   id: temp.id,
+            //   name: temp.name,
+            //   role: temp.role,
+            //   isValid: temp.isValid,
+            //   Reviews: temp.Reviews,
+            //   productLiked: temp.productLiked
+            // }
             const productLiked = temp.productLiked.map(r => ({
               id: r.dataValues.id
             })) || []
@@ -85,28 +84,15 @@ const productController = {
             }))
             //console.log('----------', productsData)
 
-            let filterProducts = []
+            const filterProducts =  productsData.map(p => ({
+              ...p,
+              isLiked: productLiked.map(r => r.id === p.id )
+            }))
 
-            productsData.forEach(p => {
-              productLiked.forEach(liked => {
-                if (p.id === liked.id) {
-                  p = {
-                    ...p,
-                    isLiked: true
-                  } 
-                } else {
-                  p = {
-                    ...p,
-                    isLiked: false
-                  }
-                }
-              })
-              filterProducts.push(p)
-            })
-            // console.log('--------------','page:', page, 'totalPages:', data.totalPages,'keyword:', keyword)
+             //console.log('--------------','page:', page, 'totalPages:', data.totalPages,'keyword:', keyword)
+
             return res.render('shop', {
               products: filterProducts,
-              setUser: setUser,
               categories: data.categories,
               category_id: category_id,
               page: page,
@@ -138,14 +124,48 @@ const productController = {
     })
   },
 
-  getProduct: (req, res, next) => {
+  getProduct: (req, res) => {
     productService.getProduct(req, res, (data) => {
       try {
         if (data['status'] === 'success') {
           req.flash('success_messages', data['message'])
+
+          if (data.currentUser['status'] === 'success') {
+            req.flash('success_messages', data['message'])
+
+            const temp = data.currentUser.content.dataValues
+            const productLiked = temp.productLiked.map(r => ({
+              id: r.dataValues.id
+            }))
+            //console.log(productLiked)
+            
+            const product = {
+              id: data.content.dataValues.id,
+              name: data.content.dataValues.id,
+              description: data.content.dataValues.description,
+              image: data.content.dataValues.image,
+              price:  data.content.dataValues.price,
+              recommendedPrice: data.content.dataValues.recommendedPrice,
+              inventory: data.content.dataValues.inventory,
+              length: data.content.dataValues.length,
+              width: data.content.dataValues.width,
+              height: data.content.dataValues.height,
+              weight: data.content.dataValues.weight,
+              CategoryId: data.content.dataValues.CategoryId,
+              isLiked: productLiked.map(r => r.id).includes(data.content.dataValues.id),
+              dataStatus: data.content.dataValues.dataStatus,
+              Category: data.content.dataValues.Category
+            }
+
+            return res.render('productDetail', {
+              product: product
+            })
+          }
+
           return res.render('productDetail', {
             product: data.content
           })
+
         } else {
           return req.flash('error_messages', data['message'])
         }
