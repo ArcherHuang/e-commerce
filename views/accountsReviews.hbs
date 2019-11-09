@@ -28,11 +28,16 @@
     <br>
     <h4>Your Reviews</h4>
     <br>
-    <table class="table table-hover" id="dataTable">
+    <h6 class="text-secondary text-center"><i class="fas fa-sort"></i> 符號代表點選此欄位標題後可進行排序</h6>
+    <table class="table table-hover" id="myTable">
       <thead>
         <tr>
-          <th scope="col">商品名稱</th>
-          <th scope="col" style="width:60%">你的評論</th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">
+            商品名稱&nbsp;<i class="fas fa-sort"></i></th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
+            style="cursor:pointer;width:60%">你的評論&nbsp;<i class="fas fa-sort"></i></th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
+            style="cursor:pointer;width:10%">日期&nbsp;<i class="fas fa-sort"></i></th>
           <th scope="col" style="width:10%"></th>
           <th scope="col" style="width:10%"></th>
         </tr>
@@ -40,7 +45,7 @@
       <tbody>
         {{#each reviews}}
         {{#ifCondNum this.id ../targetId}}
-        <tr>
+        <tr class="item">
           <td>
             <a href="/products/{{this.ProductId}}">
               <p class="text-primary">{{this.Product.dataValues.name}}</p>
@@ -60,13 +65,14 @@
           </td>
         </tr>
         {{else}}
-        <tr>
+        <tr class="item">
           <td>
             <a href="/products/{{this.ProductId}}">
               <p class="text-primary">{{this.Product.dataValues.name}}</p>
             </a>
           </td>
           <td>{{this.review}}</td>
+          <td>{{momentYYYYMMDD this.updatedAt}}</td>
           <td>
             <a href="/products/{{this.ProductId}}/reviews/{{this.id}}/edit" class="btn btn-outline-info btn-sm">編輯</a>
           </td>
