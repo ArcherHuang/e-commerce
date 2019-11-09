@@ -7,10 +7,10 @@
         <div class="product-img mb-15">
             <a href="/products/{{this.id}}"><img src="{{this.image}}" alt="product"></a>
             <div class="product-action">
-                    <a data-toggle="modal" data-target="#{{this.name}}" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                    {{!-- <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
-                    <a title="Wishlist" href="/products/{{this.id}}/unlike"><i class="la la-heart"></i></a> --}}
-                    <a title="Compare" href="#"><i class="la la-retweet"></i></a>
+                <a data-toggle="modal" data-target="#{{this.name}}" title="Quick View" href="#"><i class="la la-plus"></i></a>
+                {{!-- <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
+                <a title="Wishlist" href="/products/{{this.id}}/unlike"><i class="la la-heart"></i></a> --}}
+                <a title="Compare" href="#"><i class="la la-retweet"></i></a>
             </div>
         </div>
 
@@ -22,10 +22,11 @@
                     <span>$ {{this.price}}</span>
                 </div>
                 {{!------------- 新增至購物車 -----------------}}
-                <form action="/carts" method="POST">
-                    <input type="hidden" name="productId" value="{{this.id}}" />
+               
+                 <form action="/carts" method="post" id="add-cart-item-card">
+                    <input type="hidden" name="productId" value="{{this.id}}">
                     <div class="product-addtocart">
-                        <button type="submit">+ 新增至購物車</button>
+                        <button type="submit" form="add-cart-item-card">+ 新增至購物車</button>
                     </div>
                 </form>
             </div>
@@ -54,7 +55,7 @@
                     <div class="col-md-7 col-sm-12 col-xs-12">
                         <div class="product-details-content quickview-content">
                             <span>{{this.Category.name}}</span>
-                            <h2>{{this.id}}&{{this.name}}</h2>
+                            <h2>{{this.name}}</h2>
                             <div class="product-ratting-review">
                                 <div class="product-review">
                                     <span>40+ Reviews</span>
@@ -74,13 +75,13 @@
                                 <div class="dec-rang"></div>
                             </div>
                             {{!-- Send to Cart --}}
-                            <form action="/carts" method="POST" id="add-cart-item">
-                                <input type="hidden" name="productId" value="{{this.id}}" />
+                            <form action="/carts" method="post" id="add-cart-item">
+                                <input type="hidden" name="productId" value="{{this.id}}">
                                 <div class="pro-details-quality">
                                     <div class="cart-plus-minus form-group">
                                         <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
                                     </div>
-                                </div>ｃ
+                                </div>
                             </form>
                             <div class="pro-details-compare-wishlist">
                                 <div class="pro-details-compare">
@@ -88,15 +89,15 @@
                                 </div>
                                 {{!-- like --}}
                                 {{#if this.isLiked}}
-                                    <form action="/products/{{this.id}}/unlike" method="POST">
+                                    <form action="/products/{{this.id}}/unlike" method="post" id="product-unliked">
                                         <div class="pro-details-wishlist">
-                                            <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
+                                            <button type="submit" form="product-unliked"><i class="la la-heart"></i> 取消收藏</button>
                                         </div>
                                     </form>
                                 {{else}}
-                                    <form action="/products/{{this.id}}/like" method="POST">
+                                    <form action="/products/{{this.id}}/like" method="post" id="product-liked">
                                         <div class="pro-details-wishlist">
-                                            <button type="submit"><i class="la la-heart-o"></i> 收藏</button>
+                                            <button type="submit" form="product-liked"><i class="la la-heart-o"></i> 收藏</button>
                                         </div>
                                     </form>
                                 {{/if}}
