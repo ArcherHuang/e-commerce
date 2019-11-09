@@ -24,18 +24,10 @@ const productService = {
       // 取出 categories
       categories = await Category.findAll({ where: { dataStatus: 1 } })
       // 取出 current user  
-      if (req.user) {
-        // currentUser = await User.findByPk(req.session.user.id)
-        currentUser = await User.findAll({
-          where: {
-            id: req.user.id
-          },
-          include: [
-            Review,
-            { model: Product, as: "productLiked" },
-            { model: Product, as: "productViewed" },
-            { model: Product, as: "productReviewed" },
-          ]
+      if (req.user || req.session.user) {
+        await userService.getCurrentUser(req, res, (data) => {
+          currentUser = data
+          return currentUser
         })
       } else {
         currentUser = []
@@ -166,11 +158,11 @@ const productService = {
         } else {
           return PageView.findOrCreate({
             where: {
-              UserId: null,
+              UserId: -1,
               ProductId: req.params.product_id
             },
             default: {
-              UserId: null,
+              UserId: -1,
               ProductId: req.params.product_id,
               viewCount: 0
             }

@@ -167,33 +167,42 @@ const userService = {
     }
   },
 
-  getProfile: (req, res, callback) => {
+  getProfile: async (req, res, callback) => {
     try {
-      return User.findAll({
-        where: {
-          id: req.user.id
-        },
-        include: [
-          Review,
-          { model: Product, as: "productLiked" },
-          { model: Product, as: "productViewed" },
-          { model: Product, as: "productReviewed" },
-        ]
-      }).then(result => {
-        let user = result[0]
+      // 取出 current user  
+      let user
+      if (req.user || req.session.user) {
+        await userService.getCurrentUser(req, res, (data) => {
+          user = data.content
+        })
+      } else {
+        user = []
+      }
 
-        // 將有瀏覽過的商品，加入是否 like 過的紀錄
-        user.productViewed = user.productViewed.map(r => ({
-          ...r,
-          isLiked: user.productLiked.map(d => d.id).includes(r.id)
-        }))
+      // 將有瀏覽過的商品，加入是否 like 過的紀錄
+      user.productViewed = user.productViewed.map(r => ({
+        id: r.id,
+        name: r.name,
+        description: r.description,
+        image: r.image,
+        price: r.price,
+        recommendedPrice: r.recommendedPrice,
+        inventory: r.inventory,
+        length: r.length,
+        width: r.width,
+        height: r.height,
+        weight: r.weight,
+        CategoryId: r.CategoryId,
+        dataStatus: r.dataStatus,
+        createdAt: r.createdAt,
+        updatedAt: r.updatedAt,
+        isLiked: user.productLiked.map(d => d.id).includes(r.id)
+      }))
 
-        return callback({ status: 'success', message: '取得使用者頁面成功', content: user })
-      }).catch(err => {
-        return callback({ status: 'error', message: '無法取得使用者頁面' })
-      })
+      return callback({ status: 'success', message: '取得使用者頁面成功', content: user })
     }
     catch (err) {
+      console.log(`Err: ${err}`)
       return callback({ status: 'error', message: '無法取得使用者頁面' })
     }
   },
@@ -350,51 +359,88 @@ const userService = {
     }
   },
 
-  getCurrentUser: (req, res, callback) => {
+  getCurrentUser: async (req, res, callback) => {
 
     try {
       if (req.user || req.session.user) {
 
-        // 取得使用者資訊，以及與商品互動的資訊
-        return User.findAll({
+        // Get user info
+        let currentUser = await User.findAll({
           where: {
             id: (req.user) ? req.user.id : req.session.user.id
-          },
-          include: [
-            Review,
-            { model: Coupon, as: "couponsOwned" },
-            { model: Product, as: "productLiked" },
-            { model: Product, as: "productViewed" },
-            { model: Product, as: "productReviewed" },
-          ]
-        }).then(async (result) => {
-          let user = result[0]
-          user.password = null
-
-          // 取得過去成功付款的訂單資訊
-          let orders = await Order.findAll({
-            where: {
-              UserId: (req.user) ? req.user.id : req.session.user.id,
-              paymentStatus: 1
-            },
-            include: [
-              {
-                model: Product,
-                as: 'items',
-              }
-            ]
-          })
-
-          // 取得購買過的商品資訊
-          let purchased = []
-          for (let i = 1; i < orders.length; i++) {
-            for (let j = 1; j < orders[i].items.length; j++) {
-              purchased.push(orders[i].items[j])
-            }
           }
-
-          return callback({ status: 'success', message: '取得當前使用者資料成功', content: user, orders: orders, purchasedProducts: purchased })
         })
+
+        // 整理資訊
+        currentUser = currentUser[0]
+        currentUser.password = null
+
+        // Get user's reviews
+        let reviews = await User.findAll({
+          where: { id: currentUser.id },
+          include: [Review],
+        })
+
+        // Get user's coupons
+        let coupons = await User.findAll({
+          where: { id: currentUser.id },
+          include: [{ model: Coupon, as: "couponsOwned" }],
+        })
+
+        // Get products that user liked
+        let productLiked = await User.findAll({
+          where: { id: currentUser.id },
+          include: [{ model: Product, as: "productLiked" }],
+        })
+
+        // Get products that user viewed
+        let productViewed = await User.findAll({
+          where: { id: currentUser.id },
+          include: [{ model: Product, as: "productViewed" }],
+        })
+
+        // Get products that user reviewed
+        let productReviewed = await User.findAll({
+          where: { id: currentUser.id },
+          include: [{ model: Product, as: "productReviewed" }],
+        })
+
+        // 取得過去成功付款的訂單資訊
+        let orders = await Order.findAll({
+          where: {
+            UserId: (req.user) ? req.user.id : req.session.user.id,
+            paymentStatus: 1
+          },
+          include: [{ model: Product, as: 'items' }]
+        })
+
+        // 取得購買過的商品資訊
+        let purchased = []
+        for (let i = 1; i < orders.length; i++) {
+          for (let j = 1; j < orders[i].items.length; j++) {
+            purchased.push(orders[i].items[j])
+          }
+        }
+
+        // Consolidate all data
+        let result = {
+          id: currentUser.id,
+          name: currentUser.name,
+          email: currentUser.email,
+          role: currentUser.role,
+          isValid: currentUser.isValid,
+          phone: currentUser.phone,
+          address: currentUser.address,
+          birthday: currentUser.birthday,
+          couponsOwned: coupons[0].couponsOwned,
+          Reviews: reviews[0].Reviews,
+          productLiked: productLiked[0].productLiked,
+          productViewed: productViewed[0].productViewed,
+          productReviewed: productReviewed[0].productReviewed
+        }
+
+        return callback({ status: 'success', message: '取得當前使用者資料成功', content: result, orders: orders, purchasedProducts: purchased })
+
       } else {
         return callback({ status: 'error', message: '使用者尚未登入' })
       }
