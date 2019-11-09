@@ -15,6 +15,7 @@ router.put('/users/:user_id', userController.putUsers)
 
 // Order
 router.get('/orders', orderController.getOrders)
+router.get('/orders/:order_id', orderController.getOrder)
 router.put('/orders/:order_id/cancel', orderController.cancelOrder)
 router.put('/orders/:order_id/resume', orderController.resumeOrder)
 router.put('/orders/:order_id/shipped', orderController.shippedOrder)

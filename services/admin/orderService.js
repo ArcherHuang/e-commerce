@@ -1,5 +1,5 @@
 const db = require('../../models')
-const { Order, User, Discount } = db
+const { Order, User, Discount, Product } = db
 const sendEmailService = require('../../services/sendEmailService')
 
 const orderService = {
@@ -8,7 +8,7 @@ const orderService = {
     try {
       Order.findAll().then(orders => {
         if (req.params.order_id) {
-          Order.findByPk(req.params.order_id)
+          Order.findByPk(req.params.order_id, { include: [User, { model: Product, as: 'items' }] })
             .then((order) => {
               if (order) {
                 return callback({ status: 'success', message: '取得特定 Order 資料', content: order, key: 'order' })
@@ -281,7 +281,8 @@ const orderService = {
     catch (err) {
       return callback({ status: 'error', message: '取消 discount 失敗' })
     }
-  }
+  },
+
 }
 
 module.exports = orderService  
