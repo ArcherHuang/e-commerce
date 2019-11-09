@@ -1,0 +1,152 @@
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    {{#if product}}
+    <h4>編輯商品資訊</h4>
+    {{else}}
+    <h4>新增商品</h4>
+    {{/if}}
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+    <br>
+    {{#if product}}
+    <form action="/admin/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+      {{else}}
+      <form action="/admin/products" method="POST" enctype="multipart/form-data">
+        {{/if}}
+
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">商品名稱 </label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" id="name" placeholder="name" value="{{product.name}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="description" class="col-sm-2 col-form-label">商品描述 </label>
+          <div class="col-sm-10">
+            <input type="text" placeholder="description" id="description" name="description"
+              value="{{product.description}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="image" class="col-sm-2 col-form-label">商品圖片</label>
+          <br />
+          {{#if product.image}}
+          <img class="file-upload-image ml-3" id="file-upload-image" src="{{product.image}}" alt="your image"
+            width="100" height="100" />
+          {{/if}}
+          <div class="col-sm-4">
+            <input type="file" class="form-control-file" id="image" name="image">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="price" class="col-sm-2 col-form-label">售價 (NTD)</label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="price" id="price" name="price" value="{{product.price}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="recommended_price" class="col-sm-2 col-form-label">建議售價 (NTD)</label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="recommended_price" id="recommended_price" name="recommended_price"
+              value="{{product.recommendedPrice}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="inventory" class="col-sm-2 col-form-label">庫存 (需大於零)</label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="inventory" id="inventory" name="inventory" value="{{product.inventory}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="length" class="col-sm-2 col-form-label">長度 (cm)</label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="length" id="length" name="length" value="{{product.length}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="width" class="col-sm-2 col-form-label">寬度 (cm)</label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="width" id="width" name="width" value="{{product.width}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="height" class="col-sm-2 col-form-label">高度 (cm) </label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="height" id="height" name="height" value="{{product.height}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="weight" class="col-sm-2 col-form-label">重量 (kg) </label>
+          <div class="col-sm-10">
+            <input type="number" placeholder="weight" id="weight" name="weight" value="{{product.weight}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="category_id" class="col-sm-2 col-form-label">商品分類 </label>
+          <br />
+          <div class="col-sm-10">
+            <select class="d-inline-block col-4 custom-select" name="category_id" id="category_id" required>
+              <option value="" disabled selected>請選擇類別</option>
+              {{#each categories}}
+              <option value="{{this.id}}" {{#ifCond ../product.Category.id this.id}} selected{{/ifCond}}>
+                {{this.name}}
+              </option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+
+        <br />
+        {{#if product}}
+        <button class="btn btn-outline-primary btn-block" type="submit">更新商品資訊</button>
+        {{!-- <a href="/admin/products">or Create New</a> --}}
+        {{else}}
+        <button class="btn btn-outline-primary btn-block" type="submit">建立新商品</button>
+        {{/if}}
+      </form>
+  </div>
+</div>

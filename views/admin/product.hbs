@@ -1,0 +1,129 @@
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>商品資料</h4>
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+    <table class="table table-borderless">
+      <thead>
+        <th style="width:20%"></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr></tr>
+        <td>
+          {{#if product.image}}
+          <img src="{{product.image}}" alt="Card image cap" width="200" height="200">
+          {{else}}
+          無商品圖片
+          {{/if}}
+        </td>
+        <tr>
+          <th scope="row">名稱</th>
+          <td>{{product.name}}</td>
+        </tr>
+        <tr>
+          <th scope="row">簡介</th>
+          <td>{{product.description}}</td>
+        </tr>
+        <tr>
+          <th scope="row">售價 (NTD)</th>
+          <td>{{product.price}}</td>
+        </tr>
+        <tr>
+          <th scope="row">建議售價 (NTD)</th>
+          <td>{{product.recommendedPrice}}</td>
+        </tr>
+        <tr>
+          <th scope="row">分類</th>
+          <td>{{product.Category.name}}</td>
+        </tr>
+        <tr>
+          <th scope="row">庫存</th>
+          <td>{{product.inventory}}</td>
+        </tr>
+        <tr>
+          <th scope="row">長度 (cm)</th>
+          <td>{{product.length}}</td>
+        </tr>
+        <tr>
+          <th scope="row">寬度 (cm)</th>
+          <td>{{product.width}}</td>
+        </tr>
+        <tr>
+          <th scope="row">高度 (cm)</th>
+          <td>{{product.height}}</td>
+        </tr>
+        <tr>
+          <th scope="row">重量 (kg)</th>
+          <td>{{product.weight}}</td>
+        </tr>
+        <tr>
+          <th>商品狀態</th>
+          <td>
+            {{#ifCond product.dataStatus 1}}
+            架上
+            <a class="btn btn-outline-danger btn-sm ml-3" data-toggle="modal"
+              data-target="#trigger-deleteItem-{{ product.id}}" href="#">下架
+            </a>
+            {{!--  下架商品動作 --}}
+            <div class="modal fade" id="trigger-deleteItem-{{ product.id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <big class="font-weight-bold">確定要下架【 {{product.name}} 】嗎?</big>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    <form action="/admin/products/{{ product.id}}?_method=DELETE" method="POST"
+                      style="display: inline;">
+                      <button type="submit" class="btn btn-link btn-sm">下架此商品</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{else}}
+            已下架
+            {{/ifCond}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <a href="/admin/products/{{product.id}}/edit" class="btn btn-outline-primary btn-round btn-sm">Edit Product</a>
+  </div>
+</div>

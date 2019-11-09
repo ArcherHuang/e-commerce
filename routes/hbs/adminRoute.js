@@ -44,7 +44,9 @@ router.get('/send/coupon/users', userController.listUsers)
 
 // Product
 router.get('/products', productController.getProducts)
+router.get('/products/create', productController.getProductEditPage)
 router.get('/products/:product_id', productController.getProduct)
+router.get('/products/:product_id/edit', productController.getProductEditPage)
 router.post('/products', upload.single('image'), productController.postProduct)
 router.put('/products/:product_id', upload.single('image'), productController.putProduct)
 router.delete('/products/:product_id', productController.deleteProduct)
