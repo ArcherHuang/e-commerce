@@ -40,6 +40,7 @@ router.post('/coupons', couponController.postCoupon)
 router.get('/coupons/:coupon_id', couponController.getCoupons)
 router.put('/coupons/:coupon_id', couponController.putCoupon)
 router.delete('/coupons/:coupon_id', couponController.deleteCoupon)
+router.get('/send/coupon/users', userController.listUsers)
 
 // Product
 router.get('/products', productController.getProducts)

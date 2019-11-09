@@ -27,6 +27,15 @@ const userController = {
     })
   },
 
+  listUsers: (req, res) => {
+    userService.editUsers(req, res, (data) => {
+      return res.render('admin/sendCouponToUser', {
+        users: data['content'],
+        coupon_id: req.query.coupon_id
+      })
+    })
+  },
+
 }
 
 module.exports = userController

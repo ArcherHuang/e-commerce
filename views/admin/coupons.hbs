@@ -147,7 +147,13 @@
     <tr class="item">
       <th scope="row">{{this.id}}</th>
       <td class="text-center">{{this.name}}</td>
-      <td class="text-center">{{this.sn}}</td>
+      <td class="text-center">
+        {{this.sn}}
+        {{#ifCond this.dataStatus 1}}
+        <br />
+        <a class="btn btn-outline-primary" href="/admin/send/coupon/users?coupon_id={{this.id}}">寄送 Coupon</a>
+        {{/ifCond}}
+      </td>
       <td class="text-center">{{this.discount}}</td>
       <td class="text-center">{{this.numberOfLimitation}}</td>
       <td class="text-center">{{momentYYYYMMDD this.expireDate}}</td>
