@@ -1,92 +1,89 @@
-{{> messages}}
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
 
-<div class="main-wrapper">
-  <header class="header-area transparent-bar sticky-bar showdow">
-    <div class="main-header-wrap">
-      <div class="container">
-        <div class="row mt-40">
-          <div class="col-xl-2 col-lg-2">
-            <div class="logo mt-40">
-              <h3>aja 後台</h3>
-            </div>
-          </div>
-          <div class="col-xl-10 col-lg-10">
-            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-              <nav>
-                <ul>
-                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                  <li><a href="/admin/users">Users</a></li>
-                  <li><a href="/admin/categories">Categories</a></li>
-                  <li><a href="/admin/coupons">Coupon</a></li>
-                  <li><a href="/admin/products">Product</a></li>
-                  <li><a href="/admin/orders">Order</a></li>
-                  <li><a href="/admin/orders/discounts">Discount</a></li>
-                  <li><a href="/admin/notification">Notification</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>使用者資料</h4>
+    <br>
+    <h6 class="text-secondary text-center"><i class="fas fa-sort"></i> 符號代表點選此欄位標題後可進行排序</h6>
+    <table class="table table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th class="text-center" scope="col">#</th>
+          <th class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">
+            Email
+            <i class="fas fa-sort"></i></th>
+          <th class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">
+            Role
+            <i class="fas fa-sort"></i></th>
+          <th class="text-center" scope="col">權限設定</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+        <tr class="item">
+          <th class="text-center" scope="row">{{this.id}}</th>
+          <td class="text-center">{{this.email}}</td>
+
+          {{#ifCond this.role "admin"}}
+          <td class="text-center">Admin</td>
+          {{else}}
+          <td class="text-center">User</td>
+          {{/ifCond}}
+
+          <td class="text-center">
+            <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+
+              {{#ifCond this.email ../user.email}}
+
+              {{#ifCond this.role "admin"}}
+
+              {{else}}
+              <button type="submit" class="btn btn-outline-danger btn-sm">Set as Admin</button>
+              {{/ifCond}}
+
+              {{else}}
+
+              {{#ifCond this.role "admin"}}
+              <button type="submit" class="btn btn-outline-primary btn-sm">Set as User</button>
+              {{else}}
+              <button type="submit" class="btn btn-outline-danger btn-sm">Set as Admin</button>
+              {{/ifCond}}
+              {{/ifCond}}
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<br />
-<br />
-<br />
-<br />
-<br />
-
-<h6 class="text-secondary text-center"><i class="fas fa-sort"></i> 符號代表點選此欄位標題後可進行排序</h6>
-<table class="table" id="myTable">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-center" scope="col">#</th>
-      <th class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Email
-        <i class="fas fa-sort"></i></th>
-      <th class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Role
-        <i class="fas fa-sort"></i></th>
-      <th class="text-center" scope="col">權限設定</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each users}}
-    <tr class="item">
-      <th class="text-center" scope="row">{{this.id}}</th>
-      <td class="text-center">{{this.email}}</td>
-
-      {{#ifCond this.role "admin"}}
-      <td class="text-center">Admin</td>
-      {{else}}
-      <td class="text-center">User</td>
-      {{/ifCond}}
-
-      <td class="text-center">
-        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
-
-          {{#ifCond this.email ../user.email}}
-
-          {{#ifCond this.role "admin"}}
-
-          {{else}}
-          <button type="submit" class="btn btn-outline-danger">Set as Admin</button>
-          {{/ifCond}}
-
-          {{else}}
-
-          {{#ifCond this.role "admin"}}
-          <button type="submit" class="btn btn-outline-primary">Set as User</button>
-          {{else}}
-          <button type="submit" class="btn btn-outline-danger">Set as Admin</button>
-          {{/ifCond}}
-
-          {{/ifCond}}
-
-
-        </form>
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
