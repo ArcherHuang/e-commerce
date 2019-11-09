@@ -125,7 +125,7 @@ const productService = {
     try {
 
       let currentUser
-      await userService.getCurrentUser(req, res, (data) => {
+      await userService.getProfile(req, res, (data) => {
         currentUser = data
         return currentUser
       })
@@ -184,7 +184,6 @@ const productService = {
   },
 
   likeProduct: async (req, res, callback) => {
-
     let product = await Product.findByPk(req.params.product_id)
     let like = await Like.findOne({
       where: {
