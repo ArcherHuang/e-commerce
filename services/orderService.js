@@ -247,7 +247,7 @@ const orderService = {
         return callback({ status: 'error', message: '付款金額不一致' })
       }
     } catch (err) {
-      console.log(`Err4: ${err}`)
+      console.log(`Err: ${err}`)
       return callback({ status: 'error', message: 'postStripePayment 失敗' })
     }
   }

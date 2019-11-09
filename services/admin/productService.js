@@ -48,168 +48,204 @@ const productService = {
   },
 
   getProducts: async (req, res, callback) => {
+    try {
+      let carousels = await Carousel.findAll({
+        where: {
+          dataStatus: 1
+        }
+      })
+      let categories = await Category.findAll({
+        where: {
+          dataStatus: 1
+        }
+      })
+      let currentUser
 
-    let carousels = await Carousel.findAll({
-      where: {
-        dataStatus: 1
+      if (req.session.user) {
+        currentUser = await User.findByPk(req.session.user.id)
+      } else {
+        currentUser = []
       }
-    })
-    let categories = await Category.findAll({
-      where: {
-        dataStatus: 1
-      }
-    })
-    let currentUser
 
-    if (req.session.user) {
-      currentUser = await User.findByPk(req.session.user.id)
-    } else {
-      currentUser = []
+      if (req.query.category_id && req.query.keyword) {
+        const keyword = req.query.keyword ? req.query.keyword : null
+        return Product.findAll({
+          include: [Category],
+          where: {
+            dataStatus: 1,
+            CategoryId: req.query.category_id ? req.query.category_id : null,
+            [Op.or]: [
+              { name: { [Op.like]: '%' + keyword + '%' } },
+              { description: { [Op.like]: '%' + keyword + '%' } }
+            ]
+          },
+          order: [['updatedAt', 'DESC']]
+        }).then(products => {
+          if (products.length !== 0) {
+            return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
+          } else {
+            return Product.findAll({ include: [Category] }).then(products => {
+              return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
+            })
+          }
+        })
+
+      } else if (req.query.category_id || req.query.keyword) {
+        const keyword = req.query.keyword ? req.query.keyword : null
+        return Product.findAll({
+          include: [Category],
+          where: {
+            dataStatus: 1,
+            [Op.or]: [
+              { CategoryId: req.query.category_id ? req.query.category_id : null, },
+              { name: { [Op.like]: '%' + keyword + '%' } },
+              { description: { [Op.like]: '%' + keyword + '%' } }
+            ]
+          },
+          order: [['updatedAt', 'DESC']]
+        }).then(products => {
+          if (products.length !== 0) {
+            return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
+          } else {
+            return Product.findAll({ include: [Category] }).then(products => {
+              return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
+            })
+          }
+        })
+      } else {
+        return Product.findAll({ include: [Category] }).then(products => {
+          return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
+        })
+      }
     }
-
-    if (req.query.category_id && req.query.keyword) {
-      const keyword = req.query.keyword ? req.query.keyword : null
-      return Product.findAll({
-        include: [Category],
-        where: {
-          dataStatus: 1,
-          CategoryId: req.query.category_id ? req.query.category_id : null,
-          [Op.or]: [
-            { name: { [Op.like]: '%' + keyword + '%' } },
-            { description: { [Op.like]: '%' + keyword + '%' } }
-          ]
-        },
-        order: [['updatedAt', 'DESC']]
-      }).then(products => {
-        if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
-        } else {
-          return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
-          })
-        }
-      })
-
-    } else if (req.query.category_id || req.query.keyword) {
-      const keyword = req.query.keyword ? req.query.keyword : null
-      return Product.findAll({
-        include: [Category],
-        where: {
-          dataStatus: 1,
-          [Op.or]: [
-            { CategoryId: req.query.category_id ? req.query.category_id : null, },
-            { name: { [Op.like]: '%' + keyword + '%' } },
-            { description: { [Op.like]: '%' + keyword + '%' } }
-          ]
-        },
-        order: [['updatedAt', 'DESC']]
-      }).then(products => {
-        if (products.length !== 0) {
-          return callback({ status: 'success', message: '取得搜尋產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser })
-        } else {
-          return Product.findAll({ include: [Category] }).then(products => {
-            return callback({ status: 'success', message: '該搜尋沒有產品，取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
-          })
-        }
-      })
-    } else {
-      return Product.findAll({ include: [Category] }).then(products => {
-        return callback({ status: 'success', message: '取得所有產品清單成功', content: products, carousels: carousels, categories: categories, currentUser: currentUser, key: 'products' })
-      })
+    catch (err) {
+      console.log(`Er: ${err}`)
+      return callback({ status: 'error', message: '取得所有產品清單失敗' })
     }
   },
 
   getProduct: (req, res, callback) => {
-
-    return Product.findByPk(req.params.product_id, { include: [Category] }).then(product => {
-      Category.findAll().then(categories => {
-        return callback({ status: 'success', message: '取得特定產品成功', content: product, categories, key: 'product' })
+    try {
+      return Product.findByPk(req.params.product_id, { include: [Category] }).then(product => {
+        Category.findAll().then(categories => {
+          return callback({ status: 'success', message: '取得特定產品成功', content: product, categories, key: 'product' })
+        })
       })
-    })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '取得特定產品失敗' })
+    }
   },
 
   postProduct: (req, res, callback) => {
+    try {
+      const name = req.body.name === undefined ? '' : req.body.name.trim()
+      const description = req.body.description === undefined ? '' : req.body.description.trim()
+      const price = req.body.price === undefined ? '' : req.body.price.trim()
+      const recommendedPrice = req.body.recommended_price === undefined ? '' : req.body.recommended_price.trim()
+      const inventory = req.body.inventory === undefined ? '' : req.body.inventory.trim()
+      const length = req.body.length === undefined ? '' : req.body.length.trim()
+      const width = req.body.width === undefined ? '' : req.body.width.trim()
+      const height = req.body.height === undefined ? '' : req.body.height.trim()
+      const weight = req.body.weight === undefined ? '' : req.body.weight.trim()
 
-    const name = req.body.name === undefined ? '' : req.body.name.trim()
-    const description = req.body.description === undefined ? '' : req.body.description.trim()
-    const price = req.body.price === undefined ? '' : req.body.price.trim()
-    const recommendedPrice = req.body.recommended_price === undefined ? '' : req.body.recommended_price.trim()
-    const inventory = req.body.inventory === undefined ? '' : req.body.inventory.trim()
-    const length = req.body.length === undefined ? '' : req.body.length.trim()
-    const width = req.body.width === undefined ? '' : req.body.width.trim()
-    const height = req.body.height === undefined ? '' : req.body.height.trim()
-    const weight = req.body.weight === undefined ? '' : req.body.weight.trim()
+      const productFieldCheckResult = productService.checkProductField(req.body)
+      if (productFieldCheckResult.status === 'success') {
 
-    const productFieldCheckResult = productService.checkProductField(req.body)
-    if (productFieldCheckResult.status === 'success') {
-
-      const { file } = req // equal to const file = req.file
-      if (file) {
-        imgur.setClientID(IMGUR_CLIENT_ID)
-        imgur.upload(file.path, (err, img) => {
+        const { file } = req // equal to const file = req.file
+        if (file) {
+          imgur.setClientID(IMGUR_CLIENT_ID)
+          imgur.upload(file.path, (err, img) => {
+            return Product.create({
+              name,
+              description,
+              price,
+              recommendedPrice,
+              inventory,
+              image: file ? img.data.link : null,
+              length,
+              width,
+              height,
+              weight,
+              CategoryId: req.body.category_id
+            }).then((product) => {
+              callback({ status: 'success', message: '商品資料建立成功' })
+            })
+          })
+        } else {
           return Product.create({
             name,
             description,
             price,
             recommendedPrice,
             inventory,
-            image: file ? img.data.link : null,
             length,
             width,
             height,
             weight,
             CategoryId: req.body.category_id
-          }).then((product) => {
-            callback({ status: 'success', message: '商品資料建立成功' })
           })
-        })
+            .then(async (product) => {
+
+              //檢查商品庫存
+              await notificationService.checkInventory(product.id)
+
+              callback({ status: 'success', message: '商品資料建立成功' })
+            })
+        }
+
+
       } else {
-        return Product.create({
-          name,
-          description,
-          price,
-          recommendedPrice,
-          inventory,
-          length,
-          width,
-          height,
-          weight,
-          CategoryId: req.body.category_id
-        })
-          .then(async (product) => {
-
-            //檢查商品庫存
-            await notificationService.checkInventory(product.id)
-
-            callback({ status: 'success', message: '商品資料建立成功' })
-          })
+        return callback(productFieldCheckResult)
       }
-
-
-    } else {
-      return callback(productFieldCheckResult)
     }
-
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '商品資料建立失敗' })
+    }
   },
 
   putProduct: (req, res, callback) => {
+    try {
+      const name = req.body.name === undefined ? '' : req.body.name.trim()
+      const description = req.body.description === undefined ? '' : req.body.description.trim()
+      const price = req.body.price === undefined ? '' : req.body.price.trim()
+      const recommendedPrice = req.body.recommended_price === undefined ? '' : req.body.recommended_price.trim()
+      const inventory = req.body.inventory === undefined ? '' : req.body.inventory.trim()
+      const length = req.body.length === undefined ? '' : req.body.length.trim()
+      const width = req.body.width === undefined ? '' : req.body.width.trim()
+      const height = req.body.height === undefined ? '' : req.body.height.trim()
+      const weight = req.body.weight === undefined ? '' : req.body.weight.trim()
 
-    const name = req.body.name === undefined ? '' : req.body.name.trim()
-    const description = req.body.description === undefined ? '' : req.body.description.trim()
-    const price = req.body.price === undefined ? '' : req.body.price.trim()
-    const recommendedPrice = req.body.recommended_price === undefined ? '' : req.body.recommended_price.trim()
-    const inventory = req.body.inventory === undefined ? '' : req.body.inventory.trim()
-    const length = req.body.length === undefined ? '' : req.body.length.trim()
-    const width = req.body.width === undefined ? '' : req.body.width.trim()
-    const height = req.body.height === undefined ? '' : req.body.height.trim()
-    const weight = req.body.weight === undefined ? '' : req.body.weight.trim()
-
-    const productFieldCheckResult = productService.checkProductField(req.body)
-    if (productFieldCheckResult.status === 'success') {
-      const { file } = req
-      if (file) {
-        imgur.setClientID(IMGUR_CLIENT_ID)
-        imgur.upload(file.path, (err, img) => {
+      const productFieldCheckResult = productService.checkProductField(req.body)
+      if (productFieldCheckResult.status === 'success') {
+        const { file } = req
+        if (file) {
+          imgur.setClientID(IMGUR_CLIENT_ID)
+          imgur.upload(file.path, (err, img) => {
+            return Product.findByPk(req.params.product_id)
+              .then((product) => {
+                product.update({
+                  name,
+                  description,
+                  price,
+                  recommendedPrice,
+                  inventory,
+                  image: file ? img.data.link : null,
+                  length,
+                  width,
+                  height,
+                  weight,
+                  CategoryId: req.body.category_id
+                }).then(async (product) => {
+                  //檢查商品庫存
+                  await notificationService.checkInventory(product.id)
+                  callback({ status: 'success', message: '商品更新成功' })
+                })
+              })
+          })
+        } else {
           return Product.findByPk(req.params.product_id)
             .then((product) => {
               product.update({
@@ -218,7 +254,6 @@ const productService = {
                 price,
                 recommendedPrice,
                 inventory,
-                image: file ? img.data.link : null,
                 length,
                 width,
                 height,
@@ -230,54 +265,38 @@ const productService = {
                 callback({ status: 'success', message: '商品更新成功' })
               })
             })
-        })
+        }
       } else {
-        return Product.findByPk(req.params.product_id)
-          .then((product) => {
-            product.update({
-              name,
-              description,
-              price,
-              recommendedPrice,
-              inventory,
-              length,
-              width,
-              height,
-              weight,
-              CategoryId: req.body.category_id
-            }).then(async (product) => {
-              //檢查商品庫存
-              await notificationService.checkInventory(product.id)
-              callback({ status: 'success', message: '商品更新成功' })
-            })
-          })
+        return callback(productFieldCheckResult)
       }
-    } else {
-      return callback(productFieldCheckResult)
     }
-
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '商品更新失敗' })
+    }
   },
 
   deleteProduct: (req, res, callback) => {
-
-    Product.findByPk(req.params.product_id)
-      .then((product) => {
-        if (product) {
-          product.update({
-            dataStatus: 0
-          })
-            .then((product) => {
-              callback({ status: 'success', message: 'Product 已刪除成功' })
+    try {
+      Product.findByPk(req.params.product_id)
+        .then((product) => {
+          if (product) {
+            product.update({
+              dataStatus: 0
             })
-        } else {
-          callback({ status: 'fail', message: '查無此 Product 存在' })
-        }
-
-      })
-
+              .then((product) => {
+                callback({ status: 'success', message: 'Product 已刪除成功' })
+              })
+          } else {
+            callback({ status: 'error', message: '查無此 Product 存在' })
+          }
+        })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '查無此 Product 存在' })
+    }
   },
-
-
 }
 
 module.exports = productService  
