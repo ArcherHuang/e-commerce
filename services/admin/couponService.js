@@ -82,84 +82,100 @@ const adminCouponService = {
   },
 
   postCoupon: async (req, res, callback) => {
-
-    const couponFieldCheckResult = adminCouponService.checkCouponField(req.body)
-    if (couponFieldCheckResult.status === 'success') {
-      Coupon.create({
-        name: req.body.name.trim(),
-        sn: await adminCouponService.generateSn(),
-        numberOfLimitation: req.body.number_of_limitation.trim(),
-        discount: req.body.discount === undefined ? 0 : req.body.discount.trim() === '' ? 0 : req.body.discount.trim(),
-        amount: req.body.amount === undefined ? 0 : req.body.amount.trim() === '' ? 0 : req.body.amount.trim(),
-        expireDate: req.body.expire_date.trim()
-      }).then((coupon) => {
-        return callback({ status: 'success', message: 'Coupon 建立成功' })
-      })
-    } else {
-      return callback(couponFieldCheckResult)
+    try {
+      const couponFieldCheckResult = adminCouponService.checkCouponField(req.body)
+      if (couponFieldCheckResult.status === 'success') {
+        Coupon.create({
+          name: req.body.name.trim(),
+          sn: await adminCouponService.generateSn(),
+          numberOfLimitation: req.body.number_of_limitation.trim(),
+          discount: req.body.discount === undefined ? 0 : req.body.discount.trim() === '' ? 0 : req.body.discount.trim(),
+          amount: req.body.amount === undefined ? 0 : req.body.amount.trim() === '' ? 0 : req.body.amount.trim(),
+          expireDate: req.body.expire_date.trim()
+        }).then((coupon) => {
+          return callback({ status: 'success', message: 'Coupon 建立成功' })
+        })
+      } else {
+        return callback(couponFieldCheckResult)
+      }
     }
-
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: 'Coupon 建立失敗' })
+    }
   },
 
   putCoupon: (req, res, callback) => {
 
-    const couponFieldCheckResult = adminCouponService.checkCouponField(req.body)
-    if (couponFieldCheckResult.status === 'success') {
-      Coupon.findByPk(
-        req.params.coupon_id
-      ).then((coupon) => {
-        if (coupon) {
-          coupon.update({
-            name: req.body.name.trim(),
-            numberOfLimitation: req.body.number_of_limitation.trim(),
-            discount: req.body.discount === undefined ? 0 : req.body.discount.trim() === '' ? 0 : req.body.discount.trim(),
-            amount: req.body.amount === undefined ? 0 : req.body.amount.trim() === '' ? 0 : req.body.amount.trim(),
-            expireDate: req.body.expire_date.trim()
-          }).then((coupon) => {
-            return callback({ status: 'success', message: 'Coupon 更新成功' })
-          })
-        }
-      })
-    } else {
-      return callback(couponFieldCheckResult)
+    try {
+      const couponFieldCheckResult = adminCouponService.checkCouponField(req.body)
+      if (couponFieldCheckResult.status === 'success') {
+        Coupon.findByPk(
+          req.params.coupon_id
+        ).then((coupon) => {
+          if (coupon) {
+            coupon.update({
+              name: req.body.name.trim(),
+              numberOfLimitation: req.body.number_of_limitation.trim(),
+              discount: req.body.discount === undefined ? 0 : req.body.discount.trim() === '' ? 0 : req.body.discount.trim(),
+              amount: req.body.amount === undefined ? 0 : req.body.amount.trim() === '' ? 0 : req.body.amount.trim(),
+              expireDate: req.body.expire_date.trim()
+            }).then((coupon) => {
+              return callback({ status: 'success', message: 'Coupon 更新成功' })
+            })
+          }
+        })
+      } else {
+        return callback(couponFieldCheckResult)
+      }
     }
-
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: 'Coupon 更新失敗' })
+    }
   },
 
   deleteCoupon: (req, res, callback) => {
-
-    Coupon.findByPk(req.params.coupon_id)
-      .then((coupon) => {
-        if (coupon) {
-          coupon.update({
-            dataStatus: 0
-          })
-            .then((coupon) => {
-              callback({ status: 'success', message: 'Coupon 已刪除成功' })
+    try {
+      Coupon.findByPk(req.params.coupon_id)
+        .then((coupon) => {
+          if (coupon) {
+            coupon.update({
+              dataStatus: 0
             })
-        } else {
-          callback({ status: 'fail', message: '查無此 Coupon 存在' })
-        }
-
-      })
-
+              .then((coupon) => {
+                callback({ status: 'success', message: 'Coupon 已刪除成功' })
+              })
+          } else {
+            callback({ status: 'error', message: '查無此 Coupon 存在' })
+          }
+        })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: 'Coupon 刪除失敗' })
+    }
   },
 
   getCoupons: (req, res, callback) => {
+    try {
+      Coupon.findAll().then(coupons => {
 
-    Coupon.findAll().then(coupons => {
+        if (req.params.coupon_id) {
+          Coupon.findByPk(req.params.coupon_id)
+            .then((coupon) => {
+              return callback({ status: 'success', message: '取得特定 Coupon 資料', content: coupon, key: 'coupon' })
+            })
+        } else {
+          return callback({ status: 'success', message: '取得 Coupon 所有清單', content: coupons, key: 'coupons' })
+        }
 
-      if (req.params.coupon_id) {
-        Coupon.findByPk(req.params.coupon_id)
-          .then((coupon) => {
-            return callback({ status: 'success', message: '取得特定 Coupon 資料', content: coupon, key: 'coupon' })
-          })
-      } else {
-        return callback({ status: 'success', message: '取得 Coupon 所有清單', content: coupons, key: 'coupons' })
-      }
-
-    })
-
+      })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '取得 Coupon 資料失敗' })
+    }
   },
 
   sendCoupon: async (req, res, callback) => {
