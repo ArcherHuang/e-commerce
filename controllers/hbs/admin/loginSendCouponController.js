@@ -1,5 +1,6 @@
 const userService = require('../../../services/userService.js')
 const adminCouponService = require('../../../services/admin/couponService')
+const nodeRedService = require('../../../services/admin/nodeRedService')
 
 const loginSendCouponController = {
 
@@ -17,7 +18,12 @@ const loginSendCouponController = {
     })
   },
 
-
+  addTaskToNodeRedQueue: (req, res) => {
+    console.log(`addTaskToNodeRedQueue___addTaskToNodeRedQueue`)
+    nodeRedService.addTaskToQueue(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 }
 
 module.exports = loginSendCouponController
