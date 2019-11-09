@@ -74,89 +74,89 @@ const userService = {
   },
 
   signUp: (req, res, callback) => {
+    try {
+      const name = req.body.name === undefined ? '' : req.body.name.trim()
+      const email = req.body.email === undefined ? '' : req.body.email.trim()
+      const password = req.body.password === undefined ? '' : req.body.password.trim()
+      const passwordCheck = req.body.passwordCheck === undefined ? '' : req.body.passwordCheck.trim()
+      const phone = req.body.phone === undefined ? '' : req.body.phone.trim()
+      const address = req.body.address === undefined ? '' : req.body.address.trim()
+      const birthday = req.body.birthday === undefined ? '' : req.body.birthday.trim()
 
-    const name = req.body.name === undefined ? '' : req.body.name.trim()
-    const email = req.body.email === undefined ? '' : req.body.email.trim()
-    const password = req.body.password === undefined ? '' : req.body.password.trim()
-    const passwordCheck = req.body.passwordCheck === undefined ? '' : req.body.passwordCheck.trim()
-    const phone = req.body.phone === undefined ? '' : req.body.phone.trim()
-    const address = req.body.address === undefined ? '' : req.body.address.trim()
-    const birthday = req.body.birthday === undefined ? '' : req.body.birthday.trim()
-
-    if (name.length == 0 ||
-      email.length == 0 ||
-      password.length == 0 ||
-      passwordCheck.length == 0 ||
-      phone.length == 0 ||
-      address.length == 0 ||
-      birthday.length == 0) {
-      return callback({ status: 'error', message: '請使用者輸入相關註冊資訊！' })
-    } else {
-      if (!validator.isEmail(email)) {
-        return callback({ status: 'error', message: '請輸入正確的 email !' })
-      }
-
-      if (!moment(birthday, 'YYYY-MM-DD', true).isValid()) {
-        return callback({ status: 'error', message: '請輸入正確的格式，birthday 為日期格式' })
-      }
-
-      // Confirm password
-      if (passwordCheck !== password) {
-        return callback({ status: 'error', message: '兩次密碼輸入不同！' })
+      if (name.length == 0 ||
+        email.length == 0 ||
+        password.length == 0 ||
+        passwordCheck.length == 0 ||
+        phone.length == 0 ||
+        address.length == 0 ||
+        birthday.length == 0) {
+        return callback({ status: 'error', message: '請使用者輸入相關註冊資訊！' })
       } else {
+        if (!validator.isEmail(email)) {
+          return callback({ status: 'error', message: '請輸入正確的 email !' })
+        }
 
-        User.findOne({
-          where: {
-            email
-          }
-        }).then((user) => {
-          if (user) {
-            const diffSecondTime = moment(new Date()).diff(moment(user.updatedAt), 'seconds')
-            if (user.isValid) {
-              // 代表此 email 已經註冊過且已通過 email 認證
-              return callback({ status: 'error', message: '此 email 已重複！' })
-            } else if (user && !user.isValid && diffSecondTime <= 300) {
-              // 代表此 email 已經註冊過、尚未通過 email 認證、信件連結還在時效內
-              return callback({ status: 'error', message: '請使用者透過信件中的連結來激活 email 帳號！' })
-            } else if (!user.isValid && diffSecondTime > 300) {
-              // 代表此 email 已經註冊過、尚未通過 email 認證、連結時效已過期
-              user.destroy()
-                .then((user) => {
-                  User.create({
-                    name,
-                    email,
-                    password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null),
-                    phone,
-                    address,
-                    birthday
-                  }).then(async user => {
-                    let promises = await signUpValidEmailService.setEmailLinkKey(email)
-                    return callback(promises)
-                  })
-                })
+        if (!moment(birthday, 'YYYY-MM-DD', true).isValid()) {
+          return callback({ status: 'error', message: '請輸入正確的格式，birthday 為日期格式' })
+        }
+
+        // Confirm password
+        if (passwordCheck !== password) {
+          return callback({ status: 'error', message: '兩次密碼輸入不同！' })
+        } else {
+
+          User.findOne({
+            where: {
+              email
             }
-
-          } else {
-            // 不存在於 Users Table 
-            User.create({
-              name,
-              email,
-              password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null),
-              phone,
-              address,
-              birthday
-            }).then(async user => {
-              let promises = await signUpValidEmailService.setEmailLinkKey(email)
-              return callback(promises)
-            })
-          }
-
-
-        })
-
+          }).then((user) => {
+            if (user) {
+              const diffSecondTime = moment(new Date()).diff(moment(user.updatedAt), 'seconds')
+              if (user.isValid) {
+                // 代表此 email 已經註冊過且已通過 email 認證
+                return callback({ status: 'error', message: '此 email 已重複！' })
+              } else if (user && !user.isValid && diffSecondTime <= 300) {
+                // 代表此 email 已經註冊過、尚未通過 email 認證、信件連結還在時效內
+                return callback({ status: 'error', message: '請使用者透過信件中的連結來激活 email 帳號！' })
+              } else if (!user.isValid && diffSecondTime > 300) {
+                // 代表此 email 已經註冊過、尚未通過 email 認證、連結時效已過期
+                user.destroy()
+                  .then((user) => {
+                    User.create({
+                      name,
+                      email,
+                      password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null),
+                      phone,
+                      address,
+                      birthday
+                    }).then(async user => {
+                      let promises = await signUpValidEmailService.setEmailLinkKey(email)
+                      return callback(promises)
+                    })
+                  })
+              }
+            } else {
+              // 不存在於 Users Table 
+              User.create({
+                name,
+                email,
+                password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null),
+                phone,
+                address,
+                birthday
+              }).then(async user => {
+                let promises = await signUpValidEmailService.setEmailLinkKey(email)
+                return callback(promises)
+              })
+            }
+          })
+        }
       }
     }
-
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '註冊失敗！' })
+    }
   },
 
   checkEmail: async (req, res, callback) => {
@@ -406,9 +406,15 @@ const userService = {
   },
 
   logout: (req, res, callback) => {
-    req.logout()
-    req.session.user = null
-    return callback({ status: 'success', message: '成功登出' })
+    try {
+      req.logout()
+      req.session.user = null
+      return callback({ status: 'success', message: '成功登出' })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: '登出失敗' })
+    }
   },
 
   getFacebook: (req, res, callback) => {
@@ -447,7 +453,6 @@ const userService = {
   },
 
   getViewHistory: (req, res, callback) => {
-    console.log('getViewHistory')
     try {
       return PageView.findAll({
         where: {
