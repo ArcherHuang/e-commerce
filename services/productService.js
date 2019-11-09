@@ -166,11 +166,11 @@ const productService = {
         } else {
           return PageView.findOrCreate({
             where: {
-              UserId: null,
+              UserId: -1,
               ProductId: req.params.product_id
             },
             default: {
-              UserId: null,
+              UserId: -1,
               ProductId: req.params.product_id,
               viewCount: 0
             }
