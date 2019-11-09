@@ -194,45 +194,59 @@ const productService = {
   },
 
   likeProduct: async (req, res, callback) => {
+    try {
+      let product = await Product.findByPk(req.params.product_id)
+      let like = await Like.findOne({
+        where: {
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
+        }
+      })
 
-    let product = await Product.findByPk(req.params.product_id)
-    let like = await Like.findOne({
-      where: {
-        UserId: req.user.id,
-        ProductId: req.params.product_id,
-      }
-    })
+      // 檢查使用者是否登入
+      let user = await User.findByPk(req.user.id)
+      if (!user) return callback({ status: 'error', message: '使用者請先登入' })
 
-    if (!product) {
-      // 商品不存在
-      return callback({ status: 'error', message: '商品不存在' })
-    } else if (like) {
-      if (like.dataStatus === 1) {
-        // 商品存在，like 紀錄存在，已被使用者 like
-        return callback({ status: 'error', message: '商品已 like，無法重複 like' })
-      } else if (like.dataStatus === 0) {
-        // 商品存在，like 紀錄存在，但未被使用者 like
-        like.update({
+      if (!product) {
+        // 商品不存在
+        return callback({ status: 'error', message: '商品不存在' })
+      } else if (like) {
+        if (like.dataStatus === 1) {
+          // 商品存在，like 紀錄存在，已被使用者 like
+          return callback({ status: 'error', message: '商品已 like，無法重複 like' })
+        } else if (like.dataStatus === 0) {
+          // 商品存在，like 紀錄存在，但未被使用者 like
+          like.update({
+            dataStatus: 1
+          }).then(like => {
+            return callback({ status: 'success', message: 'Like 商品成功' })
+          })
+        }
+      } else {
+        // 商品存在，like 紀錄尚未存在
+        Like.create({
+          UserId: req.user.id,
+          ProductId: req.params.product_id,
           dataStatus: 1
         }).then(like => {
           return callback({ status: 'success', message: 'Like 商品成功' })
         })
       }
-    } else {
-      // 商品存在，like 紀錄尚未存在
-      Like.create({
-        UserId: req.user.id,
-        ProductId: req.params.product_id,
-        dataStatus: 1
-      }).then(liek => {
-        return callback({ status: 'success', message: 'Like 商品成功' })
-      })
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return callback({ status: 'error', message: 'Like 商品失敗' })
     }
   },
 
-  unlikeProduct: (req, res, callback) => {
+  unlikeProduct: async (req, res, callback) => {
     try {
-      Like.findOne({
+
+      // 檢查使用者是否登入
+      let user = await User.findByPk(req.user.id)
+      if (!user) return callback({ status: 'error', message: '使用者請先登入' })
+
+      await Like.findOne({
         where: {
           UserId: req.user.id,
           ProductId: req.params.product_id,
