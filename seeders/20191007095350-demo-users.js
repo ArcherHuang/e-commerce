@@ -338,13 +338,19 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'Orders',
-      Array.from({ length: 20 }).map((d) => ({
+      Array.from({ length: 100 }).map((d) => ({
         name: faker.lorem.word(),
         phone: faker.phone.phoneNumberFormat(),
         address: faker.address.streetAddress(),
         sn: faker.random.alphaNumeric(8),
-        shippingStatus: 1,
-        paymentStatus: 1,
+        shippingStatus: faker.random.number({
+          min: 0,
+          max: 2
+        }),
+        paymentStatus: faker.random.number({
+          min: 0,
+          max: 2,
+        }),
         totalAmount: faker.random.number({
           min: 1000,
           max: 9999
@@ -397,7 +403,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'Reviews',
-      Array.from({ length: (products.length / 2) }).map((d) => ({
+      Array.from({ length: (products.length * 5) }).map((d) => ({
         review: faker.lorem.paragraphs(1, false),
         UserId: faker.random.number({
           min: users[0],
