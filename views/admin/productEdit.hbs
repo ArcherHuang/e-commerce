@@ -58,7 +58,7 @@
         <div class="form-group row">
           <label for="description" class="col-sm-2 col-form-label">商品描述 </label>
           <div class="col-sm-10">
-            <input type="text" placeholder="description" id="description" name="description"
+            <input type="text" class="form-control" placeholder="description" id="description" name="description"
               value="{{product.description}}">
           </div>
         </div>
@@ -71,57 +71,63 @@
             width="100" height="100" />
           {{/if}}
           <div class="col-sm-4">
-            <input type="file" class="form-control-file" id="image" name="image">
+            <input type="file" class="form-control-file form-control" id="image" name="image">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="price" class="col-sm-2 col-form-label">售價 (NTD)</label>
           <div class="col-sm-10">
-            <input type="number" placeholder="price" id="price" name="price" value="{{product.price}}">
+            <input type="number" class="form-control" placeholder="price" id="price" name="price"
+              value="{{product.price}}">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="recommended_price" class="col-sm-2 col-form-label">建議售價 (NTD)</label>
           <div class="col-sm-10">
-            <input type="number" placeholder="recommended_price" id="recommended_price" name="recommended_price"
-              value="{{product.recommendedPrice}}">
+            <input type="number" class="form-control" placeholder="recommended_price" id="recommended_price"
+              name="recommended_price" value="{{product.recommendedPrice}}">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="inventory" class="col-sm-2 col-form-label">庫存 (需大於零)</label>
           <div class="col-sm-10">
-            <input type="number" placeholder="inventory" id="inventory" name="inventory" value="{{product.inventory}}">
+            <input type="number" class="form-control" placeholder="inventory" id="inventory" name="inventory"
+              value="{{product.inventory}}">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="length" class="col-sm-2 col-form-label">長度 (cm)</label>
           <div class="col-sm-10">
-            <input type="number" placeholder="length" id="length" name="length" value="{{product.length}}">
+            <input type="number" class="form-control" placeholder="length" id="length" name="length"
+              value="{{product.length}}">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="width" class="col-sm-2 col-form-label">寬度 (cm)</label>
           <div class="col-sm-10">
-            <input type="number" placeholder="width" id="width" name="width" value="{{product.width}}">
+            <input type="number" class="form-control" placeholder="width" id="width" name="width"
+              value="{{product.width}}">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="height" class="col-sm-2 col-form-label">高度 (cm) </label>
           <div class="col-sm-10">
-            <input type="number" placeholder="height" id="height" name="height" value="{{product.height}}">
+            <input type="number" class="form-control" placeholder="height" id="height" name="height"
+              value="{{product.height}}">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="weight" class="col-sm-2 col-form-label">重量 (kg) </label>
           <div class="col-sm-10">
-            <input type="number" placeholder="weight" id="weight" name="weight" value="{{product.weight}}">
+            <input type="number" class="form-control" placeholder="weight" id="weight" name="weight"
+              value="{{product.weight}}">
           </div>
         </div>
 
