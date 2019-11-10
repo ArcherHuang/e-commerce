@@ -4,6 +4,7 @@ const router = express.Router()
 const { ensureAuthenticated, isAuthUser, getUser } = require('../../config/auth')
 const orderController = require('../../controllers/hbs/orderController')
 
+router.post('/', orderController.postOrder)
 router.get('/:order_id/newebPayment', orderController.getNewebPayment)
 router.get('/:order_id/stripePayment', orderController.getStripePayment)
 router.post('/newebpay/callback', orderController.newebpayCallback)

@@ -85,6 +85,19 @@ const orderController = {
         res.redirect('/accounts/orders')
       }
     })
+  },
+
+  postOrder: async (req, res) => {
+    await orderService.postOrder(req, res, (data) => {
+      try {
+        let order = data.content[0]
+        return res.redirect(`/accounts/orders/${order.id}`)
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        return res.redirect('back')
+      }
+    })
   }
 }
 
