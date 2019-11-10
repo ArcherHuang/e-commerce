@@ -10,5 +10,7 @@ router.post('/', cartController.postCart)
 router.post('/:cartItem_id/add', cartController.addCartItem)
 router.post('/:cartItem_id/sub', cartController.subCartItem)
 router.post('/:cartItem_id/delete', cartController.deleteCartItem)
+router.post('/addCoupon', cartController.addCoupon)
+router.post('/removeCoupon', cartController.removeCoupon)
 
 module.exports = router
