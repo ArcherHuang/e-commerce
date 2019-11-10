@@ -13,6 +13,13 @@ const productController = require('../../controllers/hbs/admin/productController
 router.get('/users', userController.editUsers)
 router.put('/users/:user_id', userController.putUsers)
 
+// Discount
+router.get('/orders/discounts', orderController.getDiscounts)
+router.get('/orders/discounts/:discount_id', orderController.getDiscounts)
+router.post('/orders/discounts', orderController.createDiscount)
+router.put('/orders/discounts/:discount_id/edit', orderController.editDiscount)
+router.put('/orders/discounts/:discount_id/cancel', orderController.cancelDiscount)
+
 // Order
 router.get('/orders', orderController.getOrders)
 router.get('/orders/:order_id', orderController.getOrder)
@@ -20,13 +27,6 @@ router.put('/orders/:order_id/cancel', orderController.cancelOrder)
 router.put('/orders/:order_id/resume', orderController.resumeOrder)
 router.put('/orders/:order_id/shipped', orderController.shippedOrder)
 router.put('/orders/:order_id/unshipped', orderController.unshippedOrder)
-
-// Discount
-router.get('/orders/discounts', orderController.getDiscounts)
-router.get('/orders/discounts/:discount_id', orderController.getDiscounts)
-router.post('/orders/discounts', orderController.createDiscount)
-router.put('/orders/discounts/:discount_id/edit', orderController.editDiscount)
-router.put('/orders/discounts/:discount_id/cancel', orderController.cancelDiscount)
 
 // Category
 router.get('/categories', categoryController.getCategories)
