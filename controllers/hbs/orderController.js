@@ -90,8 +90,13 @@ const orderController = {
   postOrder: async (req, res) => {
     await orderService.postOrder(req, res, (data) => {
       try {
-        let order = data.content[0]
-        return res.redirect(`/accounts/orders/${order.id}`)
+        if (data['status'] === 'success') {
+          let order = data.content[0]
+          return res.redirect(`/accounts/orders/${order.id}`)
+        } else {
+          req.flash('error_messages', data['message'])
+          return res.redirect('back')
+        }
       }
       catch (err) {
         console.log(`Err: ${err}`)

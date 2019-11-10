@@ -35,8 +35,24 @@ const orderService = {
         ]
       }).then(cart => {
 
+        if (!cart) {
+          return callback({ status: 'error', message: '購物車商品數量不得為 0' })
+        }
+
         // 先建立訂單，取得 order.id
         let totalPrice = cart.totalPrice ? cart.totalPrice : 0
+
+        // 防止負數的金額出現
+        totalPrice = (cart.totalPrice <= 0) ? 0 : totalPrice
+
+        let paymentStatus
+        if (totalPrice === 0) {
+          // 若金額為零，不需要付款
+          paymentStatus = 1
+        } else {
+          paymentStatus = 0
+        }
+
         return Order.create({
           name: req.body.name,
           address: req.body.address,
@@ -45,21 +61,29 @@ const orderService = {
           totalAmount: totalPrice,
           UserId: req.user.id,
           shippingStatus: 0, // 待出貨 0, 已出貨 1, 取消出貨 2
-          paymentStatus: 0,  // 待付款 0, 已付款 1, 取消付款 2
+          paymentStatus: paymentStatus,  // 待付款 0, 已付款 1, 取消付款 2
           dataStatus: 1,     // 訂單刪除 0, 訂單存在 1, 訂單取消 2
         }).then(async (order) => {
 
           // 將 cart items 放入 order items
           let results = []
           for (let i = 0; i < cart.items.length; i++) {
-            results.push(
-              OrderItem.create({
-                OrderId: order.id,
-                ProductId: cart.items[i].id,
-                price: cart.items[i].price,
-                quantity: cart.items[i].CartItem.quantity,
-              })
-            )
+            if (cart.items[i].CartItem.quantity !== 0) {
+              results.push(
+                await OrderItem.create({
+                  OrderId: order.id,
+                  ProductId: cart.items[i].id,
+                  price: cart.items[i].price,
+                  quantity: cart.items[i].CartItem.quantity,
+                })
+              )
+            }
+          }
+
+          // 訂單內容驗證
+          if (!results[0]) {
+            await order.destroy()
+            return callback({ status: 'error', message: '訂單商品數量不得為 0' })
           }
 
           // 清空 cart items 以確保商品數量正確
