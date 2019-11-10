@@ -1,138 +1,137 @@
-{{> messages}}
-
-<div class="main-wrapper">
-  <header class="header-area transparent-bar sticky-bar showdow">
-    <div class="main-header-wrap">
-      <div class="container">
-        <div class="row mt-40">
-          <div class="col-xl-2 col-lg-2">
-            <div class="logo mt-40">
-              <h3>aja 後台</h3>
-            </div>
-          </div>
-          <div class="col-xl-10 col-lg-10">
-            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-              <nav>
-                <ul>
-                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                  <li><a href="/admin/users">Users</a></li>
-                  <li><a href="/admin/categories">Categories</a></li>
-                  <li><a href="/admin/coupons">Coupon</a></li>
-                  <li><a href="/admin/products">Product</a></li>
-                  <li><a href="/admin/orders">Order</a></li>
-                  <li><a href="/admin/orders/discounts">Discount</a></li>
-                  <li><a href="/admin/notification">Notification</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>分類資料總覽</h4>
+    <br>
+    <form action="/admin/categories" method="POST">
+      <div class="form-row">
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder="Name" name="name">
+        </div>
+        <div class="col-8">
+          <input type="text" class="form-control" placeholder="Description" name="description">
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-outline-success btn-round btn-sm">新增分類</button>
         </div>
       </div>
-    </div>
-  </header>
-</div>
+    </form>
+    <br>
+    <table class="table table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
+            style="cursor:pointer;width:20%">Category
+            Name&nbsp;
+            <i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
+            style="cursor:pointer;width:50%">Category
+            Description&nbsp;
+            <i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">
+            dataStatus&nbsp;
+            <i class="fas fa-sort"></i>
+          </th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each categories}}
+        {{#ifCondNum this.id ../targetId}}
+        <tr class="item bg-light">
+          <td>
+            <p>{{this.id}}</p>
+          </td>
+          <form action="/admin/categories/{{this.id}}?_method=PUT" method="POST">
+            <td>
+              <input type="text" class="form-control" placeholder="name" name="name" value="{{this.name}}">
+            </td>
+            <td>
+              <textarea rows="" cols="" type="text" class="form-control" name="description" id="description"
+                placeholder="description" style="height:100px; vertical-align: top"
+                required>{{this.description}}</textarea>
+            </td>
+            <td>{{#ifCond this.dataStatus 1}} 可使用 {{else}} 已刪除 {{/ifCond}}</td>
+            <td>
+              <button type="submit" class="btn btn-outline-success btn-round btn-sm">送出</button>
+              <a href="/admin/categories" class="btn btn-outline-danger btn-sm">取消</a>
+            </td>
+          </form>
+        </tr>
+        {{else}}
+        <tr class="item">
+          <th scope="row">{{this.id}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.description}}</td>
+          <td>{{#ifCond this.dataStatus 1}} 可使用 {{else}} 已刪除 {{/ifCond}}</td>
+          <td>
 
-<br />
-<br />
-<br />
-<br />
-<br />
+            {{#ifCond this.dataStatus 1}}
+            <a href="/admin/categories/{{this.id}}/edit" class="btn btn-outline-primary btn-sm">
+              編輯
+            </a>
 
-<div class="row mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body">
-      <h6 class="text-secondary"><small>(<i class="fas fa-star-of-life text-danger"></i>)</small> 代表必填欄位</h6>
-      {{#if category}}
-      <form action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
-        <div class="form-label-group">
-          <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-          <input type="text" placeholder="name" name="name" value="{{category.name}}">
-        </div>
-        <div class="form-label-group">
-          <label for="description">description</label>
-          <input type="text" placeholder="description" name="description" value="{{category.description}}">
-        </div>
-        <br />
-        <button class="btn btn-outline-primary btn-block" type="submit">Update</button>
-        <a href="/admin/categories">or Create New</a>
-      </form>
-      {{else}}
-      <form action="/admin/categories" method="POST">
-        <div class="form-label-group">
-          <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-          <input type="text" placeholder="name" name="name">
-        </div>
-        <div class="form-label-group">
-          <label for="description">description</label>
-          <input type="text" placeholder="description" name="description">
-        </div>
-        <br />
-        <button class="btn btn-outline-primary btn-block" type="submit">Submit</button>
-      </form>
-      {{/if}}
-    </div>
-  </div>
-</div>
+            <a class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#trigger-deleteItem-{{this.id}}"
+              href="#">刪除
+            </a>
+            {{/ifCond}}
 
-<br />
-<br />
-
-<table class="table" id="myTable">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Category Name
-        <i class="fas fa-sort"></i>
-      </th>
-      <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Category
-        Description
-        <i class="fas fa-sort"></i>
-      </th>
-      <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">dataStatus
-        <i class="fas fa-sort"></i>
-      </th>
-      <th scope="col">#</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each categories}}
-    <tr class="item">
-      <th scope="row">{{this.id}}</th>
-      <td>{{this.name}}</td>
-      <td>{{this.description}}</td>
-      <td>{{#ifCond this.dataStatus 1}} 可使用 {{else}} 已刪除 {{/ifCond}}</td>
-      <td>
-
-        {{#ifCond this.dataStatus 1}}
-        <a href="/admin/categories/{{this.id}}" class="btn btn-outline-primary">
-          編輯
-        </a>
-
-        <a class="btn btn-outline-danger" data-toggle="modal" data-target="#trigger-deleteItem-{{this.id}}" href="#">刪除
-        </a>
-        {{/ifCond}}
-
-        {{!--  刪除分類動作 --}}
-        <div class="modal fade" id="trigger-deleteItem-{{this.id}}" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-body">
-                <big class="font-weight-bold">確定要刪除【 {{this.name}} 】的分類紀錄嗎?</big>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-                  <button type="submit" class="btn btn-link">Delete</button>
-                </form>
+            {{!--  刪除分類動作 --}}
+            <div class="modal fade" id="trigger-deleteItem-{{this.id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <big class="font-weight-bold">確定要刪除【 {{this.name}} 】的分類紀錄嗎?</big>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">關閉</button>
+                    <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-link">Delete</button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
-<br />
-<br />
+          </td>
+        </tr>
+        {{/ifCondNum}}
+        {{/each}}
+      </tbody>
+    </table>
+    <br />
+    <br />
+  </div>
+</div>

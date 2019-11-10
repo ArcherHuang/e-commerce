@@ -46,6 +46,27 @@ const categoryController = {
     })
   },
 
+  getCategoryEditPage: async (req, res) => {
+    let targetId = req.params.category_id || null
+    req.params.category_id = null
+    await categoryService.getCategories(req, res, (data) => {
+      try {
+        if (data['status'] === 'success') {
+          return res.render('admin/categories', {
+            categories: data.content,
+            targetId: targetId
+          })
+        } else {
+          return res.redirect('back')
+        }
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
+        res.redirect('back')
+      }
+    })
+  },
+
 }
 
 module.exports = categoryController

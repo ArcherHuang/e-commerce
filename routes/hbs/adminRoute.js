@@ -32,6 +32,7 @@ router.put('/orders/discounts/:discount_id/cancel', orderController.cancelDiscou
 router.get('/categories', categoryController.getCategories)
 router.post('/categories', categoryController.postCategory)
 router.get('/categories/:category_id', categoryController.getCategories)
+router.get('/categories/:category_id/edit', categoryController.getCategoryEditPage)
 router.put('/categories/:category_id', categoryController.putCategory)
 router.delete('/categories/:category_id', categoryController.deleteCategory)
 
