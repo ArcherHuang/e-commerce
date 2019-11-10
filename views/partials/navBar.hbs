@@ -11,7 +11,6 @@
           <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
             <nav>
               <ul>
-
                 {{#ifCond user.role "admin"}}
                 <li><a href="/products/shop"><b>SHOP</b> </a></li>
                 <li><a href="/accounts"><b>ACCOUNTS</b></a></li>
@@ -19,7 +18,11 @@
                 <li><a href="/carts"><b>CART</b></a></li>
                 {{else}}
                 <li><a href="/products/shop"><b>展示中心</b> </a></li>
+                {{#if user.id}}
                 <li><a href="/accounts"><b>會員中心</b> </a></li>
+                {{else}}
+                <li><a href="/accounts/signin"><b>會員中心</b> </a></li>
+                {{/if}}
                 <li><a href="/carts"><b>購物車</b> </a></li>
                 {{/ifCond}}
               </ul>
