@@ -102,6 +102,36 @@
     <h4>Total Price: <span class="badge badge-warning">0</span></h4>
     {{/if}}
     <br>
-    <a href="/products/shop" class="btn btn-primary btn-round btn-sm">繼續逛逛</a>
+    {{#if user.id}}
+    <form action="/orders" method="POST">
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Name</b></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="name" id="name" placeholder="Your name" value="{{user.name}}"
+            required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Address</b></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="address" id="address" placeholder="Your address"
+            value="{{user.address}}" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Phone</b></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="phone" id="phone" placeholder="Your phone number"
+            value="{{user.phone}}" required>
+        </div>
+      </div>
+      <input type="hidden" name="cart_id" value="{{cart.id}}"><br>
+      <button type="submit" class="btn btn-success btn-round btn-sm">建立訂單，前往結帳</button>
+    </form>
+    {{else}}
+    <a href="/accounts/signin" class="btn btn-success btn-round btn-sm mb-3">前往結帳（請先登入）</a>
+    {{/if}}
+    <br>
+    <a href="/products/shop" class="btn btn-primary btn-round btn-sm mb-3">繼續逛逛</a>
   </div>
 </div>

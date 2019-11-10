@@ -442,7 +442,7 @@ const cartService = {
                 }
 
                 await cart.update({
-                  totalPrice: totalPrice
+                  totalPrice: (totalPrice <= 0) ? 0 : totalPrice
                 }).then(cart => {
                   console.log(`更新購物車（ID: ${cart.id}）總金額成功，總金額為 ${cart.totalPrice}`)
                 }).catch(err => {
@@ -462,7 +462,7 @@ const cartService = {
               }
 
               cart.update({
-                totalPrice: totalPrice
+                totalPrice: (totalPrice <= 0) ? 0 : totalPrice
               }).then(cart => {
                 console.log(`更新購物車（ID: ${cart.id}）總金額成功，總金額為 ${cart.totalPrice}`)
               }).catch(err => {
