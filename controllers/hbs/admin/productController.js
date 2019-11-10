@@ -1,4 +1,5 @@
 const productService = require('../../../services/admin/productService')
+const categoryService = require('../../../services/admin/categoryService')
 
 const productController = {
 
@@ -30,10 +31,12 @@ const productController = {
 
   getProduct: (req, res) => {
     productService.getProduct(req, res, (data) => {
-      return res.render('admin/products', {
-        [data['key']]: data['content'],
-        categories: data['categories']
-      })
+      if (data['status'] === 'success') {
+        let product = data.content
+        return res.render('admin/product', { product: product })
+      } else {
+        return res.redirect('back')
+      }
     })
   },
 
@@ -52,9 +55,40 @@ const productController = {
 
   deleteProduct: (req, res) => {
     productService.deleteProduct(req, res, (data) => {
-      productController.responseMessageAction(req, res, data, '/admin/products', '/admin/products')
+      productController.responseMessageAction(req, res, data, 'back', 'back')
     })
   },
+
+  getProductEditPage: (req, res) => {
+    try {
+      if (req.url === '/products/create') {
+        console.log(`==== CREATE NEW ====`)
+        categoryService.getCategories(req, res, (data) => {
+          if (data['status'] === 'success') {
+            let categories = data.content
+            return res.render('admin/productEdit', { categories: categories })
+          } else {
+            return res.redirect('back')
+          }
+        })
+      } else {
+        console.log(`==== EDIT OLD ====`)
+        productService.getProduct(req, res, (data) => {
+          if (data['status'] === 'success') {
+            let product = data.content
+            let categories = data.categories
+            return res.render('admin/productEdit', { product: product, categories: categories })
+          } else {
+            return res.redirect('back')
+          }
+        })
+      }
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return res.redirect('back')
+    }
+  }
 
 }
 

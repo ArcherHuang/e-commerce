@@ -15,6 +15,7 @@ router.put('/users/:user_id', userController.putUsers)
 
 // Order
 router.get('/orders', orderController.getOrders)
+router.get('/orders/:order_id', orderController.getOrder)
 router.put('/orders/:order_id/cancel', orderController.cancelOrder)
 router.put('/orders/:order_id/resume', orderController.resumeOrder)
 router.put('/orders/:order_id/shipped', orderController.shippedOrder)
@@ -31,6 +32,7 @@ router.put('/orders/discounts/:discount_id/cancel', orderController.cancelDiscou
 router.get('/categories', categoryController.getCategories)
 router.post('/categories', categoryController.postCategory)
 router.get('/categories/:category_id', categoryController.getCategories)
+router.get('/categories/:category_id/edit', categoryController.getCategoryEditPage)
 router.put('/categories/:category_id', categoryController.putCategory)
 router.delete('/categories/:category_id', categoryController.deleteCategory)
 
@@ -44,7 +46,9 @@ router.get('/send/coupon/users', userController.listUsers)
 
 // Product
 router.get('/products', productController.getProducts)
+router.get('/products/create', productController.getProductEditPage)
 router.get('/products/:product_id', productController.getProduct)
+router.get('/products/:product_id/edit', productController.getProductEditPage)
 router.post('/products', upload.single('image'), productController.postProduct)
 router.put('/products/:product_id', upload.single('image'), productController.putProduct)
 router.delete('/products/:product_id', productController.deleteProduct)

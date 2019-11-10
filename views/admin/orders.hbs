@@ -1,158 +1,160 @@
-{{> messages}}
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/discounts">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>訂單資料總覽</h4>
+    <br>
+    <table class="table table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')"
+            style="cursor:pointer">#&nbsp;<i class="fas fa-sort"></i></th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
+            style="cursor:pointer">Order Name&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
+            style="cursor:pointer">sn&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')"
+            style="cursor:pointer">總金額&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
+            style="cursor:pointer">購物車折扣
+          </th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
+            style="cursor:pointer">付款狀態&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
+            style="cursor:pointer">出貨狀態&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+            style="cursor:pointer">訂單狀態&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each orders}}
+        <tr class="item">
+          <th class="text-center" scope="row">{{this.id}}</th>
+          <td class="text-center">{{this.name}}</td>
+          <td class="text-center">{{this.sn}}</td>
+          <td class="text-center">{{this.totalAmount}}</td>
+          <td class="text-center">{{this.addDiscount}}</td>
+          <td class="text-center">
 
-<div class="main-wrapper">
-  <header class="header-area transparent-bar sticky-bar showdow">
-    <div class="main-header-wrap">
-      <div class="container">
-        <div class="row mt-40">
-          <div class="col-xl-2 col-lg-2">
-            <div class="logo mt-40">
-              <h3>aja 後台</h3>
-            </div>
-          </div>
-          <div class="col-xl-10 col-lg-10">
-            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-              <nav>
-                <ul>
-                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                  <li><a href="/admin/users">Users</a></li>
-                  <li><a href="/admin/categories">Categories</a></li>
-                  <li><a href="/admin/coupons">Coupon</a></li>
-                  <li><a href="/admin/products">Product</a></li>
-                  <li><a href="/admin/orders">Order</a></li>
-                  <li><a href="/admin/orders/discounts">Discount</a></li>
-                  <li><a href="/admin/notification">Notification</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-</div>
+            {{!-- 待付款 0, 已付款 1, 取消付款 2 --}}
+            {{#ifCond this.paymentStatus '1'}}
+            已付款
+            {{else}}
+            {{#ifCond this.paymentStatus '2'}}
+            取消付款
+            {{else}}
+            待付款
+            {{/ifCond}}
+            {{/ifCond}}
 
-<br />
-<br />
-<br />
-<br />
-<br />
+          </td>
+          <td class="text-center">
 
-<table class="table" id="myTable">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-center" scope="col">#</th>
-      <th class="text-center" scope="col">Order Name
-      </th>
-      <th class="text-center" scope="col">phone
-      </th>
-      <th class="text-center" scope="col">address
-      </th>
-      <th class="text-center" scope="col">sn
-      </th>
-      <th class="text-center" scope="col">totalAmount
-      </th>
-      <th class="text-center" scope="col">
-        shippingStatus
-      </th>
-      <th class="text-center" scope="col">paymentStatus
-      </th>
-      <th class="text-center" scope="col">addDiscount
-      </th>
-      <th class="text-center" scope="col">dataStatus
-      </th>
-      <th class="text-center" scope="col">#</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each orders}}
-    <tr class="item">
-      <th class="text-center" scope="row">{{this.id}}</th>
-      <td class="text-center">{{this.name}}</td>
-      <td class="text-center">{{this.phone}}</td>
-      <td class="text-center">{{this.address}}</td>
-      <td class="text-center">{{this.sn}}</td>
-      <td class="text-center">{{this.totalAmount}}</td>
-      <td class="text-center">
+            {{!-- 待出貨 0, 出貨 1, 取消出貨 2 --}}
+            {{#ifCond this.shippingStatus "1"}}
+            出貨
+            {{else}}
+            {{#ifCond this.shippingStatus "2"}}
+            取消出貨
+            {{else}}
+            待出貨
+            <br />
+            <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
+            </form>
+            {{/ifCond}}
+            {{/ifCond}}
 
-        {{!-- 待出貨 0, 出貨 1, 取消出貨 2 --}}
-        {{#ifCond this.shippingStatus "1"}}
-        出貨
-        {{else}}
-        {{#ifCond this.shippingStatus "2"}}
-        取消出貨
-        {{else}}
-        待出貨
-        {{/ifCond}}
-        {{/ifCond}}
+            <br />
 
-        <br />
+            {{#ifCond this.shippingStatus "2"}}
+            {{!-- 出貨 shippingStatus = 1 --}}
+            <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
+            </form>
+            {{/ifCond}}
 
-        {{#ifCond this.shippingStatus "2"}}
-        {{!-- 出貨 shippingStatus = 1 --}}
-        <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-outline-primary">出貨</button>
-        </form>
-        {{/ifCond}}
+            {{#ifCond this.shippingStatus "1"}}
+            {{!-- 取消出貨 shippingStatus = 2 --}}
+            <form action="/admin/orders/{{this.id}}/unshipped?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-danger btn-sm">取消出貨</button>
+            </form>
+            {{/ifCond}}
 
-        {{#ifCond this.shippingStatus "1"}}
-        {{!-- 取消出貨 shippingStatus = 2 --}}
-        <form action="/admin/orders/{{this.id}}/unshipped?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-outline-danger">取消出貨</button>
-        </form>
-        {{/ifCond}}
+          </td>
 
-      </td>
-      <td class="text-center">
 
-        {{!-- 待付款 0, 已付款 1, 取消付款 2 --}}
-        {{#ifCond this.paymentStatus 1}}
-        已付款
-        {{else}}
-        {{#ifCond this.paymentStatus 2}}
-        取消付款
-        {{else}}
-        待付款
-        {{/ifCond}}
-        {{/ifCond}}
+          <td class="text-center">
+            {{!-- 訂單刪除 0, 訂單存在 1, 訂單取消 2 --}}
+            {{#ifCond this.dataStatus 1}}
+            訂單成立
+            {{else}}
+            {{#ifCond this.dataStatus 2}}
+            訂單取消
+            {{else}}
+            訂單刪除
+            {{/ifCond}}
+            {{/ifCond}}
 
-      </td>
-      <td class="text-center">{{this.addDiscount}}</td>
-      <td class="text-center">
-        {{!-- 訂單刪除 0, 訂單存在 1, 訂單取消 2 --}}
-        {{#ifCond this.dataStatus 1}}
-        訂單存在
-        {{else}}
-        {{#ifCond this.dataStatus 2}}
-        訂單取消
-        {{else}}
-        訂單刪除
-        {{/ifCond}}
-        {{/ifCond}}
+            <br />
 
-        <br />
+            {{#ifCond this.dataStatus 1}}
+            {{!-- 訂單取消 (dataStatus)：1 變 2 cancelOrder--}}
+            <form action="/admin/orders/{{this.id}}/cancel?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-danger btn-sm">訂單取消</button>
+            </form>
+            {{else}}
+            {{#ifCond this.dataStatus 2}}
+            {{!-- 訂單恢復(dataStatus)：2 變 1 resumeOrder--}}
+            <form action="/admin/orders/{{this.id}}/resume?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">訂單恢復</button>
+            </form>
+            {{/ifCond}}
+            {{/ifCond}}
 
-        {{#ifCond this.dataStatus 1}}
-        {{!-- 訂單取消 (dataStatus)：1 變 2 cancelOrder--}}
-        <form action="/admin/orders/{{this.id}}/cancel?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-outline-danger">訂單取消</button>
-        </form>
-        {{else}}
-        {{#ifCond this.dataStatus 2}}
-        {{!-- 訂單恢復(dataStatus)：2 變 1 resumeOrder--}}
-        <form action="/admin/orders/{{this.id}}/resume?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-outline-primary">訂單恢復</button>
-        </form>
-        {{/ifCond}}
-        {{/ifCond}}
-
-      </td>
-      <td class="text-center">
-
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
-<br />
-<br />
+          </td>
+          <td class="text-center">
+            <form action="/admin/orders/{{this.id}}" method="GET" style="display: inline;">
+              <button type="submit" class="btn btn-outline-info btn-sm">Detail</button>
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>

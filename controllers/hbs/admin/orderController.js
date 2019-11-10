@@ -27,6 +27,26 @@ const orderController = {
     })
   },
 
+  getOrder: (req, res) => {
+    orderService.getOrders(req, res, (data) => {
+
+      let products = data.content.items
+      // 取出訂單中的商品數量
+      products = products.map(r => ({
+        id: r.id,
+        name: r.name,
+        description: r.description,
+        price: r.price,
+        quantity: r.OrderItem.quantity
+      }))
+
+      return res.render('admin/orderDetails', {
+        [data['key']]: data['content'],
+        products: products
+      })
+    })
+  },
+
   cancelOrder: (req, res) => {
     orderService.cancelOrder(req, res, (data) => {
       orderController.responseMessageAction(req, res, data, '/admin/orders', 'back')

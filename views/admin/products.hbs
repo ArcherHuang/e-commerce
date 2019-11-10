@@ -1,254 +1,126 @@
-{{> messages}}
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
 
-<div class="main-wrapper">
-  <header class="header-area transparent-bar sticky-bar showdow">
-    <div class="main-header-wrap">
-      <div class="container">
-        <div class="row mt-40">
-          <div class="col-xl-2 col-lg-2">
-            <div class="logo mt-40">
-              <h3>aja 後台</h3>
-            </div>
-          </div>
-          <div class="col-xl-10 col-lg-10">
-            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-              <nav>
-                <ul>
-                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                  <li><a href="/admin/users">Users</a></li>
-                  <li><a href="/admin/categories">Categories</a></li>
-                  <li><a href="/admin/coupons">Coupon</a></li>
-                  <li><a href="/admin/products">Product</a></li>
-                  <li><a href="/admin/orders">Order</a></li>
-                  <li><a href="/admin/discounts">Discount</a></li>
-                  <li><a href="/admin/notification">Notification</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-</div>
-
-
-<br />
-<br />
-<br />
-<br />
-<br />
-
-
-<div class="row mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body">
-
-      <h6 class="text-secondary"><small>(<i class="fas fa-star-of-life text-danger"></i>)</small> 代表必填欄位</h6>
-      {{#if product}}
-      <form action="/admin/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
-        {{else}}
-        <form action="/admin/products" method="POST" enctype="multipart/form-data">
-          {{/if}}
-
-          <div class="form-group">
-            <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="name" value="{{product.name}}">
-          </div>
-
-          <div class="form-group">
-            <label for="description">description <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="text" placeholder="description" id="description" name="description"
-              value="{{product.description}}">
-          </div>
-
-          <div class="form-group">
-            <label for="image">image</label>
-            <br />
-            {{#if product.image}}
-            <img class="file-upload-image" id="file-upload-image" src="{{product.image}}" alt="your image" width="100"
-              height="100" />
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/discounts">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>商品資料總覽</h4>
+    <a href="/admin/products/create" class="btn btn-outline-success btn-round btn-sm">建立新商品</a>
+    <br>
+    <table class="table table-hover mt-3" id="myTable">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')"
+            style="cursor:pointer">#&nbsp;<i class="fas fa-sort"></i></th>
+          <th scope="col" class="text-center">
+            圖片
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
+            style="cursor:pointer">
+            名稱&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center">
+            簡介
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
+            style="cursor:pointer;width:10%">
+            售價&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
+            style="cursor:pointer;width:10%">
+            庫存&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
+            style="cursor:pointer;width:10%">
+            上架狀態&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+            style="cursor:pointer;width:10%">
+            分類&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" class="text-center" scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each products}}
+        <tr class="item">
+          <th class="text-center" scope="row">{{this.id}}</th>
+          <td class="text-center">
+            {{#if this.image}}
+            <img src="{{this.image}}" alt="Card image cap" width="100" height="100">
+            {{else}}
+            無商品圖片
             {{/if}}
-            <input type="file" class="form-control-file" id="image" name="image">
-          </div>
-
-          <div class="form-group">
-            <label for="price">price <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="price" id="price" name="price" value="{{product.price}}">
-          </div>
-
-          <div class="form-group">
-            <label for="recommended_price">recommended Price <small>(<i
-                  class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="recommended_price" id="recommended_price" name="recommended_price"
-              value="{{product.recommendedPrice}}">
-          </div>
-
-          <div class="form-group">
-            <label for="inventory">inventory <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="inventory" id="inventory" name="inventory" value="{{product.inventory}}">
-          </div>
-
-          <div class="form-group">
-            <label for="length">length <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="length" id="length" name="length" value="{{product.length}}">
-          </div>
-
-          <div class="form-group">
-            <label for="width">width <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="width" id="width" name="width" value="{{product.width}}">
-          </div>
-
-          <div class="form-group">
-            <label for="height">height <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="height" id="height" name="height" value="{{product.height}}">
-          </div>
-
-          <div class="form-group">
-            <label for="weight">weight <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-            <input type="number" placeholder="weight" id="weight" name="weight" value="{{product.weight}}">
-          </div>
-
-          <div class="form-group">
-            <label for="category_id">Category Id <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
+          </td>
+          <td class="text-center">{{this.name}}</td>
+          <td class="text-center">{{this.description}}</td>
+          <td class="text-center">{{this.price}}</td>
+          <td class="text-center">{{this.inventory}}</td>
+          <td class="text-center">
+            {{#ifCond this.dataStatus 1}}
+            架上
             <br />
-            <select class="d-inline-block col-4 custom-select" name="category_id" id="category_id" required>
-              <option value="" disabled selected>請選擇類別</option>
-              {{#each categories}}
-              <option value="{{this.id}}" {{#ifCond ../product.Category.id this.id}} selected{{/ifCond}}>
-                {{this.name}}
-              </option>
-              {{/each}}
-            </select>
-          </div>
+            <a class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#trigger-deleteItem-{{this.id}}"
+              href="#">下架
+            </a>
+            {{!--  下架商品動作 --}}
+            <div class="modal fade" id="trigger-deleteItem-{{this.id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <big class="font-weight-bold">確定要下架【 {{this.name}} 】嗎?</big>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    <form action="/admin/products/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-link btn-sm">下架此商品</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <br />
-          {{#if product}}
-          <button class="btn btn-outline-primary btn-block" type="submit">Update</button>
-          <a href="/admin/products">or Create New</a>
-          {{else}}
-          <button class="btn btn-outline-primary btn-block" type="submit">Submit</button>
-          {{/if}}
-        </form>
-    </div>
+            {{else}}
+            已下架
+            {{/ifCond}}
+          </td>
+          <td class="text-center">{{this.Category.name}}</td>
+          <td class="text-center">
+            <a href="/admin/products/{{this.id}}" class="btn btn-outline-primary btn-sm">
+              細節
+            </a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </div>
 </div>
-
-<br />
-<br />
-
-<table class="table" id="myTable">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-center" scope="col">#</th>
-      <th class="text-center">name
-      </th>
-      <th class="text-center">
-        description
-      </th>
-      <th class="text-center">
-        image
-      </th>
-      <th class="text-center">
-        price
-      </th>
-      <th class="text-center">
-        recommendedPrice
-      </th>
-      <th class="text-center">
-        inventory
-      </th>
-      <th class="text-center">
-        length
-      </th>
-      <th class="text-center">
-        width
-      </th>
-      <th class="text-center">
-        height
-      </th>
-      <th class="text-center">
-        weight
-      </th>
-      <th class="text-center">
-        Product dataStatus
-      </th>
-      <th class="text-center">
-        Category name
-      </th>
-      <th class="text-center">
-        Category description
-      </th>
-      <th class="text-center">
-        Category dataStatus
-      </th>
-      <th class="text-center" scope="col">#</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each products}}
-    <tr class="item">
-      <th class="text-center" scope="row">{{this.id}}</th>
-      <td class="text-center">{{this.name}}</td>
-      <td class="text-center">{{this.description}}</td>
-      <td class="text-center">
-        {{#if this.image}}
-        <img src="{{this.image}}" alt="Card image cap" width="100" height="100">
-        {{else}}
-        無商品圖片
-        {{/if}}
-      </td>
-      <td class="text-center">{{this.price}}</td>
-      <td class="text-center">{{this.recommendedPrice}}</td>
-      <td class="text-center">{{this.inventory}}</td>
-      <td class="text-center">{{this.length}}</td>
-      <td class="text-center">{{this.width}}</td>
-      <td class="text-center">{{this.height}}</td>
-      <td class="text-center">{{this.weight}}</td>
-      <td class="text-center">
-        {{#ifCond this.dataStatus 1}}
-        可使用
-        <br />
-
-        <a class="btn btn-outline-danger" data-toggle="modal" data-target="#trigger-deleteItem-{{this.id}}" href="#">刪除
-        </a>
-        {{!--  刪除 Coupon 動作 --}}
-        <div class="modal fade" id="trigger-deleteItem-{{this.id}}" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-body">
-                <big class="font-weight-bold">確定要刪除【 {{this.name}} 】的 Product 紀錄嗎?</big>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                <form action="/admin/products/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-                  <button type="submit" class="btn btn-link">刪除此 Product</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {{else}}
-        已刪除
-        {{/ifCond}}
-      </td>
-      <td class="text-center">{{this.Category.name}}</td>
-      <td class="text-center">{{this.Category.description}}</td>
-      <td class="text-center">
-        {{#ifCond this.Category.dataStatus 1}}
-        可使用
-        {{else}}
-        已刪除
-        {{/ifCond}}
-      </td>
-
-      <td class="text-center">
-        <a href="/admin/products/{{this.id}}" class="btn btn-outline-primary">
-          編輯
-        </a>
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>

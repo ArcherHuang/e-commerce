@@ -1,0 +1,186 @@
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/discounts">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>訂單細節</h4>
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+    <br>
+    <table class="table table-borderless">
+      <thead>
+        <th style="width:20%"></th>
+        <th style="width:20%"></th>
+        <th style="width:10%"></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">訂單狀態</th>
+          {{#ifCond order.dataStatus 1}}
+          <td>
+            <p class="text-primary"><b>訂單成立</b></p>
+          </td>
+          <td>
+            <form action="/admin/orders/{{order.id}}/cancel?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-danger btn-sm">訂單取消</button>
+            </form>
+          </td>
+          {{else}}
+          {{#ifCond order.dataStatus 2}}
+          <td>
+            <p class="text-muted">訂單取消</p>
+          </td>
+          {{/ifCond}}
+          {{/ifCond}}
+        </tr>
+        <tr>
+          <th scope="row">付款狀態</th>
+          {{#ifCond order.paymentStatus '0'}}
+          <td>
+            <p class="text-danger">待付款</p>
+          </td>
+          {{else}}
+          {{#ifCond order.paymentStatus '1'}}
+          <td>
+            <p class="text-primary">已付款</p>
+          </td>
+          {{else}}
+          <td>
+            <p class="text-muted">取消付款</p>
+          </td>
+          {{/ifCond}}
+          {{/ifCond}}
+        </tr>
+        <tr>
+          <th scope="row">出貨狀態</th>
+          {{#ifCond order.shippingStatus '0'}}
+          <td>
+            <p class="text-danger">待出貨</p>
+          </td>
+          <td>
+            <form action="/admin/orders/{{order.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
+            </form>
+          </td>
+          {{else}}
+          {{#ifCond order.shippingStatus '1'}}
+          <td>
+            <p class="text-primary">已出貨</p>
+          </td>
+          <td>
+            <form action="/admin/orders/{{order.id}}/unshipped?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-danger btn-sm">取消出貨</button>
+            </form>
+          </td>
+          {{else}}
+          <td>
+            <p class="text-muted">取消出貨</p>
+          </td>
+          <td>
+            <form action="/admin/orders/{{order.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
+            </form>
+          </td>
+          {{/ifCond}}
+          {{/ifCond}}
+        </tr>
+        <tr>
+          <th scope="row">姓名</th>
+          <td>{{order.name}}</td>
+        </tr>
+        <tr>
+          <th scope="row">電話</th>
+          <td>{{order.phone}}</td>
+        </tr>
+        <tr>
+          <th scope="row">地址</th>
+          <td>{{order.address}}</td>
+        </tr>
+        <tr>
+          <th scope="row">金額</th>
+          <td>{{order.totalAmount}}</td>
+        </tr>
+        <tr>
+          <th scope="row">訂單更新日期</th>
+          <td>{{momentFormat order.updatedAt}}</td>
+        </tr>
+        <tr>
+          <th scope="row">訂單建立日期</th>
+          <td>{{momentFormat order.createdAt}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav class="navbar navbar-light bg-light">
+      <span class="navbar-text">
+        <h4>產品資訊</h4>
+      </span>
+    </nav>
+    <h6 class="text-secondary text-center"><i class="fas fa-sort"></i> 符號代表點選此欄位標題後可進行排序</h6>
+    <table class="table table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">
+            名稱&nbsp;<i class="fas fa-sort"></i></th>
+
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
+            style="cursor:pointer;width: 50%">敘述&nbsp;<i class="fas fa-sort"></i></th>
+
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">
+            單價&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">
+            購買數量&nbsp;<i class="fas fa-sort"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each products}}
+        <tr class="item">
+          <td>
+            <a href="/products/{{this.id}}">
+              <p class="text-primary">{{this.name}}</p>
+            </a>
+          </td>
+          <td>{{this.description}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.quantity}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+  </div>
+</div>
