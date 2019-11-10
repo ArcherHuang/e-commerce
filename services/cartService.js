@@ -9,7 +9,7 @@ const notificationService = require('./admin/notificationService')
 
 const cartService = {
 
-  getCart: (req, res, callback) => {
+  getCart: async (req, res, callback) => {
     try {
       return Cart.findOne({
         where: {
@@ -19,15 +19,25 @@ const cartService = {
           CartItem,
           { model: Product, as: "items" },
         ]
-      }).then(cart => {
+      }).then(async cart => {
         // 計算購物車總金額
         cartService.checkTotalPrice(cart.id)
-        return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart })
+
+        // 取出 coupon 資訊
+        let coupon
+        if (cart.CouponDistributionId) {
+          let couponDistribution = await CouponDistribution.findByPk(cart.CouponDistributionId)
+          coupon = await Coupon.findByPk(couponDistribution.CouponId)
+        }
+
+        return callback({ status: 'success', message: '取得購物車資訊成功', cart: cart, coupon: coupon })
       }).catch(err => {
+        console.log(`Err: ${err}`)
         return callback({ status: 'error', message: '取得購物車資訊失敗' })
       })
     }
     catch (err) {
+      console.log(`Err: ${err}`)
       return callback({ status: 'error', message: '取得購物車資訊失敗' })
     }
   },
@@ -285,8 +295,15 @@ const cartService = {
           usageStatus: "1"  // unused 1, used 2, expired 3, deleted 0
         }
       })
+      console.log(`=== CART ===`)
+      console.log(cart)
+      console.log(`=== COUPON ===`)
+      console.log(coupon)
+      console.log(`=== CouponDistribution ===`)
+      console.log(couponDistribution)
 
       if (cart && coupon && couponDistribution) {
+        console.log(`=== THREE YES ===`)
         // 將 coupon 放入購物車
         await cart.update({
           CouponDistributionId: couponDistribution.id
