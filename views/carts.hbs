@@ -1,0 +1,77 @@
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>你的購物車</h3>
+    <br>
+    {{#if cart}}
+    <h4>Total Price: <span class="badge badge-warning">{{cart.totalPrice}}</span></h4>
+    {{else}}
+    <h4>Total Price: <span class="badge badge-warning">0</span></h4>
+    {{/if}}
+    <br>
+    <h6 class="text-secondary text-center"><i class="fas fa-sort"></i> 符號代表點選此欄位標題後可進行排序</h6>
+    <table class="table table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')"
+            style="cursor:pointer;width: 10%">
+            #&nbsp;<i class="fas fa-sort"></i></th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
+            style="cursor:pointer;width: 10%">
+            名稱&nbsp;<i class="fas fa-sort"></i></th>
+
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
+            style="cursor:pointer;width: 40%">敘述&nbsp;<i class="fas fa-sort"></i></th>
+
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">
+            單價&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')" style="cursor:pointer">
+            購買數量&nbsp;<i class="fas fa-sort"></i></th>
+          <th>#</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each cart.items}}
+        {{#ifCond this.CartItem.quantity 0}}
+        {{else}}
+        <tr class="item">
+          <td>
+            <img src="{{this.image}}" class="card-img" alt="..." style="height: 100px;width: auto;">
+          </td>
+          <td>
+            <p class="text-primary">{{this.name}}</p>
+          </td>
+          <td>{{this.description}}</td>
+          <td>{{this.price}}</td>
+          <td>
+            <div style="display: flex;">
+              <form action="/carts/{{this.CartItem.id}}/add" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
+              </form>
+              <span style="margin: 0 20px;">
+                {{this.CartItem.quantity}}
+              </span>
+              <form action="/carts/{{this.CartItem.id}}/sub" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
+              </form>
+            </div>
+          </td>
+          <td>
+            <form action="/carts/{{this.CartItem.id}}/delete" method="POST">
+              <button type="submit" class="btn btn-sm btn-outline-danger btn-sm">刪除</button>
+            </form>
+          </td>
+        </tr>
+        {{/ifCond}}
+        {{/each}}
+      </tbody>
+    </table>
+    <br>
+    <a href="/products/shop" class="btn btn-primary btn-round btn-sm">繼續逛逛</a>
+  </div>
+</div>

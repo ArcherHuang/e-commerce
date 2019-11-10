@@ -1,6 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const CartItem = sequelize.define('CartItem', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
     quantity: DataTypes.INTEGER,
     CartId: DataTypes.INTEGER,
     ProductId: DataTypes.INTEGER,
