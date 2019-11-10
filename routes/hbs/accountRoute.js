@@ -35,4 +35,7 @@ router.get('/coupons', accountController.getCoupons)
 router.get('/wishlist', accountController.getWishList)
 router.get('/reviews', accountController.getUserReviews)
 
+// Policy
+router.get('/policy', accountController.getPolicy)
+
 module.exports = router

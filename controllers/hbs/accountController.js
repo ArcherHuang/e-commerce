@@ -277,6 +277,10 @@ const userController = {
     })
   },
 
+  getPolicy: (req, res) => {
+    res.render('policy')
+  },
+
   // 將 dataStatus 轉為文字
   transformDataStatus: (d) => {
     if (d == 0) {
