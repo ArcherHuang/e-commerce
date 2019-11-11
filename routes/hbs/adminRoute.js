@@ -8,6 +8,7 @@ const orderController = require('../../controllers/hbs/admin/orderController')
 const categoryController = require('../../controllers/hbs/admin/categoryController')
 const couponController = require('../../controllers/hbs/admin/couponController')
 const productController = require('../../controllers/hbs/admin/productController')
+const notificationController = require('../../controllers/hbs/admin/notificationController')
 
 // User
 router.get('/users', userController.editUsers)
@@ -52,5 +53,8 @@ router.get('/products/:product_id/edit', productController.getProductEditPage)
 router.post('/products', upload.single('image'), productController.postProduct)
 router.put('/products/:product_id', upload.single('image'), productController.putProduct)
 router.delete('/products/:product_id', productController.deleteProduct)
+
+// Notifications
+router.get('/notifications', notificationController.getNotifications)
 
 module.exports = router
