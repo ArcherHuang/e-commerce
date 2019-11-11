@@ -66,12 +66,12 @@
         </tr>
         <tr>
           <th scope="row">付款狀態</th>
-          {{#ifCond order.paymentStatus '0'}}
+          {{#ifCond order.paymentStatus 0}}
           <td>
             <p class="text-danger">待付款</p>
           </td>
           {{else}}
-          {{#ifCond order.paymentStatus '1'}}
+          {{#ifCond order.paymentStatus 1}}
           <td>
             <p class="text-primary">已付款</p>
           </td>
@@ -84,7 +84,7 @@
         </tr>
         <tr>
           <th scope="row">出貨狀態</th>
-          {{#ifCond order.shippingStatus '0'}}
+          {{#ifCond order.shippingStatus 0}}
           <td>
             <p class="text-danger">待出貨</p>
           </td>
@@ -94,7 +94,7 @@
             </form>
           </td>
           {{else}}
-          {{#ifCond order.shippingStatus '1'}}
+          {{#ifCond order.shippingStatus 1}}
           <td>
             <p class="text-primary">已出貨</p>
           </td>
