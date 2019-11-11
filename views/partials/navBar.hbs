@@ -4,50 +4,106 @@
       <div class="row">
         <div class="col-xl-3 col-lg-3">
           <div class="logo mt-40">
-            <a href="/products/main"><img src="/assets/images/logo/logo-1.png" alt="logo"></a>
+               <a href="#"><img src="/assets/images/logo/logo.png" alt="logo" width="80px" height="40px"></a>
           </div>
         </div>
         <div class="col-xl-6 col-lg-6">
           <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
             <nav>
               <ul>
-                {{#ifCond user.role "admin"}}
-                <li><a href="/products/shop"><b>SHOP</b> </a></li>
-                <li><a href="/accounts"><b>ACCOUNTS</b></a></li>
-                <li><a href="/admin/users"><b>ADMIN</b></a></li>
-                <li><a href="/carts"><b>CART</b></a></li>
-                {{else}}
-                <li><a href="/products/shop"><b>展示中心</b> </a></li>
-                {{#if user.id}}
-                <li><a href="/accounts"><b>會員中心</b> </a></li>
-                {{else}}
-                <li><a href="/accounts/signin"><b>會員中心</b> </a></li>
-                {{/if}}
-                <li><a href="/carts"><b>購物車</b> </a></li>
-                {{/ifCond}}
+                <li><a href="/products/main"><b>MAIN</b> |</a></li>
+                <li><a href="/products/shop"><b>SHOP</b> 展示中心</a></li>
+                <li><a href="/accounts"><b>ACCOUNTS</b> 會員中心</a></li>
               </ul>
             </nav>
           </div>
         </div>
         <div class="col-xl-3 col-lg-3">
-          <div class="header-right-wrap mt-20">
+          <div class="header-right-wrap mt-40">
             {{!--------------- shopping cart (large) ---------------}}
-            <div class="common-style">
-              <a href="/carts" class="btn cart-active"><i class="la la-shopping-cart la-3x"></i></a>
+            <div class="cart-wrap common-style">
+              {{#if barCart}}
+                <button class="cart-active">
+                  <i class="la la-shopping-cart"></i>
+                  <span class="count-style badge badge-info">{{cartItemNum}}</span>
+                </button>
+              {{else}}
+                <button class="cart-active">
+                  <i></i>
+                </button>
+              {{/if}}
               {{!--------------- shopping cart menu (large) ---------------}}
               <div class="shopping-cart-content">
                 <div class="shopping-cart-top">
                   <h4>Your Cart 購物車</h4>
-                  <a class="cart-close" href="/carts"><i class="la la-close"></i></a>
+                  <a class="cart-close" href="#"><i class="la la-close"></i></a>
                 </div>
+                <ul>
+                  {{!--------------- user account ---------------}}
+                  <li class="d-flex justify-content-around">
+                    {{#if user.id}}
+                    <div class="mt-2">
+                      <h2><i class="la la-user text-warning"></i></h2>
+                    </div>
+                    <div class="mt-3">
+                      <h4><a href="/accounts">會員中心</a></h4>
+                    </div>
+                    <div class="align-self-center">
+                      <a href="/accounts/logout" class="btn btn-outline-danger btn-sm">登出</a>
+                    </div>
+                    {{else}}
+                    <div class="mt-2">
+                      <h2><i class="la la-user"></i></h2>
+                    </div>
+                    <div class="mt-3">
+                      <h4><a href="/accounts/signin">SIGN IN 登入</a></h4>
+                    </div>
+                    <div></div>
+                    {{/if}}
+                  </li>
+                  {{#ifCond user.role "admin"}}
+                  <li class="d-flex justify-content-around">
+                    <div class="mt-2">
+                      <h2><i class="la la-gears"></i></h2>
+                    </div>
+                    <div class="mt-3">
+                      <h4><a href="/admin/users">管理員</a></h4>
+                    </div>
+                    <div></div>
+                  </li>
+                  {{/ifCond}}
+                  {{!--------------- cart items ---------------}}
+                  <hr />
+                  {{#if cart.items}}
+                  {{#each barCart.items}}
+                  <li class="single-shopping-cart">
+                    <div class="shopping-cart-img">
+                      <a href="/products/{{this.id}}"><img alt="" src="{{this.image}}"></a>
+                      <div class="item-close">
+                        <a href="#"><i class="sli sli-close"></i></a>
+                      </div>
+                    </div>
+                    <div class="shopping-cart-title">
+                      <h4><a href="#">{{this.name}}</a></h4>
+                      <span>$ {{this.price}}</span>
+                    </div>
+                    {{!-- <form action="/carts/{{this.CartItem.id}}/delete" method="post" id="delete-item">
+                      <div class="shopping-cart-delete">
+                        <button type="submit" form="delete-item"><i class="la la-trash"></i></button>
+                      </div>
+                    </form> --}}
+                  </li>
+                  {{/each}}
+                </ul>
                 <div class="shopping-cart-bottom">
                   <div class="shopping-cart-total">
-                    <h4>小計： <span class="shop-total">$290.00</span></h4>
+                    <h4>金額 <span class="shop-total">$ {{barTotalPrice}}</span></h4>
                   </div>
                   <div class="shopping-cart-btn btn-hover default-btn text-center">
-                    <a class="black-color" href="/carts">前往購物車</a>
+                    <a class="black-color" href="/carts">前往購物清單</a>
                   </div>
                 </div>
+                {{/if}}
               </div>
             </div>
           </div>
@@ -71,23 +127,8 @@
         </div>
       </div>
     </div>
-    <!-- main-search start -->
-    <div class="main-search-active">
-      <div class="sidebar-search-icon  border">
-        <button class="search-close"><span class="la la-close"></span></button>
-      </div>
-      <div class="sidebar-search-input">
-        <form>
-          <div class="form-search">
-            <input id="search" class="input-text" value="" placeholder="Search Now" type="search">
-            <button>
-              <i class="la la-search"></i>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
+
   {{!----------------- header Logo ----------------------}}
   <div class="header-small-mobile">
     <div class="container">
@@ -96,16 +137,24 @@
           <div class="mobile-logo">
             <a href="/products/main">
               {{!----------------- Logo ----------------------}}
-              <img alt="AJA" src="/assets/images/logo/logo-1.png">
+               <a href="#"><img src="/assets/images/logo/logo.png" alt="logo" width="80px" height="40px"></a>
             </a>
           </div>
         </div>
         <div class="col-6">
           <div class="header-right-wrap">
             {{!----------------- Shopping cart (small)----------------------}}
-            <div class="common-style">
-              <a href="/carts" class="btn cart-active"><i class="la la-shopping-cart la-2x"></i></a>
-              </button>
+            <div class="cart-wrap common-style ml-30">
+             {{#if barCart}}
+                <button class="cart-active">
+                  <i class="la la-shopping-cart"></i>
+                  <span class="count-style badge badge-info">{{cartItemNum}}</span>
+                </button>
+              {{else}}
+                <button class="cart-active">
+                  <i></i>
+                </button>
+              {{/if}}
 
               {{!----------------- cart menu ----------------------}}
               <div class="shopping-cart-content">
@@ -113,17 +162,75 @@
                   <h4>Your Cart 購物車</h4>
                   <a class="cart-close" href="#"><i class="la la-close"></i></a>
                 </div>
+
+                <ul>
+                  {{!--------------- user account ---------------}}
+                  <li class="d-flex justify-content-around">
+                    {{#if user}}
+                    <div class="mt-2">
+                      <h2><i class="la la-user text-warning"></i></h2>
+                    </div>
+                    <div class="mt-3">
+                      <h4><a href="/accounts">會員中心</a></h4>
+                    </div>
+                    <div class="align-self-center">
+                      <a href="/accounts/logout" class="btn btn-outline-danger btn-sm">登出</a>
+                    </div>
+                    {{else}}
+                    <div class="mt-2">
+                      <h2><i class="la la-user"></i></h2>
+                    </div>
+                    <div class="mt-3">
+                      <h4><a href="/accounts/signin">SIGN IN 登入</a></h4>
+                    </div>
+                    <div></div>
+                    {{/if}}
+                  </li>
+                  {{#ifCond user.role "admin"}}
+                  <li class="d-flex justify-content-around">
+                    <div class="mt-2">
+                      <h2><i class="la la-gears"></i></h2>
+                    </div>
+                    <div class="mt-3">
+                      <h4><a href="/admin/users">管理員</a></h4>
+                    </div>
+                    <div></div>
+                  </li>
+                  {{/ifCond}}
+                  {{!----------------- cart item ---------------------}}
+                  <hr />
+                  {{#if barCart.items}}
+                  {{#each barCart.items}}
+                  <form action="/carts/{{this.CartItem.id}}/delete" method="post" id="delete-item"></form>
+                  <li class="single-shopping-cart">
+                    <div class="shopping-cart-img">
+                      <a href="/products/{{this.id}}"><img alt="" src="{{this.image}}"></a>
+                      <div class="item-close">
+                        <a href="#"><i class="sli sli-close"></i></a>
+                      </div>
+                    </div>
+                    <div class="shopping-cart-title">
+                      <h4><a href="#">{{this.name}}</a></h4>
+                      <span>$ {{this.price}}</span>
+                    </div>
+                    <div class="shopping-cart-delete">
+                      <button type="submit" form="delete-item"><i class="la la-trash"></i></button>
+                    </div>
+                  </li>
+                  {{/each}}
+                </ul>
                 <div class="shopping-cart-bottom">
                   <div class="shopping-cart-total">
-                    <h4>小計： <span class="shop-total">$290.00</span></h4>
+                    <h4>金額 <span class="shop-total">$ {{barTotalPrice}}</span></h4>
                   </div>
                   <div class="shopping-cart-btn btn-hover default-btn text-center">
-                    <a class="black-color" href="/carts">前往購物車</a>
+                    <a class="black-color" href="/carts">前往購物清單</a>
                   </div>
                 </div>
+                {{/if}}
+                </div>
               </div>
-            </div>
-            <div class=" mobile-off-canvas">
+            <div class="mobile-off-canvas">
               <a class="mobile-aside-button" href="#"><i class="la la-navicon la-2x"></i></a>
             </div>
           </div>
@@ -151,7 +258,18 @@
           <ul class="mobile-menu">
             <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
             <li><a href="/products/shop"><b>SHOP</b> 展示中心</a></li>
-            {{#if user}}
+          </ul>
+        </nav>
+        <!-- mobile menu navigation end -->
+      </div>
+      <!-- mobile menu end -->
+    </div>
+    <div class="mobile-curr-lang-wrap">
+      <div class="single-mobile-curr-lang">
+        <a class="mobile-account-active" href="/accounts"><b>ACCOUNTS</b> 會員中心<i class="la la-angle-down"></i></a>
+        <div class="lang-curr-dropdown account-dropdown-active">
+          <ul>
+             {{#if user}}
             <li><a href="/accounts"><b>ACCOUNTS</b> 會員中心 </a></li>
             <li> </li>
             {{#ifCond user.role "admin"}}
@@ -165,10 +283,8 @@
 
             {{/if}}
           </ul>
-        </nav>
-        <!-- mobile menu navigation end -->
+        </div>
       </div>
-      <!-- mobile menu end -->
     </div>
     <div class="mobile-social-wrap">
       <a class="facebook" href="#"><i class="ti-facebook"></i></a>
