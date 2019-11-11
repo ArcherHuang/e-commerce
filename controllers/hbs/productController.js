@@ -8,6 +8,14 @@ const productController = {
         if (data['status'] === 'success') {
           req.flash('success_messages', data['message'])
           const keyword = req.query.keyword || ''
+          const cartItemNum = data.cart.items.length || 0
+          
+          // console.log('=========================')
+          // if (data.cart.items[0]) {
+          //   console.log(data.cart.items[0].dataValues.CartItem)
+          //   console.log(cartItemNum)
+          // }
+
 
           if (data.currentUser[0]) {
             const temp = data.currentUser[0].dataValues
@@ -31,14 +39,16 @@ const productController = {
 
             const filterProducts =  productsData.map(p => ({
               ...p,
-              isLiked: productLiked.map(r => r.id === p.id )
-               
+              isLiked: productLiked.map(r => r.id).include(p.id)
             }))
 
             return res.render('shop', {
               products: filterProducts,
               setUser: setUser,
               categories: data.categories,
+              barCart: data.cart,
+              cartItemNum: cartItemNum,
+              barTotalPrice: data.totalPrice,
               keyword: keyword
             })
           }
@@ -46,6 +56,9 @@ const productController = {
           return res.render('index', {
             products: data.content,
             categories: data.categories,
+            barCart: data.cart,
+            cartItemNum: cartItemNum,
+            barTotalPrice: data.totalPrice,
             keyword: keyword
           })
         } else {
@@ -60,10 +73,11 @@ const productController = {
       try {
         if (data['status'] === 'success') {
           req.flash('success_messages', data['message'])
-
+          
           const page = Number(req.query.page) || 1
-          const category_id = Number(req.query.category_id) || ''
+          const category_id = Number(req.query.category_id) || 0
           const keyword = req.query.keyword || ''
+          const cartItemNum = data.cart.items.length || 0
 
           if (data.currentUser[0]) {
             const temp = data.currentUser[0].dataValues
@@ -85,30 +99,19 @@ const productController = {
             }))
             //console.log('----------', productsData)
 
-            let filterProducts = []
-
-            productsData.forEach(p => {
-              productLiked.forEach(liked => {
-                if (p.id === liked.id) {
-                  p = {
-                    ...p,
-                    isLiked: true
-                  } 
-                } else {
-                  p = {
-                    ...p,
-                    isLiked: false
-                  }
-                }
-              })
-              filterProducts.push(p)
-            })
-            // console.log('--------------','page:', page, 'totalPages:', data.totalPages,'keyword:', keyword)
+            const filterProducts =  productsData.map(p => ({
+              ...p,
+              isLiked: productLiked.map(r => r.id).include(p.id)
+            }))
+           
             return res.render('shop', {
               products: filterProducts,
               setUser: setUser,
               categories: data.categories,
               category_id: category_id,
+              barCart: data.cart,
+              cartItemNum: cartItemNum,
+              barTotalPrice: data.totalPrice,
               page: page,
               totalPages: data.totalPages,
               prev: data.prev,
@@ -120,6 +123,9 @@ const productController = {
           return res.render('shop', {
             products: data.content,
             categories: data.categories,
+            barCart: data.cart,
+            cartItemNum: cartItemNum,
+            barTotalPrice: data.totalPrice,
             category_id: category_id,
             page: page,
             totalPages: data.totalPages,
@@ -144,6 +150,8 @@ const productController = {
         if (data['status'] === 'success') {
           req.flash('success_messages', data['message'])
 
+          const cartItemNum = data.cart.items.length || 0
+
           let reviews
           // 取出 reviewer 的 user name
           reviews = data.content.Reviews.map(r => ({
@@ -155,9 +163,45 @@ const productController = {
             dataStatus: r.dataStatus,
             userName: r.User.name
           }))
+          console.log( data)
+          if (data.currentUser['status'] === 'success') {
+              const temp = data.currentUser.content
+              const productLiked = temp.productLiked.map(r => ({
+                id: r.id
+              }))
+              console.log(productLiked)
+              const product = {
+                id: data.content.dataValues.id,
+                name: data.content.dataValues.id,
+                description: data.content.dataValues.description,
+                image: data.content.dataValues.image,
+                price:  data.content.dataValues.price,
+                recommendedPrice: data.content.dataValues.recommendedPrice,
+                inventory: data.content.dataValues.inventory,
+                length: data.content.dataValues.length,
+                width: data.content.dataValues.width,
+                height: data.content.dataValues.height,
+                weight: data.content.dataValues.weight,
+                CategoryId: data.content.dataValues.CategoryId,
+                isLiked: productLiked.map(r => r.id).includes(data.content.dataValues.id),
+                dataStatus: data.content.dataValues.dataStatus,
+                Category: data.content.dataValues.Category
+              }
+  
+              return res.render('productDetail', {
+                product: product,
+                barCart: data.cart,
+                barTotalPrice: data.totalPrice,
+                cartItemNum: cartItemNum,
+                reviews: reviews
+              })
+          }
 
           return res.render('productDetail', {
-            product: data.content,
+            product:  data.content,
+            barCart: data.cart, 
+            barTotalPrice: data.totalPrice,
+            cartItemNum: cartItemNum,
             reviews: reviews
           })
         } else {
