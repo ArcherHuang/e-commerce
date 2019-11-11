@@ -3327,6 +3327,16 @@ button, input, optgroup, select, textarea {
   color: #ff5151;
 }
 
+.shopping-cart-content ul li .shopping-cart-delete button {
+  font-size: 16px;
+  color: #282828;
+  margin-top: -4px;
+}
+
+.shopping-cart-content ul li .shopping-cart-delete button:hover {
+  color: #ff5151;
+}
+
 .shopping-cart-content .shopping-cart-total {
   margin: 50px 0 20px;
   border-bottom: 1px solid #cccccc;
