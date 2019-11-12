@@ -33,9 +33,15 @@
           <div class="header-right-wrap mt-20">
             {{!--------------- shopping cart (large) ---------------}}
             <div class="common-style">
+              {{#if user}}
+              <a href="/accounts/logout" style="color:gray">Logout</a>
+              {{else}}
+              <a href="/accounts/signin" style="color:black">Login</a>
+
+              {{/if}}
               <a href="/carts" class="btn cart-active"><i class="la la-shopping-cart la-3x"></i></a>
               {{!--------------- shopping cart menu (large) ---------------}}
-              <div class="shopping-cart-content">
+              {{!-- <div class="shopping-cart-content">
                 <div class="shopping-cart-top">
                   <h4>Your Cart 購物車</h4>
                   <a class="cart-close" href="/carts"><i class="la la-close"></i></a>
@@ -48,7 +54,7 @@
                     <a class="black-color" href="/carts">前往購物車</a>
                   </div>
                 </div>
-              </div>
+              </div> --}}
             </div>
           </div>
           <!-- main-search start -->
@@ -113,14 +119,14 @@
                   <h4>Your Cart 購物車</h4>
                   <a class="cart-close" href="#"><i class="la la-close"></i></a>
                 </div>
-                <div class="shopping-cart-bottom">
+                {{!-- <div class="shopping-cart-bottom">
                   <div class="shopping-cart-total">
                     <h4>小計： <span class="shop-total">$290.00</span></h4>
                   </div>
                   <div class="shopping-cart-btn btn-hover default-btn text-center">
                     <a class="black-color" href="/carts">前往購物車</a>
                   </div>
-                </div>
+                </div> --}}
               </div>
             </div>
             <div class=" mobile-off-canvas">
@@ -157,11 +163,11 @@
             {{#ifCond user.role "admin"}}
             <li><a href="/admin/users"><b>ADMIN</b> 管理者後台 </a></li>
             {{/ifCond}}
-            <li><a href="/accounts/logout" class="btn btn-outline-danger btn-sm" style="width:50%">登出</a></li>
+            <li><a href="/accounts/logout" style="color:gray">登出</a></li>
             {{else}}
 
             <li><a href="/accounts/signin"><b>Sign In</b> 登入 </a></li>
-            <li><a href="/accounts/signup"><b></b>Sign Up</b> 新增帳號 </a></li>
+            <li><a href="/accounts/signup"><b></b>Sign Up</b> 加入會員 </a></li>
 
             {{/if}}
           </ul>
@@ -171,11 +177,11 @@
       <!-- mobile menu end -->
     </div>
     <div class="mobile-social-wrap">
-      <a class="facebook" href="#"><i class="ti-facebook"></i></a>
+      {{!-- <a class="facebook" href="#"><i class="ti-facebook"></i></a>
       <a class="twitter" href="#"><i class="ti-twitter-alt"></i></a>
       <a class="pinterest" href="#"><i class="ti-pinterest"></i></a>
       <a class="instagram" href="#"><i class="ti-instagram"></i></a>
-      <a class="google" href="#"><i class="ti-google"></i></a>
+      <a class="google" href="#"><i class="ti-google"></i></a> --}}
     </div>
   </div>
 </div>
