@@ -58,8 +58,9 @@ module.exports = passport => {
               return User.create({
                 name: profile._json.name,
                 email: profile._json.email,
-                role: user,
-                password: hash
+                role: 'user',
+                password: hash,
+                isValid: true
               }).then(user => {
                 return done(null, user)
               }).catch(err => {
