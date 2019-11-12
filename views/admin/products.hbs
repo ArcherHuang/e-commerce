@@ -47,25 +47,26 @@
             style="cursor:pointer">
             名稱&nbsp;<i class="fas fa-sort"></i>
           </th>
-          <th scope="col" class="text-center">
-            簡介
-          </th>
-          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
-            style="cursor:pointer;width:10%">
-            售價&nbsp;<i class="fas fa-sort"></i>
-          </th>
-          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
-            style="cursor:pointer;width:10%">
-            庫存&nbsp;<i class="fas fa-sort"></i>
-          </th>
-          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
-            style="cursor:pointer;width:10%">
-            上架狀態&nbsp;<i class="fas fa-sort"></i>
-          </th>
-          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')"
             style="cursor:pointer;width:10%">
             分類&nbsp;<i class="fas fa-sort"></i>
           </th>
+          <th scope="col" class="text-center">
+            簡介
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
+            style="cursor:pointer;width:10%">
+            售價&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
+            style="cursor:pointer;width:10%">
+            庫存&nbsp;<i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+            style="cursor:pointer;width:10%">
+            狀態&nbsp;<i class="fas fa-sort"></i>
+          </th>
+
           <th scope="col" class="text-center" scope="col">#</th>
         </tr>
       </thead>
@@ -81,6 +82,7 @@
             {{/if}}
           </td>
           <td class="text-center">{{this.name}}</td>
+          <td class="text-center">{{this.Category.name}}</td>
           <td class="text-center">{{this.description}}</td>
           <td class="text-center">{{this.price}}</td>
           <td class="text-center">{{this.inventory}}</td>
@@ -112,7 +114,6 @@
             已下架
             {{/ifCond}}
           </td>
-          <td class="text-center">{{this.Category.name}}</td>
           <td class="text-center">
             <a href="/admin/products/{{this.id}}" class="btn btn-outline-primary btn-sm">
               細節
