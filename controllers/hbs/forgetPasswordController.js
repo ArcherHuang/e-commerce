@@ -5,7 +5,7 @@ const forgetPasswordController = {
   responseMessageAction: (req, res, data, successAction, errorAction) => {
     if (data['status'] === 'success') {
       req.flash('success_messages', data['message'])
-      res.redirect(successAction)
+      return res.redirect(successAction)
     } else {
       req.flash('error_messages', data['message'])
       return res.redirect(errorAction)

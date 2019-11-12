@@ -15,7 +15,7 @@ const couponController = {
     catch (err) {
       console.log(`Err: ${err}`)
       req.flash('error_messages', "Coupon 功能操作失敗")
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 

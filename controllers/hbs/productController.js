@@ -79,11 +79,9 @@ const productController = {
               id: r.dataValues.id
             })) || []
 
-            //console.log('----------', data.content)
             const productsData = data.content.map(r => ({
               ...r.dataValues
             }))
-            //console.log('----------', productsData)
 
             let filterProducts = []
 
@@ -103,7 +101,7 @@ const productController = {
               })
               filterProducts.push(p)
             })
-            // console.log('--------------','page:', page, 'totalPages:', data.totalPages,'keyword:', keyword)
+
             return res.render('shop', {
               products: filterProducts,
               setUser: setUser,
@@ -133,7 +131,7 @@ const productController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -167,7 +165,7 @@ const productController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -178,13 +176,13 @@ const productController = {
       try {
         if (data['status'] == 'success') {
           req.flash('success_messages', "成功收藏商品")
-          res.redirect('back')
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "收藏商品失敗")
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -195,13 +193,13 @@ const productController = {
       try {
         if (data['status'] == 'success') {
           req.flash('success_messages', "成功將商品移出 wishlist")
-          res.redirect('back')
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "無法將商品移出 wishlist")
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -211,16 +209,16 @@ const productController = {
       try {
         if (data['status'] === 'success') {
           req.flash('success_messages', "成功刪除評論")
-          res.redirect('back')
+          return res.redirect('back')
         } else {
           req.flash('error_messages', "刪除評論失敗")
-          res.redirect('back')
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "刪除評論失敗")
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -231,14 +229,14 @@ const productController = {
         if (data['status'] === 'success') {
           let reviews = data.content
           let targetId = req.params.review_id || null
-          res.render('accountsReviews', { reviews: reviews, targetId: targetId })
+          return res.render('accountsReviews', { reviews: reviews, targetId: targetId })
         } else {
-          res.redirect('back')
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -248,16 +246,16 @@ const productController = {
       try {
         if (data['status'] === 'success') {
           req.flash('success_messages', "成功更新評論")
-          res.redirect('/accounts/reviews')
+          return res.redirect('/accounts/reviews')
         } else {
           req.flash('error_messages', "更新評論失敗")
-          res.redirect('back')
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "更新評論失敗")
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -270,12 +268,12 @@ const productController = {
           res.redirect(`/products/${req.params.product_id}/#des-details3`)
         } else {
           req.flash('error_messages', data['message'])
-          res.redirect(`/products/${req.params.product_id}/#des-details3`)
+          return res.redirect(`/products/${req.params.product_id}/#des-details3`)
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect(`/products/${req.params.product_id}/#des-details3`)
+        return res.redirect(`/products/${req.params.product_id}/#des-details3`)
       }
     })
   }

@@ -22,13 +22,13 @@ const orderController = {
           res.render('ordersNewebPayment', { paymentInfo: paymentInfo, order: order })
         } else {
           req.flash('error_messages', '取得藍新金流付款資訊失敗')
-          res.redirect('back')
+          return res.redirect('back')
         }
       })
     }
     catch (err) {
       console.log(`Err: ${err}`)
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 
@@ -37,15 +37,15 @@ const orderController = {
       try {
         if (data['status'] == 'success') {
           req.flash('success_messages', '付款成功！')
-          res.redirect('/orders/payment')
+          return res.redirect('/orders/payment')
         } else {
           req.flash('error_messages', '付款失敗，請重新付款')
-          res.redirect('/accounts/orders')
+          return res.redirect('/accounts/orders')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('/accounts/orders')
+        return res.redirect('/accounts/orders')
       }
     })
   },
@@ -56,16 +56,16 @@ const orderController = {
         let order
         if (data['status'] == 'success') {
           order = data['order']
-          res.render('ordersStripePayment', { order: order })
+          return res.render('ordersStripePayment', { order: order })
         } else {
           req.flash('error_messages', '取得 Stripe 付款資訊失敗')
-          res.redirect('back')
+          return res.redirect('back')
         }
       })
     }
     catch (err) {
       console.log(`Err: ${err}`)
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 
@@ -74,15 +74,15 @@ const orderController = {
       try {
         if (data['status'] == 'success') {
           req.flash('success_messages', '付款成功！')
-          res.redirect('/orders/payment')
+          return res.redirect('/orders/payment')
         } else {
           req.flash('error_messages', '付款失敗，請重新付款')
-          res.redirect('/accounts/orders')
+          return res.redirect('/accounts/orders')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('/accounts/orders')
+        return res.redirect('/accounts/orders')
       }
     })
   },
