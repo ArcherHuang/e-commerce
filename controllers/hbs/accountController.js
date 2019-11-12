@@ -10,7 +10,7 @@ const userController = {
   responseMessageAction: (req, res, data, successAction, errorAction) => {
     if (data['status'] === 'success') {
       req.flash('success_messages', data['message'])
-      res.redirect(successAction)
+      return res.redirect(successAction)
     } else {
       req.flash('error_messages', data['message'])
       return res.redirect(errorAction)
@@ -46,7 +46,7 @@ const userController = {
   logout: (req, res) => {
     req.flash('success_messages', '登出成功！')
     req.logout()
-    res.redirect('/accounts/signin')
+    res.redirect('/')
   },
 
   getProfile: async (req, res) => {
@@ -62,12 +62,12 @@ const userController = {
           })
         } else {
           req.flash('error_messages', "請先登入")
-          res.redirect('/products/main')
+          return res.redirect('/products/main')
         }
       } catch (err) {
         req.flash('error_messages', "無法取得使用者個人頁面")
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -76,17 +76,17 @@ const userController = {
     await userService.getProfile(req, res, async (data) => {
       try {
         if (data['status'] == 'success') {
-          await res.render('accountsEditPage', {
+          return res.render('accountsEditPage', {
             user: data.content,
           })
         } else {
           req.flash('error_messages', "無法取得使用者個人頁面")
-          res.redirect('/products/main')
+          return res.redirect('/products/main')
         }
       } catch (err) {
         req.flash('error_messages', "無法取得使用者個人頁面")
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -96,16 +96,16 @@ const userController = {
       try {
         if (data['status'] == 'success') {
           req.flash('success_messages', "更新個人資訊成功")
-          res.redirect('/accounts')
+          return res.redirect('/accounts')
         } else {
           req.flash('error_messages', "更新個人資訊失敗")
-          res.redirect('/accounts/edit')
+          return res.redirect('/accounts/edit')
         }
       }
       catch (err) {
         req.flash('error_messages', "更新個人資訊失敗")
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -129,15 +129,15 @@ const userController = {
             shippingStatusString: userController.transformShippingStatus(r.shippingStatus),
             paymentStatusString: userController.transformPaymentStatus(r.paymentStatus),
           }))
-          res.render('accountsOrders', { orders: orders })
+          return res.render('accountsOrders', { orders: orders })
         } else {
           req.flash('error_messages', "取得訂單清單失敗")
-          res.redirect('/accounts')
+          return res.redirect('/accounts')
         }
       }
       catch (err) {
         console.log(`ERR: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -179,15 +179,15 @@ const userController = {
             quantity: r.OrderItem.quantity
           }))
 
-          res.render('accountsOrderDetails', { order: order, products: products })
+          return res.render('accountsOrderDetails', { order: order, products: products })
         } else {
           req.flash('error_messages', "取得訂單細節失敗")
-          res.redirect('/accounts/orders')
+          return res.redirect('/accounts/orders')
         }
       }
       catch (err) {
         console.log(`ERR: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -197,16 +197,16 @@ const userController = {
       await userService.cancelOrder(req, res, (data) => {
         if (data['status'] == 'success') {
           // req.flash('success_messages', "取消訂單成功")
-          res.redirect('back')
+          return res.redirect('back')
         } else {
           // req.flash('error_messages', "取消訂單失敗")
-          res.redirect('back')
+          return res.redirect('back')
         }
       })
     }
     catch (err) {
       console.log(`ERR: ${err}`)
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 
@@ -225,13 +225,15 @@ const userController = {
             expireDate: r.expireDate,
             status: (r.dataStatus == 1 && r.numberOfLimitation > 0 && r.CouponDistribution.usageStatus == '1') ? '有效' : '已無法使用',
           }))
-          res.render('accountsCoupons', { coupons: coupons })
+          return res.render('accountsCoupons', { coupons: coupons })
+        } else {
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "取得訂單細節失敗")
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
 
@@ -250,12 +252,14 @@ const userController = {
             inventory: r.inventory,
             likeStatus: r.Like.dataStatus
           }))
-          res.render('accountsWishList', { products: products })
+          return res.render('accountsWishList', { products: products })
+        } else {
+          return res.redirect('back')
         }
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },

@@ -15,7 +15,7 @@ const categoryController = {
     catch (err) {
       console.log(`Err: ${err}`)
       req.flash('error_messages', "分類功能操作失敗")
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 
@@ -40,7 +40,6 @@ const categoryController = {
   },
 
   deleteCategory: (req, res) => {
-    console.log(`deleteCategorydeleteCategory`)
     categoryService.deleteCategory(req, res, (data) => {
       categoryController.responseMessageAction(req, res, data, '/admin/categories', '/admin/categories')
     })
@@ -62,7 +61,7 @@ const categoryController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },

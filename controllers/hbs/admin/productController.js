@@ -16,7 +16,7 @@ const productController = {
     catch (err) {
       console.log(`Err: ${err}`)
       req.flash('error_messages', "Product 功能操作失敗")
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 
@@ -41,7 +41,6 @@ const productController = {
   },
 
   postProduct: (req, res) => {
-    console.log(`postProduct_____file_image: ${req.file}`)
     productService.postProduct(req, res, (data) => {
       productController.responseMessageAction(req, res, data, '/admin/products', 'back')
     })
@@ -62,7 +61,7 @@ const productController = {
   getProductEditPage: (req, res) => {
     try {
       if (req.url === '/products/create') {
-        console.log(`==== CREATE NEW ====`)
+        // create a new product
         categoryService.getCategories(req, res, (data) => {
           if (data['status'] === 'success') {
             let categories = data.content
@@ -72,7 +71,7 @@ const productController = {
           }
         })
       } else {
-        console.log(`==== EDIT OLD ====`)
+        // edit a existing product
         productService.getProduct(req, res, (data) => {
           if (data['status'] === 'success') {
             let product = data.content

@@ -16,7 +16,7 @@ const cartController = {
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "將商品加入購物車失敗")
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -28,7 +28,7 @@ const cartController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -42,7 +42,7 @@ const cartController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -56,7 +56,7 @@ const cartController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -70,7 +70,7 @@ const cartController = {
       }
       catch (err) {
         console.log(`Err: ${err}`)
-        res.redirect('back')
+        return res.redirect('back')
       }
     })
   },
@@ -85,6 +85,7 @@ const cartController = {
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "加入 coupon 失敗")
+        return res.redirect('back')
       }
     })
   },
@@ -99,10 +100,10 @@ const cartController = {
       catch (err) {
         console.log(`Err: ${err}`)
         req.flash('error_messages', "移除 coupon 失敗")
+        return res.redirect('back')
       }
     })
   },
-
 }
 
 module.exports = cartController

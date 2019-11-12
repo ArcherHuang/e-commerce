@@ -15,7 +15,7 @@ const orderController = {
     catch (err) {
       console.log(`Err: ${err}`)
       req.flash('error_messages', "Order 功能操作失敗")
-      res.redirect('back')
+      return res.redirect('back')
     }
   },
 
