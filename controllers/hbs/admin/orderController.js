@@ -74,7 +74,8 @@ const orderController = {
   getDiscounts: (req, res) => {
     orderService.getDiscounts(req, res, (data) => {
       return res.render('admin/discounts', {
-        [data['key']]: data['content']
+        discounts: data.content,
+        targetDiscount: data.targetDiscount,
       })
     })
   },
