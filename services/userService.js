@@ -390,7 +390,11 @@ const userService = {
         // Get products that user liked
         let productLiked = await User.findAll({
           where: { id: currentUser.id },
-          include: [{ model: Product, as: "productLiked" }],
+          include: [{
+            model: Product,
+            through: { where: { dataStatus: 1 } },
+            as: "productLiked",
+          }],
         })
 
         // Get products that user viewed
