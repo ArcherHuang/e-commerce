@@ -54,10 +54,10 @@
                     <div class="col-md-7 col-sm-12 col-xs-12">
                         <div class="product-details-content quickview-content">
                             <span>{{this.Category.name}}</span>
-                            <h2>{{this.id}}&{{this.name}}</h2>
+                            <h2>{{this.name}}</h2>
                             <div class="product-ratting-review">
                                 <div class="product-review">
-                                    <span>40+ Reviews</span>
+                                    {{!-- <span>40+ Reviews</span> --}}
                                 </div>
                             </div>
                             <div class="pro-details-size">
@@ -73,14 +73,11 @@
                                 </div>
                                 <div class="dec-rang"></div>
                             </div>
-                            {{!-- Send to Cart --}}
-                            <form action="/carts" method="POST" id="add-cart-item">
-                                <input type="hidden" name="productId" value="{{this.id}}" />
-                                <div class="pro-details-quality">
-                                    <div class="cart-plus-minus form-group">
-                                        <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
-                                    </div>
-                                </div>ｃ
+                            <div class="pro-details-quality">
+                                {{!-- <div class="cart-plus-minus form-group">
+                                    <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
+                                </div> --}}
+                            </div>
                             </form>
                             <div class="pro-details-compare-wishlist">
                                 <div class="pro-details-compare">
@@ -101,10 +98,12 @@
                                     </form>
                                 {{/if}}
                             </div>
-                            
-                            <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                                <button type="submit" form="add-cart-item">新增至購物車</button>
-                            </div>
+                            <form action="/carts" method="POST" id="add-cart-item">
+                                <input type="hidden" name="productId" value="{{this.id}}" />
+                                <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                    <button type="submit" form="add-cart-item">新增至購物車</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -3,14 +3,14 @@ const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const moment = require('moment')
 const userService = require('../services/userService.js')
+const cartService = require('../services/cartService.js')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 const db = require('../models')
-const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageView } = db
+const { Carousel, Category, User, Product, Like, Order, OrderItem, Review, PageView, Cart } = db
 
 const productService = {
-
   getProducts: async (req, res, callback) => {
     try {
       // 此程式會取出的資料
@@ -92,6 +92,10 @@ const productService = {
 
       products = products.slice(offset, theLastProductIndex)
 
+      // 購物車資料 ＆ 總價
+      const cart = await Cart.findByPk(req.session.cartId, {include: 'items'}) || {items: []}
+      let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b)=>a+b) : 0
+
       return callback({
         status: 'success',
         message: '取得搜尋產品清單成功',
@@ -99,6 +103,8 @@ const productService = {
         carousels: carousels,
         categories: categories,
         currentUser: currentUser,
+        cart: cart,
+        totalPrice: totalPrice,
         totalPages: totalPages,
         prev: prev,
         next: next
@@ -115,13 +121,15 @@ const productService = {
 
   getProduct: async (req, res, callback) => {
     try {
-
       let currentUser
       await userService.getCurrentUser(req, res, (data) => {
         currentUser = data
         return currentUser
       })
 
+      const cart = await Cart.findByPk(req.session.cartId, {include: 'items'}) || {items: []}
+      let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b)=>a+b) : 0
+      
       await Product.findByPk(req.params.product_id, {
         include: [
           Category,
@@ -148,7 +156,7 @@ const productService = {
             return pageView.update({
               viewCount: (pageView.viewCount || 1) + 1
             }).then(pageView => {
-              return callback({ status: 'success', message: '取得特定產品成功', content: product, currentUser: currentUser })
+              return callback({ status: 'success', message: '取得特定產品成功', content: product, currentUser: currentUser, cart: cart, totalPrice: totalPrice })
             }).catch(err => {
               return callback({ status: 'error', message: '增加商品瀏覽紀錄失敗', content: err })
             })
@@ -170,7 +178,7 @@ const productService = {
             return pageView.update({
               viewCount: (pageView.viewCount || 1) + 1
             }).then(pageView => {
-              return callback({ status: 'success', message: '取得特定產品成功', content: product, currentUser: currentUser })
+              return callback({ status: 'success', message: '取得特定產品成功', content: product, currentUser: currentUser, cart: cart, totalPrice: totalPrice})
             }).catch(err => {
               return callback({ status: 'error', message: '增加商品瀏覽紀錄失敗', content: err })
             })
