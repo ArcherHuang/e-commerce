@@ -1,0 +1,100 @@
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders/discounts">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    {{#if coupon}}
+    <h4>編輯 coupon 資訊</h4>
+    {{else}}
+    <h4>新增 coupon </h4>
+    {{/if}}
+    <br>
+    <a href="javascript:history.back()">
+      <h5 class="text-primary">回到上一頁</h5>
+    </a>
+    <br>
+    {{#if coupon}}
+    <form action="/admin/coupons/{{coupon.id}}?_method=PUT" method="POST">
+      {{else}}
+      <form action="/admin/coupons" method="POST">
+        {{/if}}
+
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">名稱 </label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" placeholder="name" name="name" value="{{coupon.name}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="discount" class="col-sm-2 col-form-label">折扣折數 Discount (0~100)
+          </label>
+          <div class="col-sm-10">
+            <input type="number" class="form-control" placeholder="discount" name="discount"
+              value={{#ifCond coupon.discount 0}} 0 {{else}} {{coupon.discount}} {{/ifCond}}>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="amount" class="col-sm-2 col-form-label">折扣數量 Amount (0~)</label>
+          <div class="col-sm-10">
+            <input type="number" class="form-control" placeholder="amount" name="amount"
+              value={{#ifCond coupon.amount 0}} 0 {{else}} {{coupon.amount}} {{/ifCond}}>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="number_of_limitation" class="col-sm-2 col-form-label">數量 </label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" placeholder="Number of Limitation" name="number_of_limitation"
+              value="{{coupon.numberOfLimitation}}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="expire_date" class="col-sm-2 col-form-label">到期日 </label>
+          <div class="col-sm-10">
+            <input type="date" class="form-control" placeholder="Expire Date" name="expire_date"
+              value="{{momentYYYYMMDD coupon.expireDate}}">
+          </div>
+        </div>
+        <br>
+        <h5>折扣計算方式：(購物車總金額 - 折扣金額）x (100 - 折扣折數）%</h5>
+        <br />
+        {{#if coupon}}
+        <button class="btn btn-outline-primary btn-block" type="submit">更新 Coupon 資訊</button>
+        {{else}}
+        <button class="btn btn-outline-primary btn-block" type="submit">建立 Coupon</button>
+        {{/if}}
+      </form>
+  </div>
+</div>

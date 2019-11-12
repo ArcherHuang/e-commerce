@@ -44,6 +44,29 @@ const couponController = {
       couponController.responseMessageAction(req, res, data, '/admin/coupons', '/admin/coupons')
     })
   },
+
+  getCouponEditPage: (req, res) => {
+    try {
+      //create a new coupon
+      if (req.url === '/coupons/create') {
+        return res.render('admin/couponEdit')
+      } else {
+        // edit a existing coupon
+        couponService.getCoupons(req, res, (data) => {
+          if (data['status'] === 'success') {
+            let coupon = data.content
+            return res.render('admin/couponEdit', { coupon: coupon })
+          } else {
+            return res.redirect('back')
+          }
+        })
+      }
+    }
+    catch (err) {
+      console.log(`Err: ${err}`)
+      return res.redirect('back')
+    }
+  },
 }
 
 module.exports = couponController

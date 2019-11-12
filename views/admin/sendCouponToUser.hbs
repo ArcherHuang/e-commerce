@@ -1,59 +1,52 @@
-<div class="main-wrapper">
-  <header class="header-area transparent-bar sticky-bar showdow">
-    <div class="main-header-wrap">
-      <div class="container">
-        <div class="row mt-40">
-          <div class="col-xl-2 col-lg-2">
-            <div class="logo mt-40">
-              <h3>aja 後台</h3>
-            </div>
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders/discounts">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br />
+    <div class="row mt-5">
+      <div class="col-md-8 m-auto">
+        <div class="card card-body">
+          <h4 class="text-secondary text-center"> 請勾選要寄送的給使用者</h4>
+          {{#each users}}
+          <div class="email-box align-items-center">
+            <input class="checkbox-eml" type="checkbox" value="{{item-id}}">
+            <label>{{this.email}}</label>
+            <label></label>
           </div>
-          <div class="col-xl-10 col-lg-10">
-            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-              <nav>
-                <ul>
-                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                  <li><a href="/admin/users">Users</a></li>
-                  <li><a href="/admin/categories">Categories</a></li>
-                  <li><a href="/admin/coupons">Coupon</a></li>
-                  <li><a href="/admin/products">Product</a></li>
-                  <li><a href="/admin/orders">Order</a></li>
-                  <li><a href="/admin/orders/discounts">Discount</a></li>
-                  <li><a href="/admin/notifications">Notification</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          {{/each}}
+          <br />
+          <button type="button" class="btn btn-outline-success sendCoupon" data-coupon-id="{{coupon_id}}"
+            data-email="{{this.email}}">Send</button>
         </div>
       </div>
-    </div>
-  </header>
-</div>
-
-<br />
-<br />
-<br />
-<br />
-<br />
-
-
-<div class="row mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body">
-      <h4 class="text-secondary text-center"> 寄送 Coupone 給使用者</h4>
-      {{#each users}}
-      <div class="email-box align-items-center">
-        <input class="checkbox-eml" type="checkbox" value="{{item-id}}">
-        <label>{{this.email}}</label>
-        <label></label>
-      </div>
-      {{/each}}
-
-      <br />
-
-      <button type="button" class="btn btn-outline-danger sendCoupon" data-coupon-id="{{coupon_id}}"
-        data-email="{{this.email}}">Send</button>
-
     </div>
   </div>
 </div>
