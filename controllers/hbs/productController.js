@@ -89,7 +89,7 @@ const productController = {
       try {
         if (data['status'] === 'success') {
           // 若使用者有登入
-          if (data.currentUser) {
+          if (req.user) {
             const temp = data.currentUser.content
             const setUser = {
               id: temp.id,
