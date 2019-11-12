@@ -61,17 +61,22 @@
           <td>
             <p class="text-muted">訂單取消</p>
           </td>
+          <td>
+            <form action="/admin/orders/{{order.id}}/resume?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">訂單恢復</button>
+            </form>
+          </td>
           {{/ifCond}}
           {{/ifCond}}
         </tr>
         <tr>
           <th scope="row">付款狀態</th>
-          {{#ifCond order.paymentStatus 0}}
+          {{#ifCondNum order.paymentStatus 0}}
           <td>
             <p class="text-danger">待付款</p>
           </td>
           {{else}}
-          {{#ifCond order.paymentStatus 1}}
+          {{#ifCondNum order.paymentStatus 1}}
           <td>
             <p class="text-primary">已付款</p>
           </td>
@@ -79,12 +84,12 @@
           <td>
             <p class="text-muted">取消付款</p>
           </td>
-          {{/ifCond}}
-          {{/ifCond}}
+          {{/ifCondNum}}
+          {{/ifCondNum}}
         </tr>
         <tr>
           <th scope="row">出貨狀態</th>
-          {{#ifCond order.shippingStatus 0}}
+          {{#ifCondNum order.shippingStatus 0}}
           <td>
             <p class="text-danger">待出貨</p>
           </td>
@@ -94,7 +99,7 @@
             </form>
           </td>
           {{else}}
-          {{#ifCond order.shippingStatus 1}}
+          {{#ifCondNum order.shippingStatus 1}}
           <td>
             <p class="text-primary">已出貨</p>
           </td>
@@ -112,8 +117,8 @@
               <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
             </form>
           </td>
-          {{/ifCond}}
-          {{/ifCond}}
+          {{/ifCondNum}}
+          {{/ifCondNum}}
         </tr>
         <tr>
           <th scope="row">姓名</th>

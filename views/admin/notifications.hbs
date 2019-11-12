@@ -1,83 +1,85 @@
-{{> messages}}
-
-<div class="main-wrapper">
-  <header class="header-area transparent-bar sticky-bar showdow">
-    <div class="main-header-wrap">
-      <div class="container">
-        <div class="row mt-40">
-          <div class="col-xl-2 col-lg-2">
-            <div class="logo mt-40">
-              <h3>aja 後台</h3>
-            </div>
-          </div>
-          <div class="col-xl-10 col-lg-10">
-            <div class="main-menu menu-common-style menu-lh-1 menu-other-style">
-              <nav>
-                <ul>
-                  <li><a href="/products/main"><b>MAIN</b> 主頁</a></li>
-                  <li><a href="/admin/users">Users</a></li>
-                  <li><a href="/admin/categories">Categories</a></li>
-                  <li><a href="/admin/coupons">Coupon</a></li>
-                  <li><a href="/admin/products">Product</a></li>
-                  <li><a href="/admin/orders">Order</a></li>
-                  <li><a href="/admin/orders/discounts">Discount</a></li>
-                  <li><a href="/admin/notifications">Notification</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+{{> navBar}}
+<br>
+<br>
+<div class="album py-5 ">
+  <div class="container">
+    <br>
+    {{> messages}}
+    <h3>管理者後台</h3>
+    <br>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link " href="/admin/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/categories">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/coupons">Coupons</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders/discounts">Discount</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/notifications">Notification</a>
+      </li>
+    </ul>
+    <br>
+    <h4>提醒通知總覽</h4>
+    <br>
+    <table class="table" id="myTable">
+      <thead>
+        <tr>
+          <th class="text-center" scope="col" style="cursor:pointer;width:5%">#</th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
+            style="cursor:pointer;width:10%">type
+            <i class="fas fa-sort"></i>
+          </th>
+          <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
+            style="cursor:pointer;width:15%">category
+            <i class="fas fa-sort"></i>
+          </th>
+          <th class="" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')"
+            style="cursor:pointer;width:30%">content
+            <i class="fas fa-sort"></i>
+          </th>
+          <th class="" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
+            style="cursor:pointer;width:20%">
+            time
+            <i class="fas fa-sort"></i>
+          </th>
+          {{!-- <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+            style="cursor:pointer">dataStatus
+            <i class="fas fa-sort"></i>
+          </th> --}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each content}}
+        <tr class="item">
+          <th scope="row">{{this.id}}</th>
+          <td class="text-center">{{this.type}}</td>
+          <td class="text-center">{{this.category}}</td>
+          <td>{{this.content}}</td>
+          <td>{{momentYYYYMMDDHHmmss this.updatedAt}}</td>
+          {{!-- <td class="text-center">
+            {{#ifCond this.dataStatus 1}}
+            可使用
+            {{else}}
+            已刪除
+            {{/ifCond}}
+          </td> --}}
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <br />
+    <br />
+  </div>
 </div>
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-<table class="table" id="myTable">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-center" scope="col">#</th>
-      <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
-        style="cursor:pointer">type
-        <i class="fas fa-sort"></i>
-      </th>
-      <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
-        style="cursor:pointer">category
-        <i class="fas fa-sort"></i>
-      </th>
-      <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')"
-        style="cursor:pointer">content
-        <i class="fas fa-sort"></i>
-      </th>
-      <th class="text-center" scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
-        style="cursor:pointer">dataStatus
-        <i class="fas fa-sort"></i>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each content}}
-    <tr class="item">
-      <th scope="row">{{this.id}}</th>
-      <td class="text-center">{{this.type}}</td>
-      <td class="text-center">{{this.category}}</td>
-      <td class="text-center">{{this.content}}</td>
-      <td class="text-center">
-        {{#ifCond this.dataStatus 1}}
-        可使用
-        {{else}}
-        已刪除
-        {{/ifCond}}
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
-<br />
-<br />

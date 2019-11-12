@@ -48,15 +48,12 @@
             style="cursor:pointer">總金額&nbsp;<i class="fas fa-sort"></i>
           </th>
           <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
-            style="cursor:pointer">購物車折扣
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
             style="cursor:pointer">付款狀態&nbsp;<i class="fas fa-sort"></i>
           </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
             style="cursor:pointer">出貨狀態&nbsp;<i class="fas fa-sort"></i>
           </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
             style="cursor:pointer">訂單狀態&nbsp;<i class="fas fa-sort"></i>
           </th>
           <th class="text-center" scope="col">#</th>
@@ -69,28 +66,27 @@
           <td class="text-center">{{this.name}}</td>
           <td class="text-center">{{this.sn}}</td>
           <td class="text-center">{{this.totalAmount}}</td>
-          <td class="text-center">{{this.addDiscount}}</td>
           <td class="text-center">
 
             {{!-- 待付款 0, 已付款 1, 取消付款 2 --}}
-            {{#ifCond this.paymentStatus 1}}
+            {{#ifCondNum this.paymentStatus 1}}
             已付款
             {{else}}
-            {{#ifCond this.paymentStatus 2}}
+            {{#ifCondNum this.paymentStatus 2}}
             取消付款
             {{else}}
             待付款
-            {{/ifCond}}
-            {{/ifCond}}
+            {{/ifCondNum}}
+            {{/ifCondNum}}
 
           </td>
           <td class="text-center">
 
             {{!-- 待出貨 0, 出貨 1, 取消出貨 2 --}}
-            {{#ifCond this.shippingStatus 1}}
+            {{#ifCondNum this.shippingStatus 1}}
             出貨
             {{else}}
-            {{#ifCond this.shippingStatus 2}}
+            {{#ifCondNum this.shippingStatus 2}}
             取消出貨
             {{else}}
             待出貨
@@ -98,24 +94,24 @@
             <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
               <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
             </form>
-            {{/ifCond}}
-            {{/ifCond}}
+            {{/ifCondNum}}
+            {{/ifCondNum}}
 
             <br />
 
-            {{#ifCond this.shippingStatus 2}}
+            {{#ifCondNum this.shippingStatus 2}}
             {{!-- 出貨 shippingStatus = 1 --}}
             <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
               <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
             </form>
-            {{/ifCond}}
+            {{/ifCondNum}}
 
-            {{#ifCond this.shippingStatus 1}}
+            {{#ifCondNum this.shippingStatus 1}}
             {{!-- 取消出貨 shippingStatus = 2 --}}
             <form action="/admin/orders/{{this.id}}/unshipped?_method=PUT" method="POST" style="display: inline;">
               <button type="submit" class="btn btn-outline-danger btn-sm">取消出貨</button>
             </form>
-            {{/ifCond}}
+            {{/ifCondNum}}
 
           </td>
 
@@ -151,7 +147,7 @@
           </td>
           <td class="text-center">
             <form action="/admin/orders/{{this.id}}" method="GET" style="display: inline;">
-              <button type="submit" class="btn btn-outline-info btn-sm">Detail</button>
+              <button type="submit" class="btn btn-outline-info btn-sm">細節</button>
             </form>
           </td>
         </tr>

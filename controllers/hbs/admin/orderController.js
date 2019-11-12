@@ -49,32 +49,33 @@ const orderController = {
 
   cancelOrder: (req, res) => {
     orderService.cancelOrder(req, res, (data) => {
-      orderController.responseMessageAction(req, res, data, '/admin/orders', 'back')
+      orderController.responseMessageAction(req, res, data, 'back', 'back')
     })
   },
 
   resumeOrder: (req, res) => {
     orderService.resumeOrder(req, res, (data) => {
-      orderController.responseMessageAction(req, res, data, '/admin/orders', 'back')
+      orderController.responseMessageAction(req, res, data, 'back', 'back')
     })
   },
 
   shippedOrder: (req, res) => {
     orderService.shippedOrder(req, res, (data) => {
-      orderController.responseMessageAction(req, res, data, '/admin/orders', 'back')
+      orderController.responseMessageAction(req, res, data, 'back', 'back')
     })
   },
 
   unshippedOrder: (req, res) => {
     orderService.unshippedOrder(req, res, (data) => {
-      orderController.responseMessageAction(req, res, data, '/admin/orders', 'back')
+      orderController.responseMessageAction(req, res, data, 'back', 'back')
     })
   },
 
   getDiscounts: (req, res) => {
     orderService.getDiscounts(req, res, (data) => {
       return res.render('admin/discounts', {
-        [data['key']]: data['content']
+        discounts: data.content,
+        targetDiscount: data.targetDiscount,
       })
     })
   },
