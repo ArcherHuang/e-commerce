@@ -48,15 +48,12 @@
             style="cursor:pointer">總金額&nbsp;<i class="fas fa-sort"></i>
           </th>
           <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
-            style="cursor:pointer">購物車折扣
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
             style="cursor:pointer">付款狀態&nbsp;<i class="fas fa-sort"></i>
           </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
             style="cursor:pointer">出貨狀態&nbsp;<i class="fas fa-sort"></i>
           </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(8)')"
+          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
             style="cursor:pointer">訂單狀態&nbsp;<i class="fas fa-sort"></i>
           </th>
           <th class="text-center" scope="col">#</th>
@@ -69,7 +66,6 @@
           <td class="text-center">{{this.name}}</td>
           <td class="text-center">{{this.sn}}</td>
           <td class="text-center">{{this.totalAmount}}</td>
-          <td class="text-center">{{this.addDiscount}}</td>
           <td class="text-center">
 
             {{!-- 待付款 0, 已付款 1, 取消付款 2 --}}

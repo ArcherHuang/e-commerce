@@ -28,6 +28,10 @@ module.exports = {
     return moment(a).format('YYYY-MM-DD')
   },
 
+  momentYYYYMMDDHHmmss: function (a) {
+    return moment(a).format('YYYY-MM-DD HH:mm:ss')
+  },
+
   NTDtoSGD: function (a) {
     return parseFloat(a / 22).toFixed(2)
   },
