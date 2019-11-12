@@ -5,54 +5,54 @@ const productController = {
 
   getProducts: (req, res) => {
     productService.getProducts(req, res, (data) => {
-        if (data['status'] === 'success') {
-          req.flash('success_messages', data['message'])
-          const keyword = req.query.keyword || ''
+      if (data['status'] === 'success') {
+        req.flash('success_messages', data['message'])
+        const keyword = req.query.keyword || ''
 
-          if (data.currentUser[0]) {
-            const temp = data.currentUser[0].dataValues
-            const setUser = {
-              id: temp.id,
-              name: temp.name,
-              role: temp.role,
-              isValid: temp.isValid,
-              Reviews: temp.Reviews,
-              productLiked: temp.productLiked
-            }
-            const productLiked = temp.productLiked.map(r => ({
-              id: r.dataValues.id
-            })) || []
-
-            //console.log('----------', data.content)
-            const productsData = data.content.map(r => ({
-              ...r.dataValues
-            }))
-            //console.log('----------', productsData)
-
-            const filterProducts =  productsData.map(p => ({
-              ...p,
-              isLiked: productLiked.map(r => r.id === p.id )
-               
-            }))
-
-            return res.render('shop', {
-              products: filterProducts,
-              setUser: setUser,
-              categories: data.categories,
-              keyword: keyword
-            })
+        if (data.currentUser[0]) {
+          const temp = data.currentUser[0].dataValues
+          const setUser = {
+            id: temp.id,
+            name: temp.name,
+            role: temp.role,
+            isValid: temp.isValid,
+            Reviews: temp.Reviews,
+            productLiked: temp.productLiked
           }
+          const productLiked = temp.productLiked.map(r => ({
+            id: r.dataValues.id
+          })) || []
 
-          return res.render('index', {
-            products: data.content,
+          //console.log('----------', data.content)
+          const productsData = data.content.map(r => ({
+            ...r.dataValues
+          }))
+          //console.log('----------', productsData)
+
+          const filterProducts = productsData.map(p => ({
+            ...p,
+            isLiked: productLiked.map(r => r.id === p.id)
+
+          }))
+
+          return res.render('shop', {
+            products: filterProducts,
+            setUser: setUser,
             categories: data.categories,
             keyword: keyword
           })
-        } else {
-          req.flash('error_messages', data['message'])
-          return  res.redirect('back')
         }
-      })
+
+        return res.render('index', {
+          products: data.content,
+          categories: data.categories,
+          keyword: keyword
+        })
+      } else {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      }
+    })
   },
 
   getShop: (req, res) => {
@@ -93,7 +93,7 @@ const productController = {
                   p = {
                     ...p,
                     isLiked: true
-                  } 
+                  }
                 } else {
                   p = {
                     ...p,
@@ -116,7 +116,7 @@ const productController = {
               keyword: keyword
             })
           }
-    
+
           return res.render('shop', {
             products: data.content,
             categories: data.categories,
@@ -161,7 +161,8 @@ const productController = {
             reviews: reviews
           })
         } else {
-          return req.flash('error_messages', data['message'])
+          req.flash('error_messages', data['message'])
+          return res.redirect('/')
         }
       }
       catch (err) {

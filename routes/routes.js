@@ -4,6 +4,10 @@ const passport = require('../config/passport')
 
 const { ensureAuthenticated, isAuthAdmin, getUser, authenticatedAdmin } = require('../config/auth')
 
+// catch all that caught routes not previously defined
+router.all('/products/main([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.all('/products/shop([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+
 const accountRoute = require('./hbs/accountRoute')
 const cartRoute = require('./hbs/cartRoute')
 const orderRoute = require('./hbs/orderRoute')
@@ -21,8 +25,11 @@ router.use('/send', sendCouponRoute)
 router.use('/auth', authRoute)
 
 // 將其他 routes 導回首頁
-router.get('/', (req, res) => res.redirect('/products/main'))
-router.get('/:params', (req, res) => res.redirect('/products/main'))
+// router.get('/', (req, res) => res.redirect('/products/main'))
+// router.get('/:params', (req, res) => res.redirect('/products/main'))
+
+// catch all that caught routes not previously defined
+router.all('/*', (req, res) => res.redirect('/products/main'))
 
 module.exports = router
 
