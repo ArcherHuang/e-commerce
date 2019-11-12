@@ -5,51 +5,80 @@ const productController = {
 
   getProducts: (req, res) => {
     productService.getProducts(req, res, (data) => {
-      if (data['status'] === 'success') {
-        req.flash('success_messages', data['message'])
-        const keyword = req.query.keyword || ''
+      try {
 
-        if (data.currentUser[0]) {
-          const temp = data.currentUser[0].dataValues
-          const setUser = {
-            id: temp.id,
-            name: temp.name,
-            role: temp.role,
-            isValid: temp.isValid,
-            Reviews: temp.Reviews,
-            productLiked: temp.productLiked
+        if (data['status'] === 'success') {
+          // 若使用者有登入
+          if (req.user) {
+            const temp = data.currentUser.content
+            const setUser = {
+              id: temp.id,
+              name: temp.name,
+              role: temp.role,
+              isValid: temp.isValid,
+              Reviews: temp.Reviews,
+              productLiked: temp.productLiked
+            }
+
+            const productLiked = temp.productLiked.map(r => ({
+              id: r.dataValues.id
+            })) || []
+
+            const productsData = data.content.map(r => ({
+              ...r.dataValues
+            }))
+
+            let filterProducts = []
+
+            productsData.forEach(p => {
+              productLiked.every(liked => {
+                if (p.id === liked.id) {
+                  p = {
+                    ...p,
+                    isLiked: true
+                  }
+                  return false
+                } else {
+                  p = {
+                    ...p,
+                    isLiked: false
+                  }
+                  return true
+                }
+              })
+              filterProducts.push(p)
+            })
+
+            req.flash('success_messages', data['message'])
+            return res.render('index', {
+              products: filterProducts,
+              setUser: setUser,
+              categories: data.categories,
+              category_id: data.category_id,
+              page: data.page,
+              totalPages: data.totalPages,
+              prev: data.prev,
+              next: data.next,
+              keyword: data.keyword
+            })
           }
-          const productLiked = temp.productLiked.map(r => ({
-            id: r.dataValues.id
-          })) || []
-
-          //console.log('----------', data.content)
-          const productsData = data.content.map(r => ({
-            ...r.dataValues
-          }))
-          //console.log('----------', productsData)
-
-          const filterProducts = productsData.map(p => ({
-            ...p,
-            isLiked: productLiked.map(r => r.id === p.id)
-
-          }))
-
-          return res.render('shop', {
-            products: filterProducts,
-            setUser: setUser,
+          // 若使用者未登入
+          return res.render('index', {
+            products: data.content,
             categories: data.categories,
-            keyword: keyword
+            category_id: data.category_id,
+            page: data.page,
+            totalPages: data.totalPages,
+            prev: data.prev,
+            next: data.next,
+            keyword: data.keyword
           })
+        } else {
+          return req.flash('error_messages', data['message'])
         }
-
-        return res.render('index', {
-          products: data.content,
-          categories: data.categories,
-          keyword: keyword
-        })
-      } else {
-        req.flash('error_messages', data['message'])
+      }
+      catch (err) {
+        console.log(`Err: ${err}`)
         return res.redirect('back')
       }
     })
@@ -59,14 +88,9 @@ const productController = {
     productService.getProducts(req, res, (data) => {
       try {
         if (data['status'] === 'success') {
-          req.flash('success_messages', data['message'])
-
-          const page = Number(req.query.page) || 1
-          const category_id = Number(req.query.category_id) || ''
-          const keyword = req.query.keyword || ''
-
-          if (data.currentUser[0]) {
-            const temp = data.currentUser[0].dataValues
+          // 若使用者有登入
+          if (data.currentUser) {
+            const temp = data.currentUser.content
             const setUser = {
               id: temp.id,
               name: temp.name,
@@ -86,44 +110,48 @@ const productController = {
             let filterProducts = []
 
             productsData.forEach(p => {
-              productLiked.forEach(liked => {
+              productLiked.every(liked => {
                 if (p.id === liked.id) {
                   p = {
                     ...p,
                     isLiked: true
                   }
+                  return false
                 } else {
                   p = {
                     ...p,
                     isLiked: false
                   }
+                  return true
                 }
               })
               filterProducts.push(p)
             })
 
+            req.flash('success_messages', data['message'])
             return res.render('shop', {
               products: filterProducts,
               setUser: setUser,
               categories: data.categories,
-              category_id: category_id,
-              page: page,
+              category_id: data.category_id,
+              page: data.page,
               totalPages: data.totalPages,
               prev: data.prev,
               next: data.next,
-              keyword: keyword
+              keyword: data.keyword
             })
           }
 
+          // 若使用者未登入
           return res.render('shop', {
             products: data.content,
             categories: data.categories,
-            category_id: category_id,
-            page: page,
+            category_id: data.category_id,
+            page: data.page,
             totalPages: data.totalPages,
             prev: data.prev,
             next: data.next,
-            keyword: keyword
+            keyword: data.keyword
           })
         } else {
           return req.flash('error_messages', data['message'])
@@ -143,6 +171,8 @@ const productController = {
           req.flash('success_messages', data['message'])
 
           let reviews
+          let isLiked = false
+
           // 取出 reviewer 的 user name
           reviews = data.content.Reviews.map(r => ({
             id: r.id,
@@ -154,11 +184,28 @@ const productController = {
             userName: r.User.name
           }))
 
+          // 若使用者有登入
+          if (req.user) {
+            let user = data.currentUser.content
+            const productLiked = user.productLiked.map(r => ({
+              id: r.dataValues.id
+            })) || []
+
+            productLiked.forEach(p => {
+              if (p.id === data.content.id) {
+                isLiked = true
+              }
+            })
+          }
+
           return res.render('productDetail', {
             product: data.content,
-            reviews: reviews
+            reviews: reviews,
+            isLiked: isLiked
           })
+
         } else {
+          console.log('======== FALSE ========')
           req.flash('error_messages', data['message'])
           return res.redirect('/')
         }
@@ -170,12 +217,14 @@ const productController = {
     })
   },
 
-
   likeProduct: async (req, res) => {
     await productService.likeProduct(req, res, (data) => {
       try {
         if (data['status'] == 'success') {
           req.flash('success_messages', "成功收藏商品")
+          return res.redirect('back')
+        } else {
+          req.flash('error_messages', data['message'])
           return res.redirect('back')
         }
       }
@@ -192,7 +241,10 @@ const productController = {
     await productService.unlikeProduct(req, res, (data) => {
       try {
         if (data['status'] == 'success') {
-          req.flash('success_messages', "成功將商品移出 wishlist")
+          req.flash('success_messages', "成功將商品移出收藏")
+          return res.redirect('back')
+        } else {
+          req.flash('error_messages', data['message'])
           return res.redirect('back')
         }
       }
