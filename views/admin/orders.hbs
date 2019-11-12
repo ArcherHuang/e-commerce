@@ -73,24 +73,24 @@
           <td class="text-center">
 
             {{!-- 待付款 0, 已付款 1, 取消付款 2 --}}
-            {{#ifCond this.paymentStatus 1}}
+            {{#ifCondNum this.paymentStatus 1}}
             已付款
             {{else}}
-            {{#ifCond this.paymentStatus 2}}
+            {{#ifCondNum this.paymentStatus 2}}
             取消付款
             {{else}}
             待付款
-            {{/ifCond}}
-            {{/ifCond}}
+            {{/ifCondNum}}
+            {{/ifCondNum}}
 
           </td>
           <td class="text-center">
 
             {{!-- 待出貨 0, 出貨 1, 取消出貨 2 --}}
-            {{#ifCond this.shippingStatus 1}}
+            {{#ifCondNum this.shippingStatus 1}}
             出貨
             {{else}}
-            {{#ifCond this.shippingStatus 2}}
+            {{#ifCondNum this.shippingStatus 2}}
             取消出貨
             {{else}}
             待出貨
@@ -98,24 +98,24 @@
             <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
               <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
             </form>
-            {{/ifCond}}
-            {{/ifCond}}
+            {{/ifCondNum}}
+            {{/ifCondNum}}
 
             <br />
 
-            {{#ifCond this.shippingStatus 2}}
+            {{#ifCondNum this.shippingStatus 2}}
             {{!-- 出貨 shippingStatus = 1 --}}
             <form action="/admin/orders/{{this.id}}/shipped?_method=PUT" method="POST" style="display: inline;">
               <button type="submit" class="btn btn-outline-primary btn-sm">出貨</button>
             </form>
-            {{/ifCond}}
+            {{/ifCondNum}}
 
-            {{#ifCond this.shippingStatus 1}}
+            {{#ifCondNum this.shippingStatus 1}}
             {{!-- 取消出貨 shippingStatus = 2 --}}
             <form action="/admin/orders/{{this.id}}/unshipped?_method=PUT" method="POST" style="display: inline;">
               <button type="submit" class="btn btn-outline-danger btn-sm">取消出貨</button>
             </form>
-            {{/ifCond}}
+            {{/ifCondNum}}
 
           </td>
 

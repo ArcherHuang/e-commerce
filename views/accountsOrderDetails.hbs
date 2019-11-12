@@ -59,7 +59,7 @@
         </tr>
         <tr>
           <th scope="row">付款狀態</th>
-          {{#ifCond order.paymentStatus 0}}
+          {{#ifCondNum order.paymentStatus 0}}
           <td>
             <p class="text-danger">{{order.paymentStatusString}}</p>
           </td>
@@ -67,8 +67,8 @@
           <td>
             <p class="text-dark">{{order.paymentStatusString}}</p>
           </td>
-          {{/ifCond}}
-          {{#ifCond order.paymentStatus 0}}
+          {{/ifCondNum}}
+          {{#ifCondNum order.paymentStatus 0}}
           {{#ifCond order.dataStatus 1}}
           <td>
             <a href="/orders/{{order.id}}/newebPayment" class="btn btn-primary btn-sm">立即付款 (藍新金流)</a>
@@ -77,11 +77,11 @@
             <a href="/orders/{{order.id}}/stripePayment" class="btn btn-primary btn-sm">立即付款 (Stripe)</a>
           </td>
           {{/ifCond}}
-          {{/ifCond}}
+          {{/ifCondNum}}
         </tr>
         <tr>
           <th scope="row">出貨狀態</th>
-          {{#ifCond order.shippingStatus 0}}
+          {{#ifCondNum order.shippingStatus 0}}
           <td>
             <p class="text-danger">{{order.shippingStatusString}}</p>
           </td>
@@ -89,7 +89,7 @@
           <td>
             <p class="text-dark">{{order.shippingStatusString}}</p>
           </td>
-          {{/ifCond}}
+          {{/ifCondNum}}
         </tr>
         <tr>
           <th scope="row">姓名</th>
