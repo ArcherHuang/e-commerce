@@ -61,6 +61,11 @@
           <td>
             <p class="text-muted">訂單取消</p>
           </td>
+          <td>
+            <form action="/admin/orders/{{order.id}}/resume?_method=PUT" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary btn-sm">訂單恢復</button>
+            </form>
+          </td>
           {{/ifCond}}
           {{/ifCond}}
         </tr>
