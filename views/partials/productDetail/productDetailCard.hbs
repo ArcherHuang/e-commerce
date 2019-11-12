@@ -1,3 +1,4 @@
+{{> messages}}
 <div class="product-details-area pt-90 pb-90">
     <div class="container">
         <div class="row">
@@ -10,9 +11,8 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-content pro-details-content-modify">
+                    <h2><b>{{product.id}} x {{product.name}}</b></h2>
                     <span>{{product.Category.name}}</span>
-                    <h2>{{product.name}}</h2>
-
                     <div class="product-ratting-review"></div>
                     <div class="pro-details-price-wrap">
                         <div class="product-price">
@@ -20,37 +20,38 @@
                             <span class="old">$ {{product.recommendedPrice}}</span>
                         </div>
                     </div>
-                    <form action="/carts" method="POST" id="add-cart-item">
+                    <span>庫存: {{product.inventory}}</span>
+                    <form action="/carts" method="POST" id="add-cart-item" class="mt-5">
                         <div class="pro-details-quality">
-                            <div class="cart-plus-minus">
-                                <input class="cart-plus-minus-box" type="text" name="qtybutton" value="02">
+                            <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                <input type="hidden" name="productId" value="{{product.id}}" />
+                                <button type="submit" form="add-cart-item">新增至購物車</button>
                             </div>
                         </div>
                     </form>
                     <div class="pro-details-compare-wishlist">
                         <div class="pro-details-compare">
-                            <a title="Add To Compare" href="#">
-                                <i class="la la-retweet"></i>
-                                分享
-                            </a>
+                            <div class="addthis_inline_share_toolbox" title="分享"></div>
                         </div>
-                        {{#if this.isLiked}}
-                        <form action="/products/{{this.id}}/unlike" method="POST">
-                            <div class="pro-details-wishlist">
-                                <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
+                        {{#if isLiked}}
+                        <form action="/products/{{product.id}}/unlike" method="POST">
+                            <div class="pro-details-quality">
+                                <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                    <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
+                                </div>
                             </div>
                         </form>
                         {{else}}
-                        <form action="/products/{{this.id}}/like" method="POST">
-                            <div class="pro-details-wishlist">
-                                <button type="submit"><i class="la la-heart-o"></i> 收藏</button>
+                        <form action="/products/{{product.id}}/like" method="POST">
+                            <div class="pro-details-quality">
+                                <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                    <button type="submit"><i class="la la-heart"></i> 收藏</button>
+                                </div>
                             </div>
                         </form>
                         {{/if}}
                     </div>
-                    <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                        <button type="submit" form="add-cart-item">新增至購物車</button>
-                    </div>
+
 
                 </div>
             </div>
@@ -61,16 +62,9 @@
     <div class="container">
         <div class="row">
             <div class="ml-auto mr-auto col-lg-10">
-                <div class="dec-review-topbar nav mb-40">
-                    <a data-toggle="tab" href="#des-details1">產品描述</a>
-                    <a class="active" data-toggle="tab" href="#des-details2">產品規格</a>
-                    <a data-toggle="tab" href="#des-details3">使用評價</a>
-                </div>
                 <div class="tab-content dec-review-bottom">
-                    <div id="des-details1" class="tab-pane">
-                        <div class="description-wrap">
-                            <p>{{product.description}}</p>
-                        </div>
+                    <div class="alert alert-info" role="alert">
+                        <p class="text-center font-weight-bold"> 商品規格</p>
                     </div>
                     <div id="des-details2" class="tab-pane active">
                         <div class="specification-wrap table-responsive">
@@ -79,6 +73,10 @@
                                     <tr>
                                         <td class="width1">名稱</td>
                                         <td>{{product.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">介紹</td>
+                                        <td>{{product.description}}</td>
                                     </tr>
                                     <tr>
                                         <td>類別</td>
@@ -97,7 +95,11 @@
                         </div>
                     </div>
                     {{!---------- 評論者 ------------}}
-                    <div id="des-details3" class="tab-pane">
+                    <br>
+                    <div class="alert alert-info" role="alert">
+                        <p class="text-center font-weight-bold"> 商品評論</p>
+                    </div>
+                    <div id="des-details3" class="tab-pane active">
                         {{!-- 新增評論 --}}
                         <div class="dec-review-wrap mb-50">
                             <form action="/products/{{product.id}}/reviews" method="POST" style="width:100%">
@@ -120,20 +122,15 @@
                         {{#ifCond this.dataStatus 1}}
                         <div class="dec-review-wrap mb-50">
                             <div class="row">
-                                <div class="col-xl-3 col-lg-4 col-md-5">
-                                    <div class="dec-review-img-wrap">
-                                        <div class="dec-client-name">
-                                            <h4>{{this.userName}}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-9 col-lg-8 col-md-7">
+                                <div class="col-10">
                                     <div class="dec-review-content">
                                         <p>{{this.review}}
                                         </p>
                                         <div class="review-content-bottom">
                                             <div class="review-date">
-                                                <span>{{momentYYYYMMDD this.createdAt}}</span>
+                                                <span style="color: blue;">{{momentYYYYMMDD this.createdAt}}
+                                                    &nbsp;&nbsp; <b style="color: black;">by
+                                                        {{this.userName}}</b></span>
                                             </div>
                                         </div>
 

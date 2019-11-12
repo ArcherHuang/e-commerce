@@ -7,16 +7,15 @@
         <div class="product-img mb-15">
             <a href="/products/{{this.id}}"><img src="{{this.image}}" alt="product"></a>
             <div class="product-action">
-                    <a data-toggle="modal" data-target="#{{this.name}}" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                    {{!-- <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
+                <a data-toggle="modal" data-target="#{{this.name}}" title="查看"><i class="la la-plus"></i></a>
+                {{!-- <a title="Wishlist" href="/products/{{this.id}}/like"><i class="la la-heart-o"></i></a>
                     <a title="Wishlist" href="/products/{{this.id}}/unlike"><i class="la la-heart"></i></a> --}}
-                    <a title="Compare" href="#"><i class="la la-retweet"></i></a>
+                <div class="addthis_inline_share_toolbox" title="分享"></div>
             </div>
         </div>
-
         <div class="product-content">
+            <h4 class="font-weight-bold"><a href="/products/{{this.id}}">{{this.id}} x {{this.name}}</a></h4>
             <span>{{this.Category.name}}</span>
-            <h4><a href="/products/{{this.id}}">{{this.name}}</a></h4>
             <div class="price-addtocart">
                 <div class="product-price">
                     <span>$ {{this.price}}</span>
@@ -32,15 +31,15 @@
         </div>
     </div>
 </div>
-           
-      
+
 
 {{!---------------- Modal ------------------------}}
 <div class="modal fade" id="{{this.name}}" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -53,11 +52,16 @@
                     </div>
                     <div class="col-md-7 col-sm-12 col-xs-12">
                         <div class="product-details-content quickview-content">
+                            <h2>{{this.id}} x {{this.name}}</h2>
                             <span>{{this.Category.name}}</span>
-                            <h2>{{this.id}}&{{this.name}}</h2>
                             <div class="product-ratting-review">
                                 <div class="product-review">
-                                    <span>40+ Reviews</span>
+                                    <span>
+                                        {{!-- anchor 在商品規格處，下方即可看到商品評論 --}}
+                                        <a href="/products/{{this.id}}#des-details2"
+                                            style="color: blue;">{{this.Reviews.length}}
+                                            Reviews</a>
+                                    </span>
                                 </div>
                             </div>
                             <div class="pro-details-size">
@@ -73,37 +77,38 @@
                                 </div>
                                 <div class="dec-rang"></div>
                             </div>
+                            <div class="pro-details-size">
+                                <span>庫存: {{this.inventory}}</span>
+                            </div>
                             {{!-- Send to Cart --}}
-                            <form action="/carts" method="POST" id="add-cart-item">
+                            <form action="/carts" method="POST">
                                 <input type="hidden" name="productId" value="{{this.id}}" />
-                                <div class="pro-details-quality">
-                                    <div class="cart-plus-minus form-group">
-                                        <input class="cart-plus-minus-box form-control" type="text" name="quantity" value="1">
-                                    </div>
-                                </div>ｃ
+                                <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                    <button type="submit">新增至購物車</button>
+                                </div>
                             </form>
                             <div class="pro-details-compare-wishlist">
                                 <div class="pro-details-compare">
-                                    <a title="Add To Compare" href="#"><i class="la la-retweet"></i> 分享</a>
+                                    <div class="addthis_inline_share_toolbox" title="分享"></div>
                                 </div>
                                 {{!-- like --}}
                                 {{#if this.isLiked}}
-                                    <form action="/products/{{this.id}}/unlike" method="POST">
-                                        <div class="pro-details-wishlist">
+                                <form action="/products/{{this.id}}/unlike" method="POST">
+                                    <div class="pro-details-quality">
+                                        <div class="pro-details-buy-now btn-hover btn-hover-radious">
                                             <button type="submit"><i class="la la-heart"></i> 取消收藏</button>
                                         </div>
-                                    </form>
+                                    </div>
+                                </form>
                                 {{else}}
-                                    <form action="/products/{{this.id}}/like" method="POST">
-                                        <div class="pro-details-wishlist">
-                                            <button type="submit"><i class="la la-heart-o"></i> 收藏</button>
+                                <form action="/products/{{this.id}}/like" method="POST">
+                                    <div class="pro-details-quality">
+                                        <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                            <button type="submit"><i class="la la-heart"></i> 收藏</button>
                                         </div>
-                                    </form>
+                                    </div>
+                                </form>
                                 {{/if}}
-                            </div>
-                            
-                            <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                                <button type="submit" form="add-cart-item">新增至購物車</button>
                             </div>
                         </div>
                     </div>
