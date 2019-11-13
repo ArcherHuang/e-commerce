@@ -13,6 +13,8 @@ const productService = {
 
   getProducts: async (req, res, callback) => {
     try {
+      console.log('=== req.query', req.query)
+
       // 此程式會取出的資料
       let products
       let currentUser
@@ -33,31 +35,42 @@ const productService = {
         currentUser = []
       }
 
+      // 驗證 category_id 存在且為 number
+      let categoryId
+      let isCategory = false
+      let isNum = !isNaN(Number(req.query.category_id))
+
+      if (req.query.category_id && isNum) {
+        isCategory = await Category.findByPk(Number(req.query.category_id)).then(category => {
+          if (category) {
+            categoryId = Number(req.query.category_id)
+            return true
+          } else {
+            categoryId = null
+            return false
+          }
+        })
+      }
+
       // 取出商品
-      if (req.query.category_id && req.query.keyword) {
-        // 若同時存在分類與關鍵字搜尋，會優先搜尋分類，再搜尋關鍵字
-        const keyword = req.query.keyword ? req.query.keyword : null
+      // 若分類存在
+      if (categoryId) {
         products = await Product.findAll({
           include: [Category, Review],
           where: {
             dataStatus: 1,
-            CategoryId: req.query.category_id ? req.query.category_id : null,
-            [Op.or]: [
-              { name: { [Op.like]: '%' + keyword + '%' } },
-              { description: { [Op.like]: '%' + keyword + '%' } }
-            ]
+            CategoryId: categoryId,
           },
           order: [['updatedAt', 'DESC']]
         })
-      } else if (req.query.category_id || req.query.keyword) {
-        // 若分類與關鍵字搜尋其中之一存在
+      } else if (req.query.keyword) {
+        // 若關鍵字存在
         const keyword = req.query.keyword ? req.query.keyword : null
         products = await Product.findAll({
           include: [Category, Review],
           where: {
             dataStatus: 1,
             [Op.or]: [
-              { CategoryId: req.query.category_id ? req.query.category_id : null, },
               { name: { [Op.like]: '%' + keyword + '%' } },
               { description: { [Op.like]: '%' + keyword + '%' } }
             ]
@@ -72,7 +85,7 @@ const productService = {
       // pagination setting
       const pageLimit = 12
       let offset = 0
-      let page
+      let page = Number(req.query.page) || 1
       let pages = Math.ceil(products.length / pageLimit)
       let totalPages = Array.from({ length: pages }).map((item, index) => index + 1)
 
@@ -91,6 +104,7 @@ const productService = {
       let theLastProductIndex = offset + pageLimit
 
       products = products.slice(offset, theLastProductIndex)
+      console.log(`=== Length: ${products.length} ===`)
 
       return callback({
         status: 'success',
@@ -100,7 +114,7 @@ const productService = {
         categories: categories,
         currentUser: currentUser,
         totalPages: totalPages,
-        category_id: (req.query.category_id) ? req.query.category_id : null,
+        category_id: (categoryId) ? Number(categoryId) : null,
         keyword: (req.query.keyword) ? req.query.keyword : null,
         page: page,
         prev: prev,
