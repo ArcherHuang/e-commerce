@@ -27,7 +27,7 @@ const orderService = {
 
       return Cart.findOne({
         where: {
-          Id: req.body.cart_id,
+          id: req.body.cart_id,
           dataStatus: 1,
         },
         include: [
