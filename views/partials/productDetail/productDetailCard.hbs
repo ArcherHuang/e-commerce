@@ -23,6 +23,13 @@
                         </div>
                     </div>
                     <span>庫存: {{product.inventory}}</span>
+                    {{#ifCond product.inventory 0}}
+                    <div class="pro-details-quality mt-5">
+                        <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                            <button type="submit">已無庫存</button>
+                        </div>
+                    </div>
+                    {{else}}
                     <form action="/carts" method="POST" id="add-cart-item" class="mt-5">
                         <div class="pro-details-quality">
                             <div class="pro-details-buy-now btn-hover btn-hover-radious">
@@ -31,6 +38,7 @@
                             </div>
                         </div>
                     </form>
+                    {{/ifCond}}
                     <div class="pro-details-compare-wishlist">
                         <div class="pro-details-compare">
                             <div class="addthis_inline_share_toolbox" title="分享"></div>

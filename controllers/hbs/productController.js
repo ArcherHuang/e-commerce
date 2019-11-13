@@ -59,7 +59,7 @@ const productController = {
               prev: data.prev,
               next: data.next,
               keyword: data.keyword,
-              success_messages: data['message']
+              // success_messages: data['message']
             })
           }
           // 若使用者未登入
@@ -72,7 +72,7 @@ const productController = {
             prev: data.prev,
             next: data.next,
             keyword: data.keyword,
-            success_messages: data['message']
+            // success_messages: data['message']
           })
         } else {
           return req.flash('error_messages', data['message'])
@@ -129,7 +129,6 @@ const productController = {
               filterProducts.push(p)
             })
 
-            req.flash('success_messages', data['message'])
             return res.render('shop', {
               products: filterProducts,
               setUser: setUser,
@@ -139,7 +138,8 @@ const productController = {
               totalPages: data.totalPages,
               prev: data.prev,
               next: data.next,
-              keyword: data.keyword
+              keyword: data.keyword,
+              // success_messages: data['message']
             })
           }
 
@@ -169,7 +169,6 @@ const productController = {
     productService.getProduct(req, res, (data) => {
       try {
         if (data['status'] === 'success') {
-          req.flash('success_messages', data['message'])
 
           let reviews
           let isLiked = false
@@ -202,11 +201,11 @@ const productController = {
           return res.render('productDetail', {
             product: data.content,
             reviews: reviews,
-            isLiked: isLiked
+            isLiked: isLiked,
+            // success_messages: data['message']
           })
 
         } else {
-          console.log('======== FALSE ========')
           req.flash('error_messages', data['message'])
           return res.redirect('/')
         }
