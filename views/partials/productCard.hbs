@@ -1,6 +1,13 @@
 {{!---------------------- All Products --------------------------}}
 
 {{!---------------------- Product Card--------------------------}}
+{{#ifCond products.length 0}}
+<div class="alert alert-primary mb-5" style="width: 100%;" role="alert">
+    <a href="/products/shop">
+        <p class="text-center">沒有結果，請重新搜尋</p>
+    </a>
+</div>
+{{/ifCond}}
 {{#each products}}
 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
     <div class="product-wrap mb-35">
