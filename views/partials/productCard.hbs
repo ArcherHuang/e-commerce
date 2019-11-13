@@ -23,12 +23,15 @@
                     <span>$ {{this.price}}</span>
                 </div>
                 {{!------------- 新增至購物車 -----------------}}
+                {{#ifCond this.inventory 0}}
+                {{else}}
                 <form action="/carts" method="POST">
                     <input type="hidden" name="productId" value="{{this.id}}" />
                     <div class="product-addtocart">
                         <button type="submit">+ 新增至購物車</button>
                     </div>
                 </form>
+                {{/ifCond}}
             </div>
         </div>
     </div>
@@ -85,12 +88,18 @@
                                 <span>庫存: {{this.inventory}}</span>
                             </div>
                             {{!-- Send to Cart --}}
+                            {{#ifCond this.inventory 0}}
+                            <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                                <button>已無庫存</button>
+                            </div>
+                            {{else}}
                             <form action="/carts" method="POST">
                                 <input type="hidden" name="productId" value="{{this.id}}" />
                                 <div class="pro-details-buy-now btn-hover btn-hover-radious">
                                     <button type="submit">新增至購物車</button>
                                 </div>
                             </form>
+                            {{/ifCond}}
                             <div class="pro-details-compare-wishlist">
                                 <div class="pro-details-compare">
                                     <div class="addthis_inline_share_toolbox" title="分享"></div>
