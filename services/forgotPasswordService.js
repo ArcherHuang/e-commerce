@@ -87,14 +87,15 @@ const forgotPasswordService = {
     try {
       const token = req.params.token
       forgotPasswordService.getRedisInstance().get(`PASSWORD:RESET:${token}`, (err, reply) => {
-        console.log(`token: ${token}`)
-        console.log(`reply: ${reply}`)
+        // console.log(`token: ${token}`)
+        // console.log(`reply: ${reply}`)
         if (reply === null || reply === '') {
-          return callback({ status: 'error', message: '5 分鐘的時效已過，請重新點選【 忘記密碼 】功能 ~' })
+          return callback({ status: 'error', message: '5 分鐘的時效已過或已進行過密碼變更，如需變更密碼請再重新點選【 忘記密碼 】功能 ~' })
         } else {
           const parseReply = JSON.parse(reply)
           // console.log(`email: ${parseReply.email}`)
           req.session.mail = parseReply.email
+          req.session.token = token
           return callback({ status: 'success', message: '請輸入密碼進行密碼變更' })
         }
 
@@ -127,6 +128,8 @@ const forgotPasswordService = {
                 password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
               }).then((user) => {
                 req.session.mail = null
+                forgotPasswordService.getRedisInstance().del(`PASSWORD:RESET:${req.session.token}`)
+                req.session.token = null
                 return callback({ status: 'success', message: '密碼更新成功' })
               })
             }
