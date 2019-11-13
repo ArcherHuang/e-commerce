@@ -70,10 +70,7 @@ const productService = {
           include: [Category, Review],
           where: {
             dataStatus: 1,
-            [Op.or]: [
-              { name: { [Op.like]: '%' + keyword + '%' } },
-              { description: { [Op.like]: '%' + keyword + '%' } }
-            ]
+            name: { [Op.like]: '%' + keyword + '%' },
           },
           order: [['updatedAt', 'DESC']]
         })
