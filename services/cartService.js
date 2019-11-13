@@ -71,7 +71,8 @@ const cartService = {
             }
           }).spread(async function (cartItem, created) {
             await cartItem.update({
-              quantity: (cartItem.quantity || 0) + 1
+              quantity: (cartItem.quantity || 0) + 1,
+              dataStatus: 1
             }).then(async (cartItem) => {
               req.session.cartId = cart.id
               return req.session.save(async () => {
