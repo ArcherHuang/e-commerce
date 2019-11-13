@@ -49,7 +49,6 @@ const productController = {
               filterProducts.push(p)
             })
 
-            req.flash('success_messages', data['message'])
             return res.render('index', {
               products: filterProducts,
               setUser: setUser,
@@ -59,7 +58,8 @@ const productController = {
               totalPages: data.totalPages,
               prev: data.prev,
               next: data.next,
-              keyword: data.keyword
+              keyword: data.keyword,
+              success_messages: data['message']
             })
           }
           // 若使用者未登入
@@ -71,7 +71,8 @@ const productController = {
             totalPages: data.totalPages,
             prev: data.prev,
             next: data.next,
-            keyword: data.keyword
+            keyword: data.keyword,
+            success_messages: data['message']
           })
         } else {
           return req.flash('error_messages', data['message'])
