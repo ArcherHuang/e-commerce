@@ -22,8 +22,15 @@ const userController = {
   },
 
   signIn: (req, res) => {
+    let loginSuccessToPath = ''
+    if (req.session.path) {
+      loginSuccessToPath = '/carts'
+    } else {
+      loginSuccessToPath = '/products/main'
+    }
+    req.session.path = undefined
     userService.signIn(req, res, (data) => {
-      userController.responseMessageAction(req, res, data, '/products/main', '/accounts/signin')
+      userController.responseMessageAction(req, res, data, loginSuccessToPath, '/accounts/signin')
     })
   },
 

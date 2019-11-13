@@ -22,6 +22,11 @@ const cartController = {
   },
 
   getCart: async (req, res) => {
+    // 若使用者未登入
+    if (!req.user) {
+      req.session.path = 'carts'
+    }
+
     await cartService.getCart(req, res, (data) => {
       try {
         return res.render('carts', { cart: data.cart, coupon: data.coupon })
