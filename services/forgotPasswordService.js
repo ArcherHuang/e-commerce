@@ -60,8 +60,6 @@ const forgotPasswordService = {
                 ${host}/accounts/reset-password/${token}
 
                 此連結將在 5 分鐘後逾時失效，逾時請再重新驗證申請。
-                若您並無要求重置密碼，很有可能是遭有心人士使用；
-                建議您加強您的會員密碼強度。
                 `
                 }
 
