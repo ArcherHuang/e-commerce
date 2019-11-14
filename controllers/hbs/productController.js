@@ -4,6 +4,12 @@ const userService = require('../../services/userService.js')
 const productController = {
 
   getProducts: (req, res) => {
+
+    // testing
+    console.log('==== Check user and session in getProducts funtion ====')
+    console.log(req.user)
+    console.log(req.session)
+
     productService.getProducts(req, res, (data) => {
       try {
 
