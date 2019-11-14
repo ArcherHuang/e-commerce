@@ -50,15 +50,16 @@
           <td>{{this.price}}</td>
           <td>
             <div style="display: flex;">
-              <form action="/carts/{{this.CartItem.id}}/add" method="POST">
-                <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
+              <form action="/carts/{{this.CartItem.id}}/sub" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
               </form>
               <span style="margin: 0 20px;">
                 {{this.CartItem.quantity}}
               </span>
-              <form action="/carts/{{this.CartItem.id}}/sub" method="POST">
-                <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
+              <form action="/carts/{{this.CartItem.id}}/add" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
               </form>
+
             </div>
           </td>
           <td>
@@ -103,6 +104,8 @@
     {{/if}}
     <br>
     {{#if user.id}}
+    <br>
+    <h4>收件人資訊：</h4>
     <form action="/orders" method="POST">
       <div class="form-group row">
         <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Name</b></label>
