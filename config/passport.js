@@ -88,7 +88,11 @@ module.exports = passport => {
     done(null, user.id)
   })
   passport.deserializeUser((id, cb) => {
+    console.log(`===== id in passport =====`)
+    console.log(id)
     User.findByPk(id).then(user => {
+      console.log(`===== user in passport =====`)
+      console.log(user)
       return cb(null, user)
     })
   })
