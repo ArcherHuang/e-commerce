@@ -119,6 +119,8 @@ const orderService = {
           cart.update({
             dataStatus: 0, // 不存在（已轉為訂單）0 存在 1 
           })
+          // 移除使用者所擁有的購物車
+          req.session.cartId = null
 
           return Promise.all(results).then(() => {
             Order.findAll({
