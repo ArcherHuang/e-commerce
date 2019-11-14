@@ -45,19 +45,12 @@ module.exports = passport => {
       profileFields: ['email', 'displayName']
     }, (accessToken, refreshToken, profile, done) => {
 
-      // for testing
-      console.log('Profile: ', profile)
-      console.log('Email: ', profile._json.email)
-
       User.findOne({
         where: {
           email: profile._json.email
         }
       }).then(user => {
         if (!user) {
-
-          // for testing
-          console.log('==== Can not find user ====')
 
           let randomPassword = Math.random().toString(36).slice(-8)
           bcrypt.genSalt(10, (err, salt) =>
@@ -76,8 +69,6 @@ module.exports = passport => {
             })
           )
         } else {
-          console.log('==== Found user ====')
-          console.log(user)
           return done(null, user)
         }
       })
@@ -88,11 +79,7 @@ module.exports = passport => {
     done(null, user.id)
   })
   passport.deserializeUser((id, cb) => {
-    console.log(`===== id in passport =====`)
-    console.log(id)
     User.findByPk(id).then(user => {
-      console.log(`===== user in passport =====`)
-      console.log(user)
       return cb(null, user)
     })
   })

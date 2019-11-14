@@ -7,8 +7,8 @@ router.get('/facebook',
 )
 router.get('/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: 'https://ajashop.co/',
-    failureRedirect: 'https://ajashop.co/accounts/signin',
+    successRedirect: '/',
+    failureRedirect: '/accounts/signin',
   })
 )
 
