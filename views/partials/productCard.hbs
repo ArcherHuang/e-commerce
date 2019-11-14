@@ -22,7 +22,7 @@
         </div>
         <div class="product-content">
             {{!-- 同時展示商品 id 方便 QA --}}
-            <h4 class="font-weight-bold"><a href="/products/{{this.id}}">{{this.id}} x {{this.name}}</a></h4>
+            <h4 class="font-weight-bold"><a href="/products/{{this.id}}">{{this.name}}</a></h4>
             {{!-- <h4 class="font-weight-bold"><a href="/products/{{this.id}}">{{this.name}}</a></h4> --}}
             <span>{{this.Category.name}}</span>
             <div class="price-addtocart">
@@ -65,7 +65,7 @@
                     <div class="col-md-7 col-sm-12 col-xs-12">
                         <div class="product-details-content quickview-content">
                             {{!-- 同時展示商品 id 方便 QA --}}
-                            <h2>{{this.id}} x {{this.name}}</h2>
+                            <h2>{{{this.name}}</h2>
                             {{!-- <h2>{{this.name}}</h2> --}}
                             <span>{{this.Category.name}}</span>
                             <div class="product-ratting-review">
