@@ -44,14 +44,21 @@ module.exports = passport => {
       callbackURL: process.env.FB_CALLBACK_URL,
       profileFields: ['email', 'displayName']
     }, (accessToken, refreshToken, profile, done) => {
+
+      // for testing
       console.log('Profile: ', profile)
-      console.log('Done: ', done)
+      console.log('Email: ', profile._json.email)
+
       User.findOne({
         where: {
           email: profile._json.email
         }
       }).then(user => {
         if (!user) {
+
+          // for testing
+          console.log('==== Can not find user ====')
+
           let randomPassword = Math.random().toString(36).slice(-8)
           bcrypt.genSalt(10, (err, salt) =>
             bcrypt.hash(randomPassword, salt, null, (err, hash) => {
@@ -69,6 +76,8 @@ module.exports = passport => {
             })
           )
         } else {
+          console.log('==== Found user ====')
+          console.log(user)
           return done(null, user)
         }
       })
