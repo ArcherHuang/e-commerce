@@ -11,6 +11,15 @@ const cartService = {
 
   getCart: async (req, res, callback) => {
     try {
+
+      // 驗證 cartId 是否存在，若不存在，先建立一個 cart 給使用者
+      if (!req.session.cartId) {
+        let cart = await Cart.create({
+          where: { dataStatus: 1 }
+        })
+        req.session.cartId = cart.id
+      }
+
       return Cart.findOne({
         where: {
           id: req.session.cartId
