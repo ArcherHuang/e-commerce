@@ -458,7 +458,7 @@ const userService = {
   logout: (req, res, callback) => {
     try {
       req.logout()
-      req.session.user = ""
+      req.session.user = null
       return callback({ status: 'success', message: '成功登出' })
     }
     catch (err) {
