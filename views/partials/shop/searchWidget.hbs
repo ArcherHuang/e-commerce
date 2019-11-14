@@ -2,7 +2,11 @@
     <h4 class="sidebar-title">Search 搜尋</h4>
     <div class="sidebar-search mb-40 mt-20">
         <form class="sidebar-search-form" action="/products/shop">
+            {{#ifCond products.length 0}}
+            <input type="text" name="keyword" value="" placeholder="搜尋...">
+            {{else}}
             <input type="text" name="keyword" value="{{keyword}}" placeholder="搜尋...">
+            {{/ifCond}}
             <button type="submit">
                 <i class="la la-search"></i>
             </button>

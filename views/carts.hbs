@@ -50,15 +50,16 @@
           <td>{{this.price}}</td>
           <td>
             <div style="display: flex;">
-              <form action="/carts/{{this.CartItem.id}}/add" method="POST">
-                <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
+              <form action="/carts/{{this.CartItem.id}}/sub" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
               </form>
               <span style="margin: 0 20px;">
                 {{this.CartItem.quantity}}
               </span>
-              <form action="/carts/{{this.CartItem.id}}/sub" method="POST">
-                <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
+              <form action="/carts/{{this.CartItem.id}}/add" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
               </form>
+
             </div>
           </td>
           <td>
@@ -103,6 +104,8 @@
     {{/if}}
     <br>
     {{#if user.id}}
+    <br>
+    <h4>收件人資訊：</h4>
     <form action="/orders" method="POST">
       <div class="form-group row">
         <label for="colFormLabel" class="col-sm-2 col-form-label"><b>Name</b></label>
@@ -125,8 +128,22 @@
             value="{{user.phone}}" required>
         </div>
       </div>
+      <div class="">
+        付款方式：
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="inlineRadio1" value="newebpay"
+          style="width: 30px;">
+        <label class="form-check-label" for="inlineRadio1">藍新金流 (國內)</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="paymentMethod" id="inlineRadio2" value="stripe"
+          style="width: 30px;">
+        <label class="form-check-label" for="inlineRadio2">Stripe (國外)</label>
+      </div>
       <input type="hidden" name="cart_id" value="{{cart.id}}"><br>
-      <button type="submit" class="btn btn-success btn-round btn-sm">建立訂單，前往結帳</button>
+      <button type="submit" class="btn btn-success btn-round btn-sm">立即付款 </button>
+
     </form>
     {{else}}
     <a href="/accounts/signin" class="btn btn-success btn-round btn-sm mb-3">前往結帳（請先登入）</a>

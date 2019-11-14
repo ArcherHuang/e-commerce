@@ -92,7 +92,15 @@ const orderController = {
       try {
         if (data['status'] === 'success') {
           let order = data.content[0]
-          return res.redirect(`/accounts/orders/${order.id}`)
+
+          // 使用不同金流
+          if (req.body.paymentMethod === 'stripe') {
+            return res.redirect(`/orders/${order.id}/stripePayment`)
+          } else if (req.body.paymentMethod === 'newebpay') {
+            return res.redirect(`/orders/${order.id}/newebPayment`)
+          } else {
+            return res.redirect(`/accounts/orders/${order.id}`)
+          }
         } else {
           req.flash('error_messages', data['message'])
           return res.redirect('back')
