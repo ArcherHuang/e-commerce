@@ -12,7 +12,6 @@ AJA Shop 是一間線上家具商城，提供使用者一個值得信任的購�
 - [執行方式](#執行方式)
 - [系統網址](#系統網址)
 - [API 功能](#api-功能)
-- [API 功能](#api-功能)
 - [專案管理軟體與第三方套件](#專案管理軟體與第三方套件)
 - [Frontend Wireframe](#frontend-wireframe)
 - [Background Wireframe](#background-wireframe)
@@ -23,6 +22,7 @@ AJA Shop 是一間線上家具商城，提供使用者一個值得信任的購�
 - [Contributor](#contributor)
 
 ## 簡介
+AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信任的購物環境。同時也提供完整的後台系統，幫助管理者順利管理商品庫存、銷售狀況、優惠、會員狀態等等
 
 ## 環境建置與需求
 * 前端
@@ -351,7 +351,6 @@ NODE_RED_IP=
 * [Complete] 自動刪除過期的 coupon
 * [Complete] 自動刪除閒置兩天購物車，並還原庫存
 * [Complete] 自動刪除被取消兩天的訂單，並還原庫存
-
 
 ## Change Logs
 * https://github.com/ArcherHuang/e-commerce/commits/master
