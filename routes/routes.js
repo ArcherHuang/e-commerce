@@ -29,7 +29,11 @@ router.use('/auth', authRoute)
 // router.get('/:params', (req, res) => res.redirect('/products/main'))
 
 // catch all that caught routes not previously defined
-router.all('/*', (req, res) => res.redirect('/products/main'))
+router.get('/accounts([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.get('/carts([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.get('/orders([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.get('/products([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.get('/admin([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
 
 module.exports = router
 
