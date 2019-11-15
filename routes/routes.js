@@ -25,7 +25,7 @@ router.use('/send', sendCouponRoute)
 router.use('/auth', authRoute)
 
 // 將其他 routes 導回首頁
-// router.get('/', (req, res) => res.redirect('/products/main'))
+router.get('/', (req, res) => res.redirect('/products/main'))
 // router.get('/:params', (req, res) => res.redirect('/products/main'))
 
 // catch all that caught routes not previously defined
@@ -34,6 +34,8 @@ router.get('/carts([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/mai
 router.get('/orders([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
 router.get('/products([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
 router.get('/admin([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.get('/send([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
+router.get('/auth([\\w:./-~@\!\$]+)', (req, res) => res.redirect('/products/main'))
 
 module.exports = router
 
