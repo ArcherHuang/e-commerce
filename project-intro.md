@@ -146,6 +146,7 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 * 利用 Cron job 自動執行程式
 * 思考商家庫存管理的問題
 * 遭遇到許多前所未見的技術問題
+* 使用 Swagger 協助開發
 
 ### 8. 組員名單以及每人畢業專案部落格
 
@@ -154,4 +155,4 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 * Alvis
     * [部落格](https://junchoon14.blogspot.com)
 * Jacs
-    * [部落格]()
+    * [部落格](https://github.com/jacs0110/articles/blob/master/final-project-review.md)
