@@ -139,6 +139,7 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 * 導入 Swagger 以協助開發人員更方便測試
 
 #### Alvis
+* vue 的使用過程，從興奮到崩潰，以及各項的挑戰。
 
 #### Jacs
 * 順利完成購物車功能與金流串接
@@ -151,6 +152,6 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 * Archer 阿全
     * [部落格](https://medium.com/@archerforwork/%E5%BF%83%E5%BE%97-%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC%E7%9A%84%E5%8F%8D%E6%80%9D-79260cf2cf7d)
 * Alvis
-    * [部落格]()
+    * [部落格](https://junchoon14.blogspot.com)
 * Jacs
     * [部落格]()
