@@ -111,6 +111,7 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 * [Complete] 自動刪除被取消兩天的訂單，並還原庫存
 
 ### 5. GitHub 連結
+* https://github.com/ArcherHuang/e-commerce
 
 ### 6. 產品網址連結（推上 Heroku 或 GCP 皆可）以及一組帳號密碼
 
@@ -133,19 +134,22 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 ### 7. 開發畢業專案最喜歡哪個部分，為什麼?
 
 #### Archer 阿全
+* 帳號註冊與忘記密碼導入 Redis
+* 寄送 coupon 使用 Node-Red 與 Message Queue 
+* 導入 Swagger 以協助開發人員更方便測試
+
 #### Alvis
+
 #### Jacs
 * 順利完成購物車功能與金流串接
 * 利用 Cron job 自動執行程式
 * 思考商家庫存管理的問題
 * 遭遇到許多前所未見的技術問題
 
-
-
 ### 8. 組員名單以及每人畢業專案部落格
 
 * Archer 阿全
-    * [部落格]()
+    * [部落格](https://medium.com/@archerforwork/%E5%BF%83%E5%BE%97-%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC%E7%9A%84%E5%8F%8D%E6%80%9D-79260cf2cf7d)
 * Alvis
     * [部落格]()
 * Jacs
