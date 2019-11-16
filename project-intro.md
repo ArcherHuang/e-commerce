@@ -131,7 +131,25 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
     * CVC: 隨機三位數
     * 到期日: 任意一個今天之後的日期
 
-### 7. 開發畢業專案最喜歡哪個部分，為什麼?
+### 7. 使用者回饋
+* https://github.com/ArcherHuang/e-commerce/blob/master/qa.md
+
+### 8. 分工
+
+* Alvis
+  * 初期 wireframe 與 use flow 規劃
+  * 初期前端頁面 (Vue) 開發
+  * 後期商品頁面開發
+  * QA
+* Archer
+  * 建立開發基礎架構 (express, github, heroku, etc..)
+  * 使用者權限、管理員後台功能 api 開發
+  * 管理員後台功能前端頁面開發 (handlebars) 
+* Jacs
+  * 前台功能 api
+  * 前台頁面開發 (handlebars) 
+
+### 9. 開發畢業專案最喜歡哪個部分，為什麼?
 
 #### Archer 阿全
 * 帳號註冊與忘記密碼導入 Redis
@@ -148,7 +166,7 @@ AJA Shop 是一間線上家具商城，提供使用者一個舒適、值得信�
 * 遭遇到許多前所未見的技術問題
 * 使用 Swagger 協助開發
 
-### 8. 組員名單以及每人畢業專案部落格
+### 10. 組員名單以及每人畢業專案部落格
 
 * Archer 阿全
     * [部落格](https://medium.com/@archerforwork/%E5%BF%83%E5%BE%97-%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC%E7%9A%84%E5%8F%8D%E6%80%9D-79260cf2cf7d)
