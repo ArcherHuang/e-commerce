@@ -6,7 +6,9 @@ const orderService = {
 
   getOrders: (req, res, callback) => {
     try {
-      Order.findAll().then(orders => {
+      Order.findAll({
+        order: [['updatedAt', 'DESC'], ['id', 'DESC']]
+      }).then(orders => {
         if (req.params.order_id) {
           Order.findByPk(req.params.order_id, { include: [User, { model: Product, as: 'items' }] })
             .then((order) => {
