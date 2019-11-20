@@ -34,50 +34,6 @@
     <h4>購物車折扣設定</h4>
     <br>
 
-    {{!-- <div class="row mt-5">
-      <div class="col-md-6 m-auto">
-        <div class="card card-body">
-          <h6 class="text-secondary"><small>(<i class="fas fa-star-of-life text-danger"></i>)</small> 代表必填欄位</h6>
-          {{#if discount}}
-          <form action="/admin/orders/discounts/{{discount.id}}/edit?_method=PUT" method="POST">
-            <div class="form-label-group">
-              <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-              <input type="text" placeholder="name" name="name" value="{{discount.name}}">
-            </div>
-            <div class="form-label-group">
-              <label for="requireAmount">require Amount</label>
-              <input type="text" placeholder="requireAmount" name="requireAmount" value="{{discount.requireAmount}}">
-            </div>
-            <div class="form-label-group">
-              <label for="discountAmount">discount Amount</label>
-              <input type="text" placeholder="discountAmount" name="discountAmount" value="{{discount.discountAmount}}">
-            </div>
-            <br />
-            <button class="btn btn-outline-primary btn-block" type="submit">Update</button>
-            <a href="/admin/orders/discounts">or Create New</a>
-          </form>
-          {{else}}
-          <form action="/admin/orders/discounts" method="POST">
-            <div class="form-label-group">
-              <label for="name">name <small>(<i class="fas fa-star-of-life text-danger"></i>)</label>
-              <input type="text" placeholder="name" name="name">
-            </div>
-            <div class="form-label-group">
-              <label for="requireAmount">require Amount</label>
-              <input type="text" placeholder="requireAmount" name="requireAmount">
-            </div>
-            <div class="form-label-group">
-              <label for="discountAmount">discount Amount</label>
-              <input type="text" placeholder="discountAmount" name="discountAmount">
-            </div>
-            <br />
-            <button class="btn btn-outline-primary btn-block" type="submit">Submit</button>
-          </form>
-          {{/if}}
-        </div>
-      </div>
-    </div> --}}
-
     {{#if targetDiscount}}
     <form action="/admin/orders/discounts/{{targetDiscount.id}}/edit?_method=PUT" method="POST">
       {{else}}
@@ -107,24 +63,25 @@
       </form>
       <p class="mh-3">備註：同一時間只會有一個折扣有效，若新增折扣後，原有折扣將被刪除</p>
       <br>
+      <h6 class="text-secondary text-center">點擊欄位標題後可進行排序</h6>
       <table class="table" id="myTable">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">折扣名稱
-              <i class="fas fa-sort"></i>
+
             </th>
             <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">購物車金額條件
               ($)
-              <i class="fas fa-sort"></i>
+
             </th>
             <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">購物車折扣額度
               (%)
-              <i class="fas fa-sort"></i>
+
             </th>
             <th scope="col" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')" style="cursor:pointer">
               狀態
-              <i class="fas fa-sort"></i>
+
             </th>
             <th scope="col">#</th>
           </tr>
