@@ -37,35 +37,24 @@
     <table class="table table-hover" id="myTable">
       <thead>
         <tr>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')"
-            style="cursor:pointer">#</th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')"
-            style="cursor:pointer">Order Name
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')"
-            style="cursor:pointer">sn
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')"
-            style="cursor:pointer">總金額
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(5)')"
-            style="cursor:pointer">付款狀態
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(6)')"
-            style="cursor:pointer">出貨狀態
-          </th>
-          <th scope="col" class="text-center" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(7)')"
-            style="cursor:pointer">訂單狀態
-          </th>
+          <th scope="col" style="cursor:pointer">#</th>
+          <th scope="col" style="cursor:pointer">Time</th>
+          <th scope="col" style="cursor:pointer">Order Name</th>
+          <th scope="col" style="cursor:pointer">sn</th>
+          <th scope="col" class="text-center" style="cursor:pointer">總金額</th>
+          <th scope="col" class="text-center" style="cursor:pointer">付款狀態</th>
+          <th scope="col" class="text-center" style="cursor:pointer">出貨狀態</th>
+          <th scope="col" class="text-center" style="cursor:pointer">訂單狀態</th>
           <th class="text-center" scope="col">#</th>
         </tr>
       </thead>
       <tbody>
         {{#each orders}}
         <tr class="item">
-          <th class="text-center" scope="row">{{this.id}}</th>
-          <td class="text-center">{{this.name}}</td>
-          <td class="text-center">{{this.sn}}</td>
+          <td class="text-center">{{this.id}}</td>
+          <td>{{momentYYYYMMDDHHmmss this.updatedAt}}</td>
+          <td>{{this.name}}</td>
+          <td>{{this.sn}}</td>
           <td class="text-center">{{this.totalAmount}}</td>
           <td class="text-center">
 
