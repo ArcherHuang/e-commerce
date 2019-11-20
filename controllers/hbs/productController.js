@@ -184,6 +184,9 @@ const productController = {
             userName: r.User.name
           }))
 
+          // 最新建立的 review 排在最前面
+          reviews = reviews.reverse()
+
           // 若使用者有登入
           if (req.user) {
             let user = data.currentUser.content
