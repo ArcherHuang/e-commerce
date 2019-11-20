@@ -109,13 +109,15 @@
                     </div>
                     <div id="des-details3" class="tab-pane active">
                         {{!-- 新增評論 --}}
+                        {{#if user}}
                         <div class="dec-review-wrap mb-50">
                             <form action="/products/{{product.id}}/reviews" method="POST" style="width:100%">
                                 <div class="row">
                                     <div class="col-10">
                                         <textarea rows="" cols="" type="text" class="form-control" name="review"
-                                            id="review" placeholder="Your review"
-                                            style="height:100px; vertical-align: top" required></textarea>
+                                            id="review-input" placeholder="Your review (300字內)"
+                                            style="height:100px; vertical-align: top" maxlength="300"
+                                            required></textarea>
                                     </div>
                                     <div class="col-2">
                                         <div class="mt-5">
@@ -126,17 +128,18 @@
                                 </div>
                             </form>
                         </div>
+                        {{/if}}
+                        <br>
                         {{#each reviews}}
                         {{#ifCond this.dataStatus 1}}
                         <div class="dec-review-wrap mb-50">
                             <div class="row">
                                 <div class="col-10">
-                                    <div class="dec-review-content">
-                                        <p>{{this.review}}
-                                        </p>
+                                    <div class="dec-review-content text-wrap text-break ">
+                                        <p style="overflow-wrap: break-word">{{this.review}}</p>
                                         <div class="review-content-bottom">
                                             <div class="review-date">
-                                                <span style="color: blue;">{{momentYYYYMMDD this.createdAt}}
+                                                <span style="color: blue;">{{momentYYYYMMDDHHmmss this.createdAt}}
                                                     &nbsp;&nbsp; <b style="color: black;">by
                                                         {{this.userName}}</b></span>
                                             </div>
