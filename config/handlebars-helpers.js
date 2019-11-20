@@ -29,7 +29,7 @@ module.exports = {
   },
 
   momentYYYYMMDDHHmmss: function (a) {
-    return moment(a).format('YYYY-MM-DD HH:mm:ss')
+    return moment(a).tz("Asia/Taipei").format('YYYY-MM-DD HH:mm:ss')
   },
 
   NTDtoSGD: function (a) {
