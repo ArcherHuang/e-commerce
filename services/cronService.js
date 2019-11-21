@@ -215,7 +215,7 @@ const cronService = {
               await Notification.create({
                 type: "log",
                 category: "coupon",
-                content: `刪除過期 coupon (id: ${coupon.id}`,
+                content: `刪除過期 coupon (id: ${coupon.id})`,
                 dataStatus: 1
               })
             }).catch(err => {
@@ -278,7 +278,7 @@ const cronService = {
               await Notification.create({
                 type: "log",
                 category: "transaction",
-                content: `刪除過期 cart (id: ${cart.id}`,
+                content: `刪除過期 cart (id: ${cart.id})`,
                 dataStatus: 1
               })
               // console.log(`更新 Cart (ID: ${cart.id}) 成功`)
@@ -338,7 +338,7 @@ const cronService = {
             await Notification.create({
               type: "log",
               category: "transaction",
-              content: `刪除過期 order (id: ${expiredOrders[j].id}`,
+              content: `刪除過期 order (id: ${expiredOrders[j].id})`,
               dataStatus: 1
             })
             // console.log(`更新 Order dataStatus 成功`)
