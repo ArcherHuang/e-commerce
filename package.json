@@ -47,6 +47,6 @@
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.1.1",
     "uuid": "^3.3.3",
-    "validator": "^11.1.0"
+    "validator": "^13.7.0"
   }
 }
